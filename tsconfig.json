@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "target": "ESNext",
+        "sourceMap": true,
+        "outDir": "dir",
+        "esModuleInterop": true,
+        "baseUrl": "./app",
+        "paths": {
+            "@*": ["./*"]
+         },
+         "resolveJsonModule": true,
+        "types": ["./app/types/global.d.ts"]
+    },
+    "include": ["./**/*.ts"],
+    "exclude": ["node_modules"]
+}

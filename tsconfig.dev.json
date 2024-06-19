@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "ts-node": {
+        "swc": true,
+        "pretty": true,
+        "watch-files": ["."]
+    },
+    "compilerOptions": {
+        "listEmittedFiles": true,
+        "diagnostics": true,
+        "pretty": true,
+        "sourceMap": true
+    }
+}
