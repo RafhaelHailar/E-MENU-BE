@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "@../prisma";
+import prisma from "@/../prisma";
 
 async function GetService(req: Request, res: Response) {
   const { productId } = req.params;
