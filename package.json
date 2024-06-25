@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "npm run clean:build",
     "dev": "npm run db:generate && cross-env NODE_ENV=development nodemon .",
-    "build:production": "npm run db:generate && tsc --build tsconfig.build.json",
+    "build:production": "npm run db:generate && tsc --build tsconfig.build.json && tsc-alias -p tsconfig.json",
     "production": "npm run build:production && npm run start",
     "start": "cross-env NODE_ENV=production node ./build/app.js",
     "clean:build": "rm -rf build",
@@ -59,6 +59,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5"
   }
