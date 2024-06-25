@@ -1,24 +1,30 @@
-import { name, version } from '../package.json';
+import { name, version } from "../package.json";
 
-const formatName = name.split("-").map(word => {
+const formatName = name
+  .split("-")
+  .map((word) => {
     if (word == "be") return word.toUpperCase();
     return word.charAt(0).toUpperCase() + word.slice(1);
-}).join(" ");
+  })
+  .join(" ");
 
 const swaggerDef = {
-  openapi: '3.0.0',
+  openapi: "3.0.0",
   info: {
     title: `${formatName} API documentation`,
     version,
     license: {
-      name: 'MIT',
-    }
+      name: "MIT",
+    },
   },
   servers: [
     {
-      url: `http://localhost:${process.env.APP_PORT}`
-    }
-  ]
+      url: `http://localhost:${process.env.APP_PORT}`,
+    },
+    {
+      url: `https://e-menu-be.onrender.com`,
+    },
+  ],
 };
 
 export default swaggerDef;

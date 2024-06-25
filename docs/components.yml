@@ -1,0 +1,27 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        cookingTimeInSec:
+          type: number
+        categoryId:
+          type: number
+        category:
+          type:
+            $ref: "#/components/schemas/Category"
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: boolean
