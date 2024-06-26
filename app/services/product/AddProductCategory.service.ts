@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
-async function CreateProductCategoryService(req: Request, res: Response) {
+async function AddProductCategoryService(req: Request, res: Response) {
   const { name } = req.body;
 
   const category = await prisma.productCategory.create({
@@ -16,4 +16,4 @@ async function CreateProductCategoryService(req: Request, res: Response) {
   });
 }
 
-export default CreateProductCategoryService;
+export default AddProductCategoryService;
