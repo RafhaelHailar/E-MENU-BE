@@ -2,3 +2,4 @@ export { default as GetProductService } from "./Get.service";
 export { default as AddProductService } from "./Add.service";
 export { default as AddProductCategoryService } from "./AddProductCategory.service";
 export { default as CategorizeProductService } from "./CategorizeProduct.service";
+export { default as AddPromotionService } from "./AddPromotion.service";
