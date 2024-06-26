@@ -44,6 +44,13 @@ router.post(
   ProductController.categorizeProduct,
 );
 
+/**
+ * Add Promotion
+ * @route POST /products/promotion
+ * @returns {object} 200 - Message that the promotion is created along side with its id.
+ */
+router.post("/products/promotion", ProductController.addPromotion);
+
 export default router;
 
 /**
