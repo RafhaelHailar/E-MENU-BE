@@ -17,6 +17,16 @@ const router: Router = Router();
 router.get("/products/:productId?", ProductController.get);
 
 /**
+ * Get Promotion/s
+ * @route GET /products/promotions
+ * @returns {object} 200 - Products promotions
+ *
+ * @route GET /products/promotions/{promotionId}
+ * @returns {object} 200 - Product promotions
+ */
+router.get("/products/promotions/:promotionId?", ProductController.get);
+
+/**
  * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.
@@ -49,7 +59,7 @@ router.post(
  * @route POST /products/promotion
  * @returns {object} 200 - Message that the promotion is created along side with its id.
  */
-router.post("/products/promotion", ProductController.addPromotion);
+router.post("/products/promotions", ProductController.addPromotion);
 
 /**
  * Categorize promotion
