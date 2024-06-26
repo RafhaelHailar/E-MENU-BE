@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function CategorizeProductService(req: Request, res: Response) {
-  const { categoryId, productId } = req.body;
+  const { productId } = req.params;
+  const { categoryId } = req.body;
 
   await prisma.productCategorize.create({
     data: {
