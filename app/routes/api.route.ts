@@ -11,7 +11,7 @@ const router: Router = Router();
  * @route GET /products
  * @returns {object} 200 - Products
  *
- * @route GET /products/productId
+ * @route GET /products/{productId}
  * @returns {object} 200 - Product
  */
 router.get("/products/:productId?", ProductController.get);
@@ -33,6 +33,16 @@ router.post(
  * @returns {object} 200 - Message that the product category is created along side with its id.
  */
 router.post("/products/category", ProductController.addProductCategory);
+
+/**
+ * Categorize product
+ * @route POST /product/{productId}/categorize
+ * @returns {object} 200 - Product Successfully Categorize
+ */
+router.post(
+  "/product/:productId/categorize",
+  ProductController.categorizeProduct,
+);
 
 export default router;
 
