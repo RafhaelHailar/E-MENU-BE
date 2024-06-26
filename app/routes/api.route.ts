@@ -24,7 +24,7 @@ router.get("/products/:productId?", ProductController.get);
  * @route GET /products/promotions/{promotionId}
  * @returns {object} 200 - Product promotions
  */
-router.get("/products/promotions/:promotionId?", ProductController.get);
+router.get("/promotions/:promotionId?", ProductController.getPromotion);
 
 /**
  * Add a new product
@@ -59,7 +59,7 @@ router.post(
  * @route POST /products/promotion
  * @returns {object} 200 - Message that the promotion is created along side with its id.
  */
-router.post("/products/promotions", ProductController.addPromotion);
+router.post("/promotions", ProductController.addPromotion);
 
 /**
  * Categorize promotion
@@ -67,7 +67,7 @@ router.post("/products/promotions", ProductController.addPromotion);
  * @returns {object} 200 - Promotion Successfully Categorize
  */
 router.post(
-  "/products/promotion/:promotionId/categorize",
+  "/promotion/:promotionId/categorize",
   ProductController.categorizePromotion,
 );
 
