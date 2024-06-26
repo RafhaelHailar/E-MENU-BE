@@ -6,6 +6,7 @@ import {
   AddProductCategoryService,
   CategorizeProductService,
   AddPromotionService,
+  CategorizePromotionService,
 } from "@services/product";
 
 const ProductController = {
@@ -27,6 +28,10 @@ const ProductController = {
 
   addPromotion: asyncHandler(async (req: Request, res: Response) => {
     await AddPromotionService(req, res);
+  }),
+
+  categorizePromotion: asyncHandler(async (req: Request, res: Response) => {
+    await CategorizePromotionService(req, res);
   }),
 };
 
