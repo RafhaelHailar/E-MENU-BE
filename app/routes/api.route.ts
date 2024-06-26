@@ -51,6 +51,16 @@ router.post(
  */
 router.post("/products/promotion", ProductController.addPromotion);
 
+/**
+ * Categorize promotion
+ * @route POST /products/promotion/{promotionId}/categorize
+ * @returns {object} 200 - Promotion Successfully Categorize
+ */
+router.post(
+  "/products/promotion/:promotionId/categorize",
+  ProductController.categorizePromotion,
+);
+
 export default router;
 
 /**
