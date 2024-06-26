@@ -16,7 +16,8 @@ const router: Router = Router();
  */
 router.get("/products/:productId?", ProductController.get);
 
-/** Add a new product
+/**
+ * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.
  */
@@ -25,6 +26,13 @@ router.post(
   validate(productValidators.add),
   ProductController.add,
 );
+
+/**
+ * Add a new product category
+ * @route POST /products/category
+ * @returns {object} 200 - Message that the product category is created along side with its id.
+ */
+router.post("/products/category", ProductController.addProductCategory);
 
 export default router;
 
