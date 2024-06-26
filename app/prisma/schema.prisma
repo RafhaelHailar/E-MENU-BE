@@ -14,74 +14,138 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model User {
-  id         String     @unique @default(uuid())
-  name       String     
-  email      String     @unique @db.VarChar(255)
-  contact    String
-  password   String     
-  role       String     
-  status     Boolean
-  remarks    String
-  cart       Cart?
-  createdAt  DateTime   @default(now()) 
-  updatedAt  DateTime   @updatedAt
+model Account {
+  id            String     @unique @default(uuid())
+  name          String     
+  email         String     @unique @db.VarChar(255)
+  contact       String
+  password      String     
+  status        Boolean
+  remarks       String
+  createdAt     DateTime   @default(now()) 
+  updatedAt     DateTime   @updatedAt
+
+  productReview ProductReview[]
 }
 
-model Category {
-  id         String     @unique @default(uuid())
-  name       String     @unique @db.VarChar(255)
-  status     Boolean
-  createdAt  DateTime   @default(now()) 
-  updatedAt  DateTime   @updatedAt
+model Table {
+  id        Int        @id @default(autoincrement())
+  session   String
 
-  product    Product[]
+  leaderId  String     @unique
+  leader    Customer?  @relation(fields: [leaderId], references: [id]) 
 }
 
-model Product {
-  id               String     @unique @default(uuid())
-  name             String     
-  price            Float
-  description      String
-  cookingTimeInSec Int
-  createdAt        DateTime   @default(now()) 
-  updatedAt        DateTime   @updatedAt
+model Customer {
+  id         String         @unique @default(uuid())
+  name       String         @unique @db.VarChar(255)
+  role       CustomerType   @default(ACCOMPLICE)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 
-  categoryId  String     
-  category    Category   @relation(fields: [categoryId], references: [id])
+  leaderId   String   
+  leader     Customer       @relation("group",fields: [leaderId], references: [id])
+  accomplice Customer[]     @relation("group")
 
-  cartItem    CartItem[]
-}
+  cart       Cart?          
 
-model Order {
-  id          String     @unique @default(uuid())
-  subtotal    Float
-  discount    Float
-  total       Float
-  orderType   String
-  orderStatus String
-  createdAt   DateTime   @default(now()) 
-  updatedAt   DateTime   @updatedAt
-
-  cartItem    CartItem[]
-}   
-
-model CartItem {
-  id         String     @unique @default(uuid())
-  group      Boolean
-  createdAt  DateTime   @default(now()) 
-  updatedAt  DateTime   @updatedAt
-
-  orderId    String     
-  order      Order      @relation(fields: [orderId], references: [id])
-
-  productId  String     
-  product    Product    @relation(fields: [productId], references: [id])
+  table      Table?
 }
 
 model Cart {
-  id         String     @unique @default(uuid())
+  id          String        @unique @default(uuid())
 
-  userId     String     @unique
-  user       User       @relation(fields: [userId], references: [id]) 
+  customerId  String        @unique
+  customer    Customer      @relation(fields: [customerId], references: [id])
+
+  cartItem    CartItem[]
+}
+
+model CartItem {
+  id          String         @unique @default(uuid())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  cartId      String 
+  cart        Cart           @relation(fields: [cartId], references: [id])
+
+  productId   String
+  product     Product        @relation(fields: [productId], references: [id])
+}
+
+model Product {
+  id                String     @unique @default(uuid())
+  name              String     
+  image             String
+  description       String
+  price             Float
+  cookingTimeInSec  Int
+  createdAt         DateTime   @default(now()) 
+  updatedAt         DateTime   @updatedAt
+  cartItem          CartItem[]
+  productCategorize ProductCategorize[]
+
+  productReview     ProductReview[]
+}
+
+model ProductCategory {
+  id                  String     @unique @default(uuid())
+  name                String
+  createdAt           DateTime   @default(now()) 
+  updatedAt           DateTime   @updatedAt
+
+  productCategorize   ProductCategorize[]
+  promotionCategory   PromotionCategory[]
+}
+
+model ProductCategorize {
+  categoryId   String
+  category     ProductCategory @relation(fields: [categoryId], references: [id])
+
+  productId    String
+  product      Product         @relation(fields: [productId], references: [id])
+
+  @@unique([categoryId,productId])
+}
+
+model Promotion {
+  id                  String     @unique @default(uuid())
+  name                String
+  description         String
+  discountRate        Float
+  startDate           DateTime   @default(now())
+  endDate             DateTime
+  createdAt           DateTime   @default(now()) 
+  updatedAt           DateTime   @updatedAt
+
+  promotionCategory   PromotionCategory[]
+}
+
+model PromotionCategory {
+  categoryId     String
+  category       ProductCategory @relation(fields: [categoryId], references: [id])
+
+  promotionId    String
+  promotion      Promotion       @relation(fields: [promotionId], references: [id])
+
+  @@unique([categoryId,promotionId])
+}
+
+model ProductReview {
+  id           String     @unique @default(uuid())
+  comment      String     
+  rating       Float
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  accountId    String     
+  account      Account    @relation(fields: [accountId], references: [id])
+
+  productId    String
+  product      Product    @relation(fields: [productId], references: [id])
+}
+
+enum CustomerType {
+  LEADER
+  ACCOMPLICE
 }
