@@ -95,7 +95,7 @@ model ProductCategory {
   updatedAt           DateTime   @updatedAt
 
   productCategorize   ProductCategorize[]
-  promotionCategory   PromotionCategory[]
+  promotionCategorize   PromotionCategorize[]
 }
 
 model ProductCategorize {
@@ -118,7 +118,7 @@ model Promotion {
   createdAt           DateTime   @default(now()) 
   updatedAt           DateTime   @updatedAt
 
-  promotionCategory   PromotionCategory[]
+  promotionCategorize   PromotionCategorize[]
 }
 
 model PromotionCategorize {
