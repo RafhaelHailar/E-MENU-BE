@@ -14,10 +14,17 @@ const router: Router = Router();
  * @route GET /products/productId
  * @returns {object} 200 - Product
  */
-router
-  .route("/products/:productId?")
-  .get(ProductController.get)
-  .post(validate(productValidators.add), ProductController.add);
+router.get("/products/:productId?", ProductController.get);
+
+/** Add a new product
+ * @route POST /products
+ * @returns {object} 200 - Message that the product is created along side with its id.
+ */
+router.post(
+  "/products",
+  validate(productValidators.add),
+  ProductController.add,
+);
 
 export default router;
 
