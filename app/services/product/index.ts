@@ -4,3 +4,4 @@ export { default as AddProductCategoryService } from "./AddProductCategory.servi
 export { default as CategorizeProductService } from "./CategorizeProduct.service";
 export { default as AddPromotionService } from "./AddPromotion.service";
 export { default as CategorizePromotionService } from "./CategorizePromotion.service";
+export { default as GetPromotionService } from "./GetPromotion.service";
