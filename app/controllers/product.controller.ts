@@ -1,9 +1,15 @@
 import { Request, Response } from "express";
+import asyncHandler from "@utils/asyncHandler";
+import { GetProductService, AddProductService } from "@services/product";
 
-import { GetProductService } from "@services/product";
-
-export default class ProductController {
-  static async get(req: Request, res: Response) {
+const ProductController = {
+  get: asyncHandler(async (req: Request, res: Response) => {
     await GetProductService(req, res);
-  }
-}
+  }),
+
+  add: asyncHandler(async (req: Request, res: Response) => {
+    await AddProductService(req, res);
+  }),
+};
+
+export default ProductController;

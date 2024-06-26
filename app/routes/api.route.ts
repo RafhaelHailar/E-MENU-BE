@@ -1,6 +1,8 @@
 import { Router } from "express";
 
+import validate from "@middlewares/validate";
 import ProductController from "@controllers/product.controller";
+import productValidators from "@validators/product.validator";
 
 const router: Router = Router();
 
@@ -12,7 +14,10 @@ const router: Router = Router();
  * @route GET /products/productId
  * @returns {object} 200 - Product
  */
-router.route("/products/:productId?").get(ProductController.get);
+router
+  .route("/products/:productId?")
+  .get(ProductController.get)
+  .post(validate(productValidators.add), ProductController.add);
 
 export default router;
 
