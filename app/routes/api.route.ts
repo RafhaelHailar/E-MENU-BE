@@ -11,13 +11,65 @@ const router: Router = Router();
  * @route GET /products
  * @returns {object} 200 - Products
  *
- * @route GET /products/productId
+ * @route GET /products/{productId}
  * @returns {object} 200 - Product
  */
-router
-  .route("/products/:productId?")
-  .get(ProductController.get)
-  .post(validate(productValidators.add), ProductController.add);
+router.get("/products/:productId?", ProductController.get);
+
+/**
+ * Get Promotion/s
+ * @route GET /products/promotions
+ * @returns {object} 200 - Products promotions
+ *
+ * @route GET /products/promotions/{promotionId}
+ * @returns {object} 200 - Product promotions
+ */
+router.get("/promotions/:promotionId?", ProductController.getPromotion);
+
+/**
+ * Add a new product
+ * @route POST /products
+ * @returns {object} 200 - Message that the product is created along side with its id.
+ */
+router.post(
+  "/products",
+  validate(productValidators.add),
+  ProductController.add,
+);
+
+/**
+ * Add a new product category
+ * @route POST /products/category
+ * @returns {object} 200 - Message that the product category is created along side with its id.
+ */
+router.post("/products/category", ProductController.addProductCategory);
+
+/**
+ * Categorize product
+ * @route POST /product/{productId}/categorize
+ * @returns {object} 200 - Product Successfully Categorize
+ */
+router.post(
+  "/product/:productId/categorize",
+  ProductController.categorizeProduct,
+);
+
+/**
+ * Add Promotion
+ * @route POST /products/promotion
+ * @returns {object} 200 - Message that the promotion is created along side with its id.
+ */
+router.post("/promotions", ProductController.addPromotion);
+
+/**
+ * Categorize promotion
+ * @route POST /products/promotion/{promotionId}/categorize
+ * @returns {object} 200 - Promotion Successfully Categorize
+ */
+router.post(
+  "/promotion/:promotionId/categorize",
+  ProductController.categorizePromotion,
+);
 
 export default router;
 

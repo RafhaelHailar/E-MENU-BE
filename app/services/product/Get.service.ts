@@ -9,12 +9,29 @@ async function GetService(req: Request, res: Response) {
       where: {
         id: productId,
       },
+      include: {
+        productCategorize: {
+          include: {
+            category: true,
+          },
+        },
+        productReview: true,
+      },
     });
 
     return res.status(200).json(product);
   }
 
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({
+    include: {
+      productCategorize: {
+        include: {
+          category: true,
+        },
+      },
+      productReview: true,
+    },
+  });
 
   return res.status(200).json(products);
 }
