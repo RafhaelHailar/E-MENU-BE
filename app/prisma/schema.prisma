@@ -32,8 +32,7 @@ model Table {
   id        Int        @id @default(autoincrement())
   session   String?    @unique 
 
-  leaderId  String?    @unique
-  leader    Customer?  @relation(fields: [leaderId], references: [id]) 
+  customers Customer[]
 }
 
 model Customer {
@@ -49,7 +48,8 @@ model Customer {
 
   cart       Cart?          
 
-  table      Table?
+  tableId    Int
+  table      Table          @relation(fields: [tableId], references: [id])
 }
 
 model Cart {
