@@ -2,7 +2,8 @@ declare global {
   namespace Express {
     interface Request {
       tableSession: {
-        id: number;
+        tableId: number;
+        customerId: string;
       };
     }
   }
