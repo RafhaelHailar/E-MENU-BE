@@ -19,3 +19,5 @@ async function auth(req: Request, res: Response, next: NextFunction) {
   req.tableSession = sessionData;
   next();
 }
+
+export default auth;
