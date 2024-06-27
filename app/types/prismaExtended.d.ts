@@ -1,4 +1,13 @@
-import { Product, ProductCategorize, ProductCategory } from "@prisma/client";
+import {
+  Product,
+  ProductCategorize,
+  ProductCategory,
+  PromotionCategorize,
+} from "@prisma/client";
+
+export interface CategoryWithPromotionCategorize extends ProductCategory {
+  promotionCategorize: PromotionCategorize;
+}
 
 export interface Category extends ProductCategorize {
   category: ProductCategory;
