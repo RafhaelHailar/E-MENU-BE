@@ -1,10 +1,20 @@
 import { Request, Response } from "express";
 import prisma from "@/../prisma";
-import type { ProductWithCategory } from "@./types/prismaExtended";
+import type {
+  ProductWithCategory,
+  CategoryWithPromotionCategorize,
+} from "@./types/prismaExtended";
 
-function transformProduct(product: ProductWithCategory) {
+function transformProduct(product: ProductWithCategory, allCategory: string[]) {
   const categories = product.productCategorize.map((categorize) => {
-    return categorize.category.name;
+    const categoryName = categorize.category.name;
+    if (
+      (categorize.category as CategoryWithPromotionCategorize)
+        .promotionCategorize &&
+      !allCategory.includes(categoryName)
+    )
+      allCategory.push(categoryName);
+    return categoryName;
   });
 
   const transformedProduct = {
@@ -34,31 +44,49 @@ async function GetService(req: Request, res: Response) {
       },
     });
 
-    const transformedProduct = transformProduct(product as ProductWithCategory);
+    const transformedProduct = transformProduct(
+      product as ProductWithCategory,
+      [],
+    );
 
     return res.status(200).json(transformedProduct);
   }
+
+  const transformedProducts = [];
+  const allCategory = [];
 
   const products = await prisma.product.findMany({
     include: {
       productCategorize: {
         include: {
-          category: true,
+          category: {
+            include: {
+              promotionCategorize: {
+                include: {
+                  promotion: true,
+                },
+              },
+            },
+          },
         },
       },
       productReview: true,
     },
   });
 
-  const transformedProducts = [];
-
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
-    const transformedProduct = transformProduct(product as ProductWithCategory);
+    const transformedProduct = transformProduct(
+      product as ProductWithCategory,
+      allCategory,
+    );
     transformedProducts.push(transformedProduct);
   }
 
-  return res.status(200).json(transformedProducts);
+  return res.status(200).json({
+    categories: allCategory,
+    items: transformedProducts,
+  });
 }
 
 export default GetService;
