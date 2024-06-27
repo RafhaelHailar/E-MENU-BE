@@ -6,16 +6,18 @@ async function auth(req: Request, res: Response, next: NextFunction) {
 
   if (!tableSession) res.status(401).json({ message: "please authenticate" });
 
-  const table = await prisma.table.findUnique({
+  const [customerId, tableId] = tableSession.split(".");
+
+  const customer = await prisma.customer.findUnique({
     where: {
-      session: tableSession,
+      id: customerId,
     },
   });
 
-  if (!table)
+  if (!customer)
     res.status(401).json({ message: "table with that session is not found!" });
 
-  const sessionData = { id: table.id };
+  const sessionData = { customerId, tableId };
   req.tableSession = sessionData;
   next();
 }
