@@ -30,9 +30,9 @@ model Account {
 
 model Table {
   id        Int        @id @default(autoincrement())
-  session   String?     
+  session   String?    @unique 
 
-  leaderId  String?     @unique
+  leaderId  String?    @unique
   leader    Customer?  @relation(fields: [leaderId], references: [id]) 
 }
 
