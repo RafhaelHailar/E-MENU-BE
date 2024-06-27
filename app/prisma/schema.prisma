@@ -43,8 +43,8 @@ model Customer {
   createdAt  DateTime       @default(now())
   updatedAt  DateTime       @updatedAt
 
-  leaderId   String   
-  leader     Customer       @relation("group",fields: [leaderId], references: [id])
+  leaderId   String?   
+  leader     Customer?      @relation("group",fields: [leaderId], references: [id])
   accomplice Customer[]     @relation("group")
 
   cart       Cart?          
