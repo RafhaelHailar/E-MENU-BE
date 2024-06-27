@@ -34,7 +34,9 @@ async function GetService(req: Request, res: Response) {
       },
     });
 
-    return res.status(200).json(product);
+    const transformedProduct = transformProduct(product as ProductWithCategory);
+
+    return res.status(200).json(transformedProduct);
   }
 
   const products = await prisma.product.findMany({
