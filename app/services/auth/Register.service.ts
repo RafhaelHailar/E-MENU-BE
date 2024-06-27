@@ -11,6 +11,9 @@ async function RegisterService(req: Request, res: Response) {
     },
   });
 
+  if (!table)
+    return res.status(404).json({ message: "no table with that id found!" });
+
   const isInSession = table.session || table.session != "";
 
   if (isInSession)
