@@ -11,7 +11,11 @@
       "@*": ["./app/*"]
     },
     "resolveJsonModule": true,
-    "types": ["./app/types/global.d.ts"]
+    "types": [
+      "./app/types/global.d.ts",
+      "./app/types/prismaExtended.d.ts",
+      "./app/types/expressExtended.d.ts"
+    ]
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules"]

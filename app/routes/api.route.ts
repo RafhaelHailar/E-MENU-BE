@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import validate from "@middlewares/validate";
 import ProductController from "@controllers/product.controller";
+import OrderController from "@controllers/order.controller";
 import productValidators from "@validators/product.validator";
 
 const router: Router = Router();
@@ -70,6 +71,16 @@ router.post(
   "/promotion/:promotionId/categorize",
   ProductController.categorizePromotion,
 );
+
+/**
+ * Update Cart
+ * @route POST /cart/update
+ * @returns {object} 200 - Item in Cart is Updated.
+ * @returns {object} 401 - Customer with the given customer id is not found.
+ * @returns {object} 409 - Table Id does not match with the Id User Provided.
+ * @returns {object} 404 - Product with the given Product Id is not found.
+ */
+router.post("/cart/update", OrderController.updateCart);
 
 export default router;
 
