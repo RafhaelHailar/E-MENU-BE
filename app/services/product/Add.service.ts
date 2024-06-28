@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function AddService(req: Request, res: Response) {
-  const { name, image, description, price, cookingTimeInSec } = req.body;
+  const { name, image, description, price, estimatedCookingTimeMin } = req.body;
 
   const product = await prisma.product.create({
     data: {
@@ -10,7 +10,7 @@ async function AddService(req: Request, res: Response) {
       image,
       description,
       price,
-      cookingTimeInSec,
+      estimatedCookingTimeMin,
     },
   });
 
