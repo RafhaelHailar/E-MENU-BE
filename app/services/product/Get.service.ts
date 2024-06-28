@@ -43,6 +43,7 @@ async function GetService(req: Request, res: Response) {
 
   const transformedProducts = [];
   const allCategory = await GetCategoriesService();
+  const categoriesName = allCategory.map((category) => category.name);
 
   const products = await prisma.product.findMany({
     include: {
@@ -70,7 +71,7 @@ async function GetService(req: Request, res: Response) {
   }
 
   return res.status(200).json({
-    categories: allCategory,
+    categories: categoriesName,
     items: transformedProducts,
   });
 }
