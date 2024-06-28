@@ -6,7 +6,7 @@ const add = {
     image: Joi.string().required(),
     description: Joi.string().required(),
     price: Joi.number().required(),
-    cookingTimeInSec: Joi.number().required(),
+    estimatedCookingTimeMin: Joi.number().required(),
   }),
 };
 
