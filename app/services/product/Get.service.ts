@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "@/../prisma";
 import type { ProductWithCategory } from "@./types/prismaExtended";
-import GetCategoriesService from "./GetCategories.service";
 
 function transformProduct(product: ProductWithCategory) {
   const categories = product.productCategorize.map((categorize) => {
@@ -42,8 +41,6 @@ async function GetService(req: Request, res: Response) {
   }
 
   const transformedProducts = [];
-  const allCategory = await GetCategoriesService();
-  const categoriesName = allCategory.map((category) => category.name);
 
   const products = await prisma.product.findMany({
     include: {
@@ -70,10 +67,7 @@ async function GetService(req: Request, res: Response) {
     transformedProducts.push(transformedProduct);
   }
 
-  return res.status(200).json({
-    categories: categoriesName,
-    items: transformedProducts,
-  });
+  return res.status(200).json(transformedProducts);
 }
 
 export default GetService;
