@@ -5,6 +5,8 @@ import ProductController from "@controllers/product.controller";
 import OrderController from "@controllers/order.controller";
 import productValidators from "@validators/product.validator";
 
+import auth from "@middlewares/auth";
+
 const router: Router = Router();
 
 /**
@@ -80,7 +82,7 @@ router.post(
  * @returns {object} 409 - Table Id does not match with the Id User Provided.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
-router.post("/cart/update", OrderController.updateCart);
+router.post("/cart/update", auth, OrderController.updateCart);
 
 export default router;
 
