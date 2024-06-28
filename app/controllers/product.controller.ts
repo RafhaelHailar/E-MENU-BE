@@ -41,7 +41,7 @@ const ProductController = {
     await CategorizePromotionService(req, res);
   }),
 
-  deCategorizePromotion: asyncHandler(async (req: Request, res: Response) => {
+  deCategorizeProduct: asyncHandler(async (req: Request, res: Response) => {
     await DeCategorizeProductService(req, res);
   }),
 
