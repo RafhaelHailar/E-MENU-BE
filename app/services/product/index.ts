@@ -5,3 +5,4 @@ export { default as CategorizeProductService } from "./CategorizeProduct.service
 export { default as AddPromotionService } from "./AddPromotion.service";
 export { default as CategorizePromotionService } from "./CategorizePromotion.service";
 export { default as GetPromotionService } from "./GetPromotion.service";
+export { default as DeCategorizeProductService } from "./DeCategorizeProduct.service";
