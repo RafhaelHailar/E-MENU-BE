@@ -100,7 +100,7 @@ router.post("/cart/update", auth, OrderController.updateCart);
  */
 router.delete(
   "/category/:categoryId/decategorize/:productId",
-  OrderController.updateCart,
+  ProductController.deCategorizeProduct,
 );
 
 export default router;
