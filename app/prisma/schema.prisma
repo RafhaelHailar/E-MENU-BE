@@ -1,150 +1,136 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  shadowDatabaseUrl  = env("SHADOW_DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Account {
-  id            String     @unique @default(uuid())
-  name          String     
-  email         String     @unique @db.VarChar(255)
+  id            String          @unique @default(uuid())
+  name          String
+  email         String          @unique @db.VarChar(255)
   contact       String
-  password      String     
+  password      String
   status        Boolean
   remarks       String
-  createdAt     DateTime   @default(now()) 
-  updatedAt     DateTime   @updatedAt
-
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   productReview ProductReview[]
 }
 
 model Table {
   id        Int        @id @default(autoincrement())
-  session   String?    @unique 
-
+  session   String?    @unique
   customers Customer[]
 }
 
 model Customer {
-  id         String         @unique @default(uuid())
-  name       String         @unique @db.VarChar(255)
-  role       CustomerType   @default(ACCOMPLICE)
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-
-  leaderId   String?   
-  leader     Customer?      @relation("group",fields: [leaderId], references: [id])
-  accomplice Customer[]     @relation("group")
-
-  cart       Cart?          
-
+  id         String       @unique @default(uuid())
+  name       String       @unique @db.VarChar(255)
+  role       CustomerType @default(ACCOMPLICE)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  leaderId   String?
   tableId    Int
-  table      Table          @relation(fields: [tableId], references: [id])
+  cart       Cart?
+  leader     Customer?    @relation("group", fields: [leaderId], references: [id])
+  accomplice Customer[]   @relation("group")
+  table      Table        @relation(fields: [tableId], references: [id])
 }
 
 model Cart {
-  id          String        @unique @default(uuid())
-
-  customerId  String        @unique
-  customer    Customer      @relation(fields: [customerId], references: [id])
-
-  cartItem    CartItem[]
+  id         String     @unique @default(uuid())
+  customerId String     @unique
+  customer   Customer   @relation(fields: [customerId], references: [id])
+  cartItem   CartItem[]
 }
 
 model CartItem {
-  id          String         @unique @default(uuid())
-  quantity    Int
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-
-  cartId      String 
-  cart        Cart           @relation(fields: [cartId], references: [id])
-
-  productId   String
-  product     Product        @relation(fields: [productId], references: [id])
+  id        String   @unique @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cartId    String
+  productId String
+  quantity  Int
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Product {
-  id                String     @unique @default(uuid())
-  name              String     
-  image             String
-  description       String
-  price             Float
-  cookingTimeInSec  Int
-  createdAt         DateTime   @default(now()) 
-  updatedAt         DateTime   @updatedAt
-
-  cartItem          CartItem[]
-  productCategorize ProductCategorize[]
-
-  productReview     ProductReview[]
+  id                      String              @unique @default(uuid())
+  name                    String
+  image                   String
+  description             String
+  price                   Float
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  estimatedCookingTimeMin Int
+  cartItem                CartItem[]
+  productCategorize       ProductCategorize[]
+  productReview           ProductReview[]
 }
 
 model ProductCategory {
-  id                  String     @unique @default(uuid())
+  id                  String                @unique @default(uuid())
   name                String
-  createdAt           DateTime   @default(now()) 
-  updatedAt           DateTime   @updatedAt
-
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
   productCategorize   ProductCategorize[]
-  promotionCategorize   PromotionCategorize[]
+  promotionCategorize PromotionCategorize[]
 }
 
 model ProductCategorize {
-  categoryId   String
-  category     ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+  productId  String
+  category   ProductCategory @relation(fields: [categoryId], references: [id])
+  product    Product         @relation(fields: [productId], references: [id])
 
-  productId    String
-  product      Product         @relation(fields: [productId], references: [id])
-
-  @@unique([categoryId,productId])
+  @@unique([categoryId, productId])
 }
 
 model Promotion {
-  id                  String     @unique @default(uuid())
+  id                  String                @unique @default(uuid())
   name                String
   description         String
   discountRate        Float
-  startDate           DateTime   @default(now())
+  startDate           DateTime              @default(now())
   endDate             DateTime
-  createdAt           DateTime   @default(now()) 
-  updatedAt           DateTime   @updatedAt
-
-  promotionCategorize   PromotionCategorize[]
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  promotionCategorize PromotionCategorize[]
 }
 
 model PromotionCategorize {
-  categoryId     String
-  category       ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  promotionId String
+  category    ProductCategory @relation(fields: [categoryId], references: [id])
+  promotion   Promotion       @relation(fields: [promotionId], references: [id])
 
-  promotionId    String
-  promotion      Promotion       @relation(fields: [promotionId], references: [id])
-
-  @@unique([categoryId,promotionId])
+  @@unique([categoryId, promotionId])
 }
 
 model ProductReview {
-  id           String     @unique @default(uuid())
-  comment      String     
-  rating       Float
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id        String   @unique @default(uuid())
+  comment   String
+  rating    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  accountId String
+  productId String
+  account   Account  @relation(fields: [accountId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+}
 
-  accountId    String     
-  account      Account    @relation(fields: [accountId], references: [id])
-
-  productId    String
-  product      Product    @relation(fields: [productId], references: [id])
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
 }
 
 enum CustomerType {
