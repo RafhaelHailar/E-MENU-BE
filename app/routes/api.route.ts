@@ -98,7 +98,7 @@ router.post("/cart/update", auth, OrderController.updateCart);
  * @returns {object} 404 - Category with the given Category Id is not found.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
-router.post(
+router.delete(
   "/category/:categoryId/decategorize/:productId",
   OrderController.updateCart,
 );
