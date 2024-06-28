@@ -30,6 +30,13 @@ router.get("/products/:productId?", ProductController.get);
 router.get("/promotions/:promotionId?", ProductController.getPromotion);
 
 /**
+ * Get Categories
+ * @route GET /categories
+ * @returns {object} 200 - Products categories
+ */
+router.get("/categories", ProductController.getCategories);
+
+/**
  * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.
@@ -78,11 +85,23 @@ router.post(
  * Update Cart
  * @route POST /cart/update
  * @returns {object} 200 - Item in Cart is Updated.
- * @returns {object} 401 - Customer with the given customer id is not found.
+ * @returns {object} 401 - Customer with the given customer Id is not found.
  * @returns {object} 409 - Table Id does not match with the Id User Provided.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
 router.post("/cart/update", auth, OrderController.updateCart);
+
+/**
+ * De Categorize a Product from a given Category
+ * @route DELETE /category/${categoryId}/decategorize/${productId}
+ * @returns {object} 200 - Product Successfully Decategorize.
+ * @returns {object} 404 - Category with the given Category Id is not found.
+ * @returns {object} 404 - Product with the given Product Id is not found.
+ */
+router.post(
+  "/category/:categoryId/decategorize/:productId",
+  OrderController.updateCart,
+);
 
 export default router;
 
