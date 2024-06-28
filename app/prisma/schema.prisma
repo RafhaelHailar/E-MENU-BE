@@ -62,7 +62,7 @@ model CartItem {
 model Product {
   id                      String              @unique @default(uuid())
   name                    String
-  image                   String
+  image                   String              @db.LongText
   description             String              @db.LongText
   price                   Float
   createdAt               DateTime            @default(now())
@@ -94,7 +94,7 @@ model ProductCategorize {
 model Promotion {
   id                  String                @unique @default(uuid())
   name                String
-  description         String
+  description         String                @db.LongText
   discountRate        Float
   startDate           DateTime              @default(now())
   endDate             DateTime
@@ -114,7 +114,7 @@ model PromotionCategorize {
 
 model ProductReview {
   id        String   @unique @default(uuid())
-  comment   String
+  comment   String   @db.LongText
   rating    Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
