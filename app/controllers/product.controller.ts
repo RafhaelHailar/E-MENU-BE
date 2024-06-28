@@ -9,6 +9,7 @@ import {
   CategorizePromotionService,
   GetPromotionService,
   DeCategorizeProductService,
+  GetCategoriesService,
 } from "@services/product";
 
 const ProductController = {
@@ -42,6 +43,12 @@ const ProductController = {
 
   deCategorizePromotion: asyncHandler(async (req: Request, res: Response) => {
     await DeCategorizeProductService(req, res);
+  }),
+
+  getCategories: asyncHandler(async (req: Request, res: Response) => {
+    const allCategory = await GetCategoriesService();
+
+    res.status(200).json(allCategory);
   }),
 };
 

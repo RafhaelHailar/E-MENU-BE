@@ -1,19 +1,11 @@
 import { Request, Response } from "express";
 import prisma from "@/../prisma";
-import type {
-  ProductWithCategory,
-  CategoryWithPromotionCategorize,
-} from "@./types/prismaExtended";
+import type { ProductWithCategory } from "@./types/prismaExtended";
+import GetCategoriesService from "./GetCategories.service";
 
-function transformProduct(product: ProductWithCategory, allCategory: string[]) {
+function transformProduct(product: ProductWithCategory) {
   const categories = product.productCategorize.map((categorize) => {
     const categoryName = categorize.category.name;
-    if (
-      (categorize.category as CategoryWithPromotionCategorize)
-        .promotionCategorize &&
-      !allCategory.includes(categoryName)
-    )
-      allCategory.push(categoryName);
     return categoryName;
   });
 
@@ -44,16 +36,14 @@ async function GetService(req: Request, res: Response) {
       },
     });
 
-    const transformedProduct = transformProduct(
-      product as ProductWithCategory,
-      [],
-    );
+    const transformedProduct = transformProduct(product as ProductWithCategory);
 
     return res.status(200).json(transformedProduct);
   }
 
   const transformedProducts = [];
-  const allCategory = [];
+  const allCategory = await GetCategoriesService();
+  const categoriesName = allCategory.map((category) => category.name);
 
   const products = await prisma.product.findMany({
     include: {
@@ -76,15 +66,12 @@ async function GetService(req: Request, res: Response) {
 
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
-    const transformedProduct = transformProduct(
-      product as ProductWithCategory,
-      allCategory,
-    );
+    const transformedProduct = transformProduct(product as ProductWithCategory);
     transformedProducts.push(transformedProduct);
   }
 
   return res.status(200).json({
-    categories: allCategory,
+    categories: categoriesName,
     items: transformedProducts,
   });
 }
