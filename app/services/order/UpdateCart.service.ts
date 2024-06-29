@@ -27,16 +27,16 @@ async function UpdateCartService(req: Request, res: Response) {
   });
 
   // clear cart
-  await prisma.cart.deleteMany({
+  await prisma.cartItem.deleteMany({
     where: {
-      id: cart.id,
+      cartId: cart.id,
     },
   });
 
   const data = req.body;
 
   const cartItems = data.cartItems;
-
+  console.log(cartItems);
   for (let i = 0; i < cartItems.length; i++) {
     const [id, quantity] = data[i];
 
