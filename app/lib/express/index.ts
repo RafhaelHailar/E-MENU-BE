@@ -17,7 +17,7 @@ export async function index(app: express.Express): Promise<void> {
     app.disable("x-powered-by");
     app.use(morgan("dev"));
     app.use(cookieParser());
-    app.use(
+    /*  app.use(
       cors({
         origin: [
           process.env.FRONTEND_BASE_URL as string,
@@ -26,7 +26,7 @@ export async function index(app: express.Express): Promise<void> {
         ],
         credentials: true,
       }),
-    );
+    ); */
 
     app.use("/api", apiRoutes);
     app.use("/api/auth", authRoutes);
