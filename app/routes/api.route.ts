@@ -37,6 +37,13 @@ router.get("/promotions/:promotionId?", ProductController.getPromotion);
 router.get("/categories", ProductController.getCategories);
 
 /**
+ * Get Cart Items
+ * @route GET /cart
+ * @returns {object} 200 - Customer Card Items
+ */
+router.get("/cart", auth, OrderController.getCart);
+
+/**
  * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.

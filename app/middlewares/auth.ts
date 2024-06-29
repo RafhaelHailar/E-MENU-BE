@@ -17,7 +17,7 @@ async function auth(req: Request, res: Response, next: NextFunction) {
   if (!customer)
     res.status(401).json({ message: "table with that session is not found!" });
 
-  const sessionData = { customerId, tableId };
+  const sessionData = { customerId, tableId: Number(tableId) };
   req.tableSession = sessionData;
   next();
 }
