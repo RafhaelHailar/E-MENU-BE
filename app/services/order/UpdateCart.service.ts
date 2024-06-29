@@ -13,7 +13,7 @@ async function UpdateCartService(req: Request, res: Response) {
     },
   });
 
-  if (customer)
+  if (!customer)
     return res
       .status(401)
       .json({ message: "customer with the given id not found" });
