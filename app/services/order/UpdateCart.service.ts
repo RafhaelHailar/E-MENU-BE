@@ -38,7 +38,7 @@ async function UpdateCartService(req: Request, res: Response) {
   const cartItems = data.cartItems;
   console.log(cartItems);
   for (let i = 0; i < cartItems.length; i++) {
-    const [id, quantity] = data[i];
+    const { id, quantity } = cartItems[i];
 
     const product = await prisma.product.findUnique({
       where: {
