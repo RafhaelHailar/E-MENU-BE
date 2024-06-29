@@ -36,7 +36,7 @@ async function UpdateCartService(req: Request, res: Response) {
   const data = req.body;
 
   const cartItems = data.cartItems;
-  console.log(cartItems);
+
   for (let i = 0; i < cartItems.length; i++) {
     const { id, quantity } = cartItems[i];
 
