@@ -27,6 +27,7 @@ export async function index(app: express.Express): Promise<void> {
         credentials: true,
       }),
     ); */
+    app.use(cors());
 
     app.use("/api", apiRoutes);
     app.use("/api/auth", authRoutes);
