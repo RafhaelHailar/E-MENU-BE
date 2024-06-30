@@ -86,7 +86,7 @@ async function createCheckoutSession(items: LineItem[]) {
 }
 
 async function CheckoutService(req: Request, res: Response) {
-  const { customerId, tableId } = req.tableSession as Request["tableSession"];
+  /*  const { customerId, tableId } = req.tableSession as Request["tableSession"];
 
   const customer = await prisma.customer.findUnique({
     where: {
@@ -138,7 +138,7 @@ async function CheckoutService(req: Request, res: Response) {
 
   const checkoutSession = await createCheckoutSession(lineItems);
 
-  return res.status(200).json(checkoutSession);
+  return res.status(200).json(checkoutSession); */
 }
 
 export default CheckoutService;
