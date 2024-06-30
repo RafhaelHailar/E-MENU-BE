@@ -52,10 +52,14 @@ router.get("/cart", OrderController.getCart);
 router.get("/checkout", OrderController.checkout);
 
 router.get("/test/api", function (req, res) {
-  const ip =
-    req.connection.remoteAddress || req.headers["x-forwarded-for"] || req.ip;
+  const ips =
+    req.headers["cf-connecting-ip"] ||
+    req.headers["x-real-ip"] ||
+    req.headers["x-forwarded-for"] ||
+    req.connection.remoteAddress ||
+    "";
 
-  res.send(ip);
+  res.send(ips);
 });
 
 /**
