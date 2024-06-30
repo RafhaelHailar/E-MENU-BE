@@ -2,39 +2,9 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function UpdateCartService(req: Request, res: Response) {
-  const { customerId, tableId } = req.tableSession as Request["tableSession"];
-
-  const customer = await prisma.customer.findUnique({
-    where: {
-      id: customerId,
-    },
-    include: {
-      cart: true,
-    },
-  });
-
-  if (!customer)
-    return res
-      .status(401)
-      .json({ message: "customer with the given id not found" });
-  if (customer.tableId !== tableId)
-    return res.status(409).json({ message: "table id desrepancy." });
-
-  const cart = await prisma.cart.findUnique({
-    where: {
-      customerId,
-    },
-  });
-
-  // clear cart
-  await prisma.cartItem.deleteMany({
-    where: {
-      cartId: cart.id,
-    },
-  });
+  const tableSession = req.tableSession;
 
   const data = req.body;
-
   const cartItems = data.cartItems;
 
   for (let i = 0; i < cartItems.length; i++) {
@@ -54,7 +24,8 @@ async function UpdateCartService(req: Request, res: Response) {
     await prisma.cartItem.create({
       data: {
         productId: id,
-        cartId: cart.id,
+        sessionId: tableSession.session,
+        tableNo: Number(tableSession.tableNo),
         quantity,
       },
     });

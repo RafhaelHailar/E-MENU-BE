@@ -2,12 +2,13 @@ declare global {
   namespace Express {
     interface Request {
       tableSession: {
-        tableId?: number;
-        customerId?: string;
-        error?: {
-          status: number;
-          message: string;
-        };
+        id: number;
+        session: string | null;
+        tableNo: number;
+        status: boolean;
+        approvedDate: Date | null;
+        approvedBy: string | null;
+        createdAt: Date;
       };
     }
   }

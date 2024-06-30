@@ -1,6 +1,5 @@
 import { Router } from "express";
 import AuthController from "@controllers/auth.controller";
-import auth from "@middlewares/auth";
 
 const router: Router = Router();
 
@@ -12,10 +11,6 @@ const router: Router = Router();
  * @returns {object} 403 - There is another session open
  * @returns {object} 200 - Table session key
  */
-router.get(
-  "/order/:tableId",
-  auth({ isResponding: false }),
-  AuthController.register,
-);
+router.get("/order/:tableId", AuthController.register);
 
 export default router;

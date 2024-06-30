@@ -41,7 +41,15 @@ router.get("/categories", ProductController.getCategories);
  * @route GET /cart
  * @returns {object} 200 - Customer Card Items
  */
-router.get("/cart", auth(), OrderController.getCart);
+router.get("/cart", OrderController.getCart);
+
+/**
+ * Checkout Cart Items
+ * @route GET /cart
+ * @returns {object} 200 - Checkout Session Created.
+ * @returns {object} 400 - No Item in Cart.
+ */
+router.get("/checkout", OrderController.checkout);
 
 /**
  * Add a new product
@@ -96,7 +104,17 @@ router.post(
  * @returns {object} 409 - Table Id does not match with the Id User Provided.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
-router.post("/cart/update", auth(), OrderController.updateCart);
+router.post("/cart/update", auth, OrderController.updateCart);
+
+/**
+ * Update Cart
+ * @route POST /cart/update
+ * @returns {object} 200 - Item in Cart is Updated.
+ * @returns {object} 401 - Customer with the given customer Id is not found.
+ * @returns {object} 409 - Table Id does not match with the Id User Provided.
+ * @returns {object} 404 - Product with the given Product Id is not found.
+ */
+router.post("/cart/add", auth, OrderController.addCart);
 
 /**
  * De Categorize a Product from a given Category
