@@ -4,6 +4,9 @@ import prisma from "@/../prisma";
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   const tableSession = req.cookies._table_session;
 
+  if (!tableSession)
+    return res.status(401).json({ message: "please authenticate" });
+
   const session = await prisma.table.findUnique({
     where: {
       session: tableSession,
