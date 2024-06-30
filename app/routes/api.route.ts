@@ -44,6 +44,14 @@ router.get("/categories", ProductController.getCategories);
 router.get("/cart", auth(), OrderController.getCart);
 
 /**
+ * Checkout Cart Items
+ * @route GET /cart
+ * @returns {object} 200 - Checkout Session Created.
+ * @returns {object} 400 - No Item in Cart.
+ */
+router.get("/checkout", auth(), OrderController.checkout);
+
+/**
  * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.
