@@ -22,9 +22,14 @@ model Account {
 }
 
 model Table {
-  id        Int        @id @default(autoincrement())
-  session   String?    @unique
-  customers Customer[]
+  id           Int        @id @default(autoincrement())
+  session      String?    @unique
+  tableNo      Int
+  status       Boolean    @default(false)
+  approvedDate DateTime?  @db.DateTime(0)
+  approvedBy   String?    @db.Char(50)
+  createdAt    DateTime   @default(now()) @db.DateTime(0)
+  customers    Customer[]
 }
 
 model Customer {
@@ -39,24 +44,28 @@ model Customer {
   leader     Customer?    @relation("group", fields: [leaderId], references: [id])
   accomplice Customer[]   @relation("group")
   table      Table        @relation(fields: [tableId], references: [id])
+
+  @@index([leaderId], map: "Customer_leaderId_fkey")
+  @@index([tableId], map: "Customer_tableId_fkey")
 }
 
 model Cart {
-  id         String     @unique @default(uuid())
-  customerId String     @unique
-  customer   Customer   @relation(fields: [customerId], references: [id])
-  cartItem   CartItem[]
+  id         String   @unique @default(uuid())
+  customerId String   @unique
+  customer   Customer @relation(fields: [customerId], references: [id])
 }
 
 model CartItem {
   id        String   @unique @default(uuid())
+  sessionId String   @db.Char(200)
+  tableNo   Int
+  productId String   @db.Char(200)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  cartId    String
-  productId String
   quantity  Int
-  cart      Cart     @relation(fields: [cartId], references: [id])
-  product   Product  @relation(fields: [productId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "product_fk")
+
+  @@index([productId], map: "product_fk")
 }
 
 model Product {
@@ -68,7 +77,7 @@ model Product {
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
   estimatedCookingTimeMin Int
-  cartItem                CartItem[]
+  CartItem                CartItem[]
   productCategorize       ProductCategorize[]
   productReview           ProductReview[]
 }
@@ -89,6 +98,7 @@ model ProductCategorize {
   product    Product         @relation(fields: [productId], references: [id])
 
   @@unique([categoryId, productId])
+  @@index([productId], map: "ProductCategorize_productId_fkey")
 }
 
 model Promotion {
@@ -110,6 +120,7 @@ model PromotionCategorize {
   promotion   Promotion       @relation(fields: [promotionId], references: [id])
 
   @@unique([categoryId, promotionId])
+  @@index([promotionId], map: "PromotionCategorize_promotionId_fkey")
 }
 
 model ProductReview {
@@ -122,6 +133,9 @@ model ProductReview {
   productId String
   account   Account  @relation(fields: [accountId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
+
+  @@index([accountId], map: "ProductReview_accountId_fkey")
+  @@index([productId], map: "ProductReview_productId_fkey")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
