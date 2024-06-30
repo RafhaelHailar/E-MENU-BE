@@ -4,11 +4,16 @@ import {
   CheckoutService,
   GetCartService,
   UpdateCartService,
+  AddCartService,
 } from "@services/order";
 
 const OrderController = {
   updateCart: asyncHandler(async (req: Request, res: Response) => {
     await UpdateCartService(req, res);
+  }),
+
+  addCart: asyncHandler(async (req: Request, res: Response) => {
+    await AddCartService(req, res);
   }),
 
   getCart: asyncHandler(async (req: Request, res: Response) => {
