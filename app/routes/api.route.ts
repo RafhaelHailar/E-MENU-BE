@@ -51,17 +51,6 @@ router.get("/cart", OrderController.getCart);
  */
 router.get("/checkout", OrderController.checkout);
 
-router.get("/test/api", function (req, res) {
-  const ips =
-    req.headers["cf-connecting-ip"] ||
-    req.headers["x-real-ip"] ||
-    req.headers["x-forwarded-for"] ||
-    req.connection.remoteAddress ||
-    "";
-
-  res.send(ips);
-});
-
 /**
  * Add a new product
  * @route POST /products
