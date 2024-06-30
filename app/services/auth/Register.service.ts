@@ -7,13 +7,28 @@ async function RegisterService(req: Request, res: Response) {
 
   const sessionId = crypto.randomBytes(32).toString("hex");
 
+  const ip =
+    req.headers["cf-connecting-ip"] ||
+    req.headers["x-real-ip"] ||
+    req.headers["x-forwarded-for"] ||
+    req.connection.remoteAddress ||
+    "";
+
   res.cookie("_table_session", sessionId);
   res.cookie("_table_no", tableId);
 
-  await prisma.table.create({
-    data: {
+  await prisma.table.upsert({
+    where: {
+      ipAddress: ip as string,
+    },
+    update: {
       session: sessionId,
       tableNo: tableId,
+    },
+    create: {
+      session: sessionId,
+      tableNo: tableId,
+      ipAddress: ip as string,
     },
   });
 
