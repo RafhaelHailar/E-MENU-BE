@@ -20,6 +20,6 @@ router.get("/order/:tableId", AuthController.register);
  * @returns {object} 404 - Session id is not register
  * @returns {object} 200 - Table session key
  */
-router.get("/group/:_session_id", AuthController.register);
+router.get("/group/:_session_id", AuthController.groupRegister);
 
 export default router;
