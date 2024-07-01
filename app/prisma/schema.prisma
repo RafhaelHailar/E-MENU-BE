@@ -8,19 +8,6 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model Account {
-  id            String          @unique @default(uuid())
-  name          String
-  email         String          @unique @db.VarChar(255)
-  contact       String
-  password      String
-  status        Boolean
-  remarks       String
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  productReview ProductReview[]
-}
-
 model Table {
   id           Int        @id @default(autoincrement())
   session      String?    @unique
@@ -57,17 +44,17 @@ model Cart {
   customer   Customer @relation(fields: [customerId], references: [id])
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model CartItem {
-  id        Int      @unique @default(autoincrement())
   sessionId String   @db.Char(200)
   tableNo   Int
   productId String   @db.Char(200)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   quantity  Int
-  product   Product  @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "product_fk")
 
-  @@index([productId], map: "product_fk")
+  product   Product  @relation(fields:[productId], references:[id])
+  @@unique([sessionId,tableNo,productId])
 }
 
 model Product {
@@ -79,7 +66,7 @@ model Product {
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
   estimatedCookingTimeMin Int
-  CartItem                CartItem[]
+  cartItems               CartItem[]
   productCategorize       ProductCategorize[]
   productReview           ProductReview[]
 }
@@ -133,7 +120,6 @@ model ProductReview {
   updatedAt DateTime @updatedAt
   accountId String
   productId String
-  account   Account  @relation(fields: [accountId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
 
   @@index([accountId], map: "ProductReview_accountId_fkey")
@@ -149,7 +135,93 @@ model spatial_ref_sys {
   proj4text String? @db.VarChar(2048)
 }
 
+model Loyalty {
+  id        Int      @id @default(autoincrement())
+  email     String   @db.VarChar(50)
+  phoneNo   String   @db.VarChar(50)
+  amount    Float    @db.Float
+  reference String   @db.Char(200)
+  createdAt DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Orders {
+  id            Int      @id @default(autoincrement())
+  sessionId     String   @db.Char(200)
+  tableNo       Int
+  productId     String   @db.Char(200)
+  price         Float    @db.Float
+  quantity      Int
+  amount        Float    @db.Float
+  createdAt     DateTime @default(now()) @db.DateTime(0)
+  transactionId String   @db.Char(200)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Transactions {
+  id             Int                        @id @default(autoincrement())
+  sessionId      String                     @db.Char(200)
+  tableNo        Int
+  productId      String                     @db.Char(200)
+  price          Float                      @db.Float
+  quantity       Int
+  amount         Float                      @db.Float
+  paymentMethod  Transactions_paymentMethod
+  paymentMode    Transactions_paymentMode
+  transactionId  String                     @db.Char(200)
+  email          String                     @db.VarChar(50)
+  name           String                     @db.VarChar(50)
+  contactNo      String                     @db.VarChar(50)
+  loyalty        Boolean
+  discountAmount Float                      @db.Float
+  status         Transactions_status
+  paymentStatus  Transactions_paymentStatus
+  createdAt      DateTime                   @default(now()) @db.DateTime(0)
+  updatedAt      DateTime                   @db.DateTime(0)
+  updatedBy      String                     @db.VarChar(50)
+}
+
+model User {
+  id        String    @unique(map: "Account_id_key")
+  name      String
+  email     String    @unique(map: "Account_email_key") @db.VarChar(255)
+  contact   String
+  password  String
+  sessionId String    @db.Char(200)
+  role      User_role
+  createdAt DateTime  @default(now())
+  updatedAt DateTime
+}
+
 enum CustomerType {
   LEADER
   ACCOMPLICE
+}
+
+enum User_role {
+  ADMIN
+  KITCHEN
+  CASHIER
+  WAITER
+}
+
+enum Transactions_paymentMethod {
+  CASH
+  ONLINE
+}
+
+enum Transactions_paymentMode {
+  GCASH
+}
+
+enum Transactions_status {
+  Pending
+  Ongoing
+  Completed
+  Cancelled
+}
+
+enum Transactions_paymentStatus {
+  Paid
+  Unpaid
 }
