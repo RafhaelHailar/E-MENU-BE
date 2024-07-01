@@ -13,8 +13,16 @@ async function GroupRegisterService(req: Request, res: Response) {
   if (!session)
     return res.status(404).json({ message: "given session id is not found" });
 
-  res.cookie("_table_session", targetSession);
-  res.cookie("_table_no", session.tableNo);
+  res.cookie("_table_session", targetSession, {
+    httpOnly: false,
+    secure: true,
+    sameSite: "none",
+  });
+  res.cookie("_table_no", session.tableNo, {
+    httpOnly: false,
+    secure: true,
+    sameSite: "none",
+  });
 
   return res.redirect(process.env.FRONTEND_BASE_URL);
 }
