@@ -13,4 +13,13 @@ const router: Router = Router();
  */
 router.get("/order/:tableId", AuthController.register);
 
+/**
+ * Register a user to a group
+ * @route POST /order/{tableId}
+ *
+ * @returns {object} 404 - Session id is not register
+ * @returns {object} 200 - Table session key
+ */
+router.get("/group/:_session_id", AuthController.register);
+
 export default router;
