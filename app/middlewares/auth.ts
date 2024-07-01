@@ -3,6 +3,7 @@ import prisma from "@/../prisma";
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   const tableSession = req.cookies._table_session;
+  console.log(req.cookies);
   console.log(tableSession);
   if (!tableSession)
     return res.status(401).json({ message: "please authenticate" });
