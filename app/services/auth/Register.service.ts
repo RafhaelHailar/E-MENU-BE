@@ -14,8 +14,8 @@ async function RegisterService(req: Request, res: Response) {
     req.connection.remoteAddress ||
     "";
 
-  res.cookie("_table_session", sessionId);
-  res.cookie("_table_no", tableId);
+  res.cookie("_table_session", sessionId, { httpOnly: false, sameSite: false });
+  res.cookie("_table_no", tableId, { httpOnly: false, sameSite: false });
 
   await prisma.table.upsert({
     where: {
@@ -24,6 +24,7 @@ async function RegisterService(req: Request, res: Response) {
     update: {
       session: sessionId,
       tableNo: tableId,
+      updatedAt: new Date(),
     },
     create: {
       session: sessionId,
