@@ -64,7 +64,7 @@ model CartItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   quantity  Int
-  Product   Product  @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "product_fk")
+  product   Product  @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "product_fk")
 
   @@index([productId], map: "product_fk")
 }
