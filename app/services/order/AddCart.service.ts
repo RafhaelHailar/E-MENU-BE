@@ -6,6 +6,17 @@ async function AddCartService(req: Request, res: Response) {
 
   const data = req.body;
 
+  const product = prisma.product.findUnique({
+    where: {
+      id: data.id,
+    },
+  });
+
+  if (!product)
+    return res
+      .status(404)
+      .json({ message: "product with given id is not found!" });
+
   await prisma.cartItem.upsert({
     where: {
       id: data.id,
