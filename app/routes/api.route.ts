@@ -107,14 +107,19 @@ router.post(
 router.post("/cart/update", auth, OrderController.updateCart);
 
 /**
- * Update Cart
- * @route POST /cart/update
- * @returns {object} 200 - Item in Cart is Updated.
- * @returns {object} 401 - Customer with the given customer Id is not found.
- * @returns {object} 409 - Table Id does not match with the Id User Provided.
+ * Add Cart
+ * @route POST /cart/add
+ * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
 router.post("/cart/add", auth, OrderController.addCart);
+
+/**
+ * Subtract Cart
+ * @route POST /cart/sub
+ * @returns {object} 200 - Item in Cart Reduced its Quantity.
+ */
+router.post("/cart/sub", auth, OrderController.addCart);
 
 /**
  * De Categorize a Product from a given Category
