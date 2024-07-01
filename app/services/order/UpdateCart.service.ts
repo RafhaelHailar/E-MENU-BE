@@ -31,7 +31,7 @@ async function UpdateCartService(req: Request, res: Response) {
     });
   }
 
-  return res.status(200).json({ message: "items added in cart" });
+  return res.status(200).json({ message: "items updated in cart" });
 }
 
 export default UpdateCartService;
