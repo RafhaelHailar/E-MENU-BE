@@ -30,6 +30,7 @@ model Table {
   approvedDate DateTime?  @db.DateTime(0)
   approvedBy   String?    @db.Char(50)
   createdAt    DateTime   @default(now()) @db.DateTime(0)
+  updatedAt    DateTime?  @db.DateTime(0)
   customers    Customer[]
 }
 
@@ -57,7 +58,7 @@ model Cart {
 }
 
 model CartItem {
-  id        String   @unique @default(uuid())
+  id        Int      @unique @default(autoincrement())
   sessionId String   @db.Char(200)
   tableNo   Int
   productId String   @db.Char(200)
