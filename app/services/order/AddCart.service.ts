@@ -6,7 +6,7 @@ async function AddCartService(req: Request, res: Response) {
 
   const data = req.body;
 
-  const cartItem = await prisma.cartItem.upsert({
+  await prisma.cartItem.upsert({
     where: {
       id: data.id,
       tableNo: Number(tableSession.tableNo),
@@ -23,7 +23,7 @@ async function AddCartService(req: Request, res: Response) {
     },
   });
 
-  return res.status(200).json({ message: "items added in cart" });
+  return res.status(200).json({ message: "item added in cart" });
 }
 
 export default AddCartService;
