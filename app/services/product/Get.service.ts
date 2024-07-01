@@ -19,6 +19,9 @@ function transformProduct(product: ProductWithCategory) {
 
 async function GetService(req: Request, res: Response) {
   const { productId } = req.params;
+  const page = Number(req.query.page || 1);
+  const total = Number(req.query.total || 15);
+  console.log(total);
 
   if (productId) {
     const product = await prisma.product.findUnique({
@@ -42,7 +45,22 @@ async function GetService(req: Request, res: Response) {
 
   const transformedProducts = [];
 
+  // cursor base pagination: https://www.prisma.io/docs/orm/prisma-client/queries/pagination
+  const firstQueryResults = await prisma.product.findMany({
+    take: (page - 1) * total || 1,
+  });
+
+  if (firstQueryResults.length === 0) return res.status(200).json([]);
+
+  const lastPointInResults = firstQueryResults[firstQueryResults.length - 1];
+  const myCursor = lastPointInResults.id;
+
   const products = await prisma.product.findMany({
+    take: total,
+    skip: page === 1 ? 0 : 1,
+    cursor: {
+      id: myCursor,
+    },
     include: {
       productCategorize: {
         include: {
