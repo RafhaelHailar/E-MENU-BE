@@ -86,33 +86,12 @@ async function createCheckoutSession(items: LineItem[]) {
 }
 
 async function CheckoutService(req: Request, res: Response) {
-  /*  const { customerId, tableId } = req.tableSession as Request["tableSession"];
-
-  const customer = await prisma.customer.findUnique({
-    where: {
-      id: customerId,
-    },
-    include: {
-      cart: true,
-    },
-  });
-
-  if (!customer)
-    return res
-      .status(401)
-      .json({ message: "customer with the given id not found" });
-  if (customer.tableId !== tableId)
-    return res.status(409).json({ message: "table id desrepancy." });
-
-  const cart = await prisma.cart.findUnique({
-    where: {
-      customerId,
-    },
-  });
+  const { session, tableNo } = req.tableSession as Request["tableSession"];
 
   const cartItems = await prisma.cartItem.findMany({
     where: {
-      cartId: cart.id,
+      sessionId: session,
+      tableNo: tableNo,
     },
     include: {
       product: true,
@@ -122,23 +101,30 @@ async function CheckoutService(req: Request, res: Response) {
   if (cartItems.length === 0)
     return res.status(400).send({ message: "no item in cart." });
 
-  const lineItems: LineItem[] = cartItems.map((item) => {
-    const product = item.product;
+  const lineItems: LineItem[] = [];
 
-    return {
-      id: item.id,
+  cartItems.forEach((item) => {
+    const product = item.product;
+    const productItem = lineItems.find(
+      (lineItem) => lineItem.id === product.id,
+    );
+
+    if (productItem) return productItem.quantity++;
+
+    lineItems.push({
+      id: product.id,
       name: product.name,
       description: product.description.slice(0, 252) + "...",
       images: [product.image],
       currency: "PHP",
       amount: Math.round(product.price * 100), // from peso to centavo.
       quantity: item.quantity,
-    };
+    });
   });
 
   const checkoutSession = await createCheckoutSession(lineItems);
 
-  return res.status(200).json(checkoutSession); */
+  return res.status(200).json(checkoutSession);
 }
 
 export default CheckoutService;
