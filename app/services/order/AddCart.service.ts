@@ -19,9 +19,11 @@ async function AddCartService(req: Request, res: Response) {
 
   await prisma.cartItem.upsert({
     where: {
-      id: data.id,
-      tableNo: Number(tableSession.tableNo),
-      sessionId: tableSession.session,
+      sessionId_tableNo_productId: {
+        tableNo: Number(tableSession.tableNo),
+        sessionId: tableSession.session,
+        productId: data.id,
+      },
     },
     update: {
       quantity: { increment: 1 },
