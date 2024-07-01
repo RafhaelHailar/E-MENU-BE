@@ -15,14 +15,14 @@ async function RegisterService(req: Request, res: Response) {
     "";
 
   res.cookie("_table_session", sessionId, {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
-    sameSite: "strict",
+    sameSite: "none",
   });
   res.cookie("_table_no", tableId, {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
-    sameSite: "strict",
+    sameSite: "none",
   });
 
   await prisma.table.upsert({
