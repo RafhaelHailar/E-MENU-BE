@@ -8,9 +8,11 @@ async function SubCartService(req: Request, res: Response) {
 
   const subtractedItem = await prisma.cartItem.update({
     where: {
-      id: data.id,
-      tableNo: Number(tableSession.tableNo),
-      sessionId: tableSession.session,
+      sessionId_tableNo_productId: {
+        productId: data.id,
+        tableNo: Number(tableSession.tableNo),
+        sessionId: tableSession.session,
+      },
     },
     data: {
       quantity: { decrement: 1 },
@@ -20,9 +22,11 @@ async function SubCartService(req: Request, res: Response) {
   if (subtractedItem.quantity === 0) {
     await prisma.cartItem.delete({
       where: {
-        id: data.id,
-        tableNo: Number(tableSession.tableNo),
-        sessionId: tableSession.session,
+        sessionId_tableNo_productId: {
+          productId: data.id,
+          tableNo: Number(tableSession.tableNo),
+          sessionId: tableSession.session,
+        },
       },
     });
     return res.status(200).json({ message: "item removed in cart" });
