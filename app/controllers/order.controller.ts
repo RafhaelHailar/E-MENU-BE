@@ -5,6 +5,7 @@ import {
   GetCartService,
   UpdateCartService,
   AddCartService,
+  SubCartService,
 } from "@services/order";
 
 const OrderController = {
@@ -14,6 +15,10 @@ const OrderController = {
 
   addCart: asyncHandler(async (req: Request, res: Response) => {
     await AddCartService(req, res);
+  }),
+
+  subCart: asyncHandler(async (req: Request, res: Response) => {
+    await SubCartService(req, res);
   }),
 
   getCart: asyncHandler(async (req: Request, res: Response) => {
