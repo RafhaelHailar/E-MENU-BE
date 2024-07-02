@@ -62,6 +62,25 @@ router.get("/checkout", auth(), OrderController.checkout);
 router.get("/table/queues", auth("getSessions"), TableController.listQueues);
 
 /**
+ * Register a user to a table
+ * @route POST /order/{tableId}
+ *
+ * @returns {object} 404 - Table with given table id is not found
+ * @returns {object} 403 - There is another session open
+ * @returns {object} 200 - Table session key
+ */
+router.get("/order/:tableId", TableController.tableRegister);
+
+/**
+ * Register a user to a group
+ * @route POST /order/{tableId}
+ *
+ * @returns {object} 404 - Session id is not register
+ * @returns {object} 200 - Table session key
+ */
+router.get("/group/:_session_id", TableController.groupRegister);
+
+/**
  * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.
