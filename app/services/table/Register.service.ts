@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 import crypto from "crypto";
 
-async function RegisterTableService(req: Request, res: Response) {
+async function RegisterService(req: Request, res: Response) {
   const tableId = Number(req.params.tableId);
 
   const sessionId = crypto.randomBytes(32).toString("hex");
@@ -44,4 +44,4 @@ async function RegisterTableService(req: Request, res: Response) {
   return res.redirect(process.env.FRONTEND_BASE_URL);
 }
 
-export default RegisterTableService;
+export default RegisterService;
