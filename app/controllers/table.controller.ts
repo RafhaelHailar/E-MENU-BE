@@ -6,6 +6,7 @@ import {
   RegisterService,
   GroupRegisterService,
   ApproveRequestService,
+  DeclineRequestService,
 } from "@services/table";
 
 const TableController = {
@@ -23,6 +24,10 @@ const TableController = {
 
   approveRequest: asyncHandler(async (req: Request, res: Response) => {
     await ApproveRequestService(req, res);
+  }),
+
+  declineRequest: asyncHandler(async (req: Request, res: Response) => {
+    await DeclineRequestService(req, res);
   }),
 };
 
