@@ -11,12 +11,6 @@ import docsRoutes from "@routes/docs.route";
 
 export async function index(app: express.Express): Promise<void> {
   return new Promise((resolve, reject) => {
-    app.use(helmet());
-    app.use(nocache());
-    app.use(express.json());
-    app.disable("x-powered-by");
-    app.use(morgan("dev"));
-    app.use(cookieParser());
     app.use(
       cors({
         origin: [
@@ -27,6 +21,12 @@ export async function index(app: express.Express): Promise<void> {
         credentials: true,
       }),
     );
+    app.use(helmet());
+    app.use(nocache());
+    app.use(express.json());
+    app.disable("x-powered-by");
+    app.use(morgan("dev"));
+    app.use(cookieParser());
     //app.use(cors({credentials: true}));
 
     app.use("/api", apiRoutes);
