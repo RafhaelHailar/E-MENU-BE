@@ -20,7 +20,7 @@ async function LoginService(req: Request, res: Response) {
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch)
-    return res.status(401).json({ message: "user or password is incorrect" });
+    return res.status(401).json({ message: "email or password is incorrect" });
 
   const salt = await bcrypt.salt();
   const sessionId = await bcrypt.hash(
