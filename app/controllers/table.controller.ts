@@ -5,6 +5,7 @@ import {
   ListQueuesService,
   RegisterService,
   GroupRegisterService,
+  ApproveRequestService,
 } from "@services/table";
 
 const TableController = {
@@ -18,6 +19,10 @@ const TableController = {
 
   listQueues: asyncHandler(async (req: Request, res: Response) => {
     await ListQueuesService(req, res);
+  }),
+
+  approveRequest: asyncHandler(async (req: Request, res: Response) => {
+    await ApproveRequestService(req, res);
   }),
 };
 
