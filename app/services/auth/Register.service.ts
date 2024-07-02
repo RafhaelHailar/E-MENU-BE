@@ -1,47 +1,33 @@
 import { Request, Response } from "express";
 import prisma from "@/../prisma";
-import crypto from "crypto";
+import bcrypt from "bcrypt";
 
 async function RegisterService(req: Request, res: Response) {
-  const tableId = Number(req.params.tableId);
+  const { name, email, contact, password, role } = req.body;
 
-  const sessionId = crypto.randomBytes(32).toString("hex");
-
-  const ip =
-    req.headers["cf-connecting-ip"] ||
-    req.headers["x-real-ip"] ||
-    req.headers["x-forwarded-for"] ||
-    req.connection.remoteAddress ||
-    "";
-
-  res.cookie("_table_session", sessionId, {
-    httpOnly: false,
-    secure: true,
-    sameSite: "none",
-  });
-  res.cookie("_table_no", tableId, {
-    httpOnly: false,
-    secure: true,
-    sameSite: "none",
-  });
-
-  await prisma.table.upsert({
+  const similarEmail = await prisma.user.findUnique({
     where: {
-      ipAddress: ip as string,
-    },
-    update: {
-      session: sessionId,
-      tableNo: tableId,
-      updatedAt: new Date(),
-    },
-    create: {
-      session: sessionId,
-      tableNo: tableId,
-      ipAddress: ip as string,
+      email,
     },
   });
 
-  return res.redirect(process.env.FRONTEND_BASE_URL);
+  if (similarEmail)
+    return res.status(409).json({ message: "email is already taken" });
+
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  await prisma.user.create({
+    data: {
+      name,
+      email,
+      contact,
+      password: hashedPassword,
+      role,
+    },
+  });
+
+  return res.status(200).json({ message: "user created" });
 }
 
 export default RegisterService;
