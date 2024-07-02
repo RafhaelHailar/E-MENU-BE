@@ -1,26 +1,72 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "@/../prisma";
+import { User_Role } from "@prisma/client";
+import { roleRights } from "@config/roles";
+import ApiErrorHandler from "@utils/ApiErrorHandler";
+import httpStatus from "http-status";
 
-const auth = async (req: Request, res: Response, next: NextFunction) => {
-  const tableSession = req.cookies._table_session;
-  console.log(req.cookies);
-  console.log(tableSession);
-  if (!tableSession)
-    return res.status(401).json({ message: "please authenticate" });
+async function checkRights(
+  req: Request,
+  resolve: (value?: unknown) => void,
+  reject: (reason?: unknown) => void,
+  requiredRights: string[],
+) {
+  const userSession = req.cookies._user_session;
 
-  const session = await prisma.table.findUnique({
-    where: {
-      session: tableSession,
-    },
-  });
+  let role: User_Role = User_Role.CUSTOMER;
 
-  if (!session) return res.status(404).json({ message: "session not found" });
+  if (userSession) {
+    const user = await prisma.user.findUnique({
+      where: {
+        sessionId: userSession,
+      },
+    });
+    if (user) role = user.role;
+  }
 
-  if (!session.status)
-    return res.status(401).json({ message: "session not approved" });
+  const userRights = roleRights.get(role) ?? [];
+  const hasRequiredRights = requiredRights.every((requiredRight) =>
+    userRights.includes(requiredRight),
+  );
 
-  req.tableSession = session;
-  next();
+  if (!hasRequiredRights)
+    return reject(new ApiErrorHandler(httpStatus.FORBIDDEN, "Forbidden"));
+
+  return resolve(role);
+}
+
+const auth = (...requiredRights: string[]) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    return new Promise((resolve, reject) => {
+      checkRights(req, resolve, reject, requiredRights);
+    })
+      .then(async (role) => {
+        if (role !== User_Role.CUSTOMER) return next();
+
+        const tableSession = req.cookies._table_session;
+
+        if (!tableSession)
+          return res.status(401).json({ message: "please authenticate" });
+
+        const session = await prisma.table.findUnique({
+          where: {
+            session: tableSession,
+          },
+        });
+
+        if (!session)
+          return res.status(404).json({ message: "session not found" });
+
+        if (!session.status)
+          return res.status(401).json({ message: "session not approved" });
+
+        req.tableSession = session;
+        next();
+      })
+      .catch((e) => {
+        return res.status(e.statusCode).json({ message: e.message });
+      });
+  };
 };
 
 export default auth;
