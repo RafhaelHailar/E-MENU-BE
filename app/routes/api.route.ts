@@ -81,6 +81,15 @@ router.get("/order/:tableId", TableController.tableRegister);
 router.get("/group/:_session_id", TableController.groupRegister);
 
 /**
+ * Approve Table Request
+ * @route POST /table/approve
+ *
+ * @returns {object} 404 - Table session with given session is not found
+ * @returns {object} 200 - Table session is approve
+ */
+router.patch("/table/approve", TableController.approveRequest);
+
+/**
  * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.
