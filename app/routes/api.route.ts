@@ -4,6 +4,7 @@ import validate from "@middlewares/validate";
 import ProductController from "@controllers/product.controller";
 import OrderController from "@controllers/order.controller";
 import productValidators from "@validators/product.validator";
+import TableController from "@controllers/table.controller";
 
 import auth from "@middlewares/auth";
 
@@ -50,6 +51,15 @@ router.get("/cart", OrderController.getCart);
  * @returns {object} 400 - No Item in Cart.
  */
 router.get("/checkout", auth(), OrderController.checkout);
+
+/**
+ * Get All Table Session Requests
+ * @route GET /session/queues
+ *
+ * @returns {object} 403 - User Role is not allowed to make such request.
+ * @returns {object} 200 - List of Table Session Requests
+ */
+router.get("/table/queues", auth("getSessions"), TableController.listQueues);
 
 /**
  * Add a new product
