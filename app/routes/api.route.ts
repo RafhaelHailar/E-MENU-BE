@@ -42,7 +42,7 @@ router.get("/categories", ProductController.getCategories);
  * @route GET /cart
  * @returns {object} 200 - Customer Card Items
  */
-router.get("/cart", OrderController.getCart);
+router.get("/cart", auth(), OrderController.getCart);
 
 /**
  * Checkout Cart Items
@@ -178,7 +178,7 @@ router.delete(
  * @returns {object} 404 - Table session with given session is not found
  * @returns {object} 200 - Table session is decline
  */
-router.delete("/table/decline/:sessionId", TableController.declineRequest);
+router.delete("/table/decline/:_session_id", TableController.declineRequest);
 
 export default router;
 
