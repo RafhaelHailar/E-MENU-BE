@@ -82,7 +82,7 @@ router.get("/group/:_session_id", TableController.groupRegister);
 
 /**
  * Approve Table Request
- * @route POST /table/approve
+ * @route PATCH /table/approve
  *
  * @returns {object} 404 - Table session with given session is not found
  * @returns {object} 200 - Table session is approve
@@ -170,6 +170,15 @@ router.delete(
   "/category/:categoryId/decategorize/:productId",
   ProductController.deCategorizeProduct,
 );
+
+/**
+ * Decline Table Request
+ * @route DELETE /table/delete
+ *
+ * @returns {object} 404 - Table session with given session is not found
+ * @returns {object} 200 - Table session is decline
+ */
+router.delete("/table/decline/:sessionId", TableController.declineRequest);
 
 export default router;
 
