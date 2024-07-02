@@ -2,7 +2,7 @@ import { roles } from "@config/roles";
 import Joi from "joi";
 import { password } from "./password.validator";
 
-const create = {
+const register = {
   body: Joi.object().keys({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
@@ -12,8 +12,16 @@ const create = {
   }),
 };
 
+const login = {
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().custom(password),
+  }),
+};
+
 const userValidators = {
-  create,
+  register,
+  login,
 };
 
 export default userValidators;
