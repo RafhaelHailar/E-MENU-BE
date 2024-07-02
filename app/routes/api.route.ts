@@ -59,7 +59,7 @@ router.get("/cart", OrderController.getCart);
  * @returns {object} 403 - User Role is not allowed to make such request.
  * @returns {object} 200 - List of Table Session Requests
  */
-router.get("/table/queues", auth("getSessions"), TableController.listQueues);
+router.get("/table/queues", TableController.listQueues);
 
 /**
  * Register a user to a table
