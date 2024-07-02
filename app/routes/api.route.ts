@@ -49,7 +49,7 @@ router.get("/cart", OrderController.getCart);
  * @returns {object} 200 - Checkout Session Created.
  * @returns {object} 400 - No Item in Cart.
  */
-router.get("/checkout", auth, OrderController.checkout);
+router.get("/checkout", auth(), OrderController.checkout);
 
 /**
  * Add a new product
@@ -84,7 +84,7 @@ router.post(
  * @route POST /products/promotion
  * @returns {object} 200 - Message that the promotion is created along side with its id.
  */
-router.post("/promotions", ProductController.addPromotion);
+router.post("/promotions", auth(), ProductController.addPromotion);
 
 /**
  * Categorize promotion
@@ -104,7 +104,7 @@ router.post(
  * @returns {object} 409 - Table Id does not match with the Id User Provided.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
-router.post("/cart/update", auth, OrderController.updateCart);
+router.post("/cart/update", auth(), OrderController.updateCart);
 
 /**
  * Add Cart
@@ -112,14 +112,14 @@ router.post("/cart/update", auth, OrderController.updateCart);
  * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
-router.post("/cart/add", auth, OrderController.addCart);
+router.post("/cart/add", auth(), OrderController.addCart);
 
 /**
  * Subtract Cart
  * @route POST /cart/sub
  * @returns {object} 200 - Item in Cart Reduced its Quantity.
  */
-router.post("/cart/sub", auth, OrderController.addCart);
+router.post("/cart/sub", auth(), OrderController.addCart);
 
 /**
  * De Categorize a Product from a given Category

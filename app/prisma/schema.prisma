@@ -169,16 +169,16 @@ model Transactions {
   paymentMethod  Transactions_paymentMethod
   paymentMode    Transactions_paymentMode
   transactionId  String                     @db.Char(200)
-  email          String                     @db.VarChar(50)
-  name           String                     @db.VarChar(50)
-  contactNo      String                     @db.VarChar(50)
-  loyalty        Boolean
+  email          String?                    @db.VarChar(50)
+  name           String?                    @db.VarChar(50)
+  contactNo      String?                    @db.VarChar(50)
+  loyalty        Boolean                    @default(false)
   discountAmount Float                      @db.Float
-  status         Transactions_status
-  paymentStatus  Transactions_paymentStatus
+  status         Transactions_status        @default(Pending)
+  paymentStatus  Transactions_paymentStatus @default(Unpaid)
   createdAt      DateTime                   @default(now()) @db.DateTime(0)
-  updatedAt      DateTime                   @db.DateTime(0)
-  updatedBy      String                     @db.VarChar(50)
+  updatedAt      DateTime                   @updatedAt
+  updatedBy      String?                    @db.VarChar(50)
 }
 
 model User {
@@ -187,8 +187,8 @@ model User {
   email     String    @unique(map: "Account_email_key") @db.VarChar(255)
   contact   String
   password  String
-  sessionId String    @db.Char(200)
-  role      User_role
+  sessionId String    @unique @db.Char(200)
+  role      User_Role
   createdAt DateTime  @default(now())
   updatedAt DateTime
 }
@@ -198,11 +198,12 @@ enum CustomerType {
   ACCOMPLICE
 }
 
-enum User_role {
+enum User_Role {
   ADMIN
   KITCHEN
   CASHIER
   WAITER
+  CUSTOMER
 }
 
 enum Transactions_paymentMethod {
