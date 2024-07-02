@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function DeclineRequestService(req: Request, res: Response) {
-  const { sessionId } = req.body;
+  const sessionId = req.params._session_id;
 
   const tableRequest = await prisma.table.findUnique({
     where: {
