@@ -4,6 +4,7 @@ import {
   RegisterTableService,
   GroupRegisterService,
   ListQueuesService,
+  RegisterService,
 } from "@services/auth";
 
 const AuthController = {
@@ -11,12 +12,16 @@ const AuthController = {
     await ListQueuesService(req, res);
   }),
 
-  register: asyncHandler(async (req: Request, res: Response) => {
+  tableRegister: asyncHandler(async (req: Request, res: Response) => {
     await RegisterTableService(req, res);
   }),
 
   groupRegister: asyncHandler(async (req: Request, res: Response) => {
     await GroupRegisterService(req, res);
+  }),
+
+  register: asyncHandler(async (req: Request, res: Response) => {
+    await RegisterService(req, res);
   }),
 };
 
