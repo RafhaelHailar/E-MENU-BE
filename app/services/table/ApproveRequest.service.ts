@@ -24,6 +24,18 @@ async function ApproveRequestService(req: Request, res: Response) {
     },
   });
 
+  // delete other requests
+  await prisma.table.deleteMany({
+    where: {
+      tableNo: tableRequest.tableNo,
+      NOT: [
+        {
+          session: sessionId,
+        },
+      ],
+    },
+  });
+
   return res.status(200).json({ message: "table request is approved" });
 }
 
