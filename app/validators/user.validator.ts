@@ -8,7 +8,7 @@ const create = {
     email: Joi.string().email().required(),
     contact: Joi.string().required(),
     password: Joi.string().custom(password),
-    role: Joi.string().valid(roles),
+    role: Joi.string().valid(...roles),
   }),
 };
 
