@@ -1,6 +1,5 @@
 import { Router } from "express";
 import AuthController from "@controllers/auth.controller";
-import auth from "@middlewares/auth";
 import userValidators from "@validators/user.validator";
 import validate from "@middlewares/validate";
 
@@ -26,15 +25,6 @@ router.get("/order/:tableId", AuthController.tableRegister);
 router.get("/group/:_session_id", AuthController.groupRegister);
 
 /**
- * Get All Table Session Requests
- * @route GET /session/queues
- *
- * @returns {object} 403 - User Role is not allowed to make such request.
- * @returns {object} 200 - List of Table Session Requests
- */
-router.get("/session/queues", auth("getSessions"), AuthController.listQueues);
-
-/**
  * Register User
  * @route POST /register
  *
@@ -43,8 +33,17 @@ router.get("/session/queues", auth("getSessions"), AuthController.listQueues);
  */
 router.post(
   "/register",
-  validate(userValidators.create),
+  validate(userValidators.register),
   AuthController.register,
 );
+
+/**
+ * Login User
+ * @route POST /login
+ *
+ * @returns {object} 401 - Email or Password is incorrect.
+ * @returns {object} 200 - User is Logged in
+ */
+router.post("/login", validate(userValidators.login), AuthController.login);
 
 export default router;
