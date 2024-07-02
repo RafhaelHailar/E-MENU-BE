@@ -50,7 +50,7 @@ router.get("/cart", OrderController.getCart);
  * @returns {object} 200 - Checkout Session Created.
  * @returns {object} 400 - No Item in Cart.
  */
-router.get("/checkout", auth(), OrderController.checkout);
+// router.get("/checkout", auth(), OrderController.checkout);
 
 /**
  * Get All Table Session Requests
