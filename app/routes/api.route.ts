@@ -42,7 +42,7 @@ router.get("/categories", ProductController.getCategories);
  * @route GET /cart
  * @returns {object} 200 - Customer Card Items
  */
-router.get("/cart", auth(), OrderController.getCart);
+router.get("/cart", OrderController.getCart);
 
 /**
  * Checkout Cart Items
