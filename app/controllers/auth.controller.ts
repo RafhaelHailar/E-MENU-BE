@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "@utils/asyncHandler";
 import {
-  RegisterService,
+  RegisterTableService,
   GroupRegisterService,
   ListQueuesService,
 } from "@services/auth";
@@ -12,7 +12,7 @@ const AuthController = {
   }),
 
   register: asyncHandler(async (req: Request, res: Response) => {
-    await RegisterService(req, res);
+    await RegisterTableService(req, res);
   }),
 
   groupRegister: asyncHandler(async (req: Request, res: Response) => {
