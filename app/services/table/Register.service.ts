@@ -19,14 +19,12 @@ async function RegisterService(req: Request, res: Response) {
     secure: true,
     sameSite: "none",
     path: "/",
-    domain: ".vercel.app",
   });
   res.cookie("_table_no", tableId, {
     httpOnly: false,
     secure: true,
     sameSite: "none",
     path: "/",
-    domain: ".vercel.app",
   });
 
   await prisma.table.upsert({
