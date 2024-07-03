@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import asyncHandler from "@utils/asyncHandler";
 import {
-  CheckoutService,
   GetCartService,
   UpdateCartService,
   AddCartService,
   SubCartService,
+  OrderService,
 } from "@services/order";
 
 const OrderController = {
@@ -25,8 +25,8 @@ const OrderController = {
     await GetCartService(req, res);
   }),
 
-  checkout: asyncHandler(async (req: Request, res: Response) => {
-    await CheckoutService(req, res);
+  order: asyncHandler(async (req: Request, res: Response) => {
+    await OrderService(req, res);
   }),
 };
 

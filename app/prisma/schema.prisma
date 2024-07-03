@@ -152,6 +152,7 @@ model Orders {
   productId     String   @db.Char(200)
   price         Float    @db.Float
   quantity      Int
+  orderNo       Int      
   amount        Float    @db.Float
   createdAt     DateTime @default(now()) @db.DateTime(0)
   transactionId String   @db.Char(200)
@@ -167,7 +168,7 @@ model Transactions {
   quantity       Int
   amount         Float                      @db.Float
   paymentMethod  Transactions_paymentMethod
-  paymentMode    Transactions_paymentMode
+  paymentMode    Transactions_paymentMode?
   transactionId  String                     @db.Char(200)
   email          String?                    @db.VarChar(50)
   name           String?                    @db.VarChar(50)

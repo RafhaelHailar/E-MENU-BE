@@ -160,6 +160,13 @@ router.post("/cart/add", auth(), OrderController.addCart);
 router.post("/cart/sub", auth(), OrderController.addCart);
 
 /**
+ * Order Cart Items
+ * @route POST /order
+ * @returns {object} 200 - Item in Cart is Ordered.
+ */
+router.post("/order", auth(), OrderController.order);
+
+/**
  * De Categorize a Product from a given Category
  * @route DELETE /category/${categoryId}/decategorize/${productId}
  * @returns {object} 200 - Product Successfully Decategorize.

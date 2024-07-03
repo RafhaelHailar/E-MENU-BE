@@ -1,0 +1,127 @@
+import { Request, Response } from "express";
+import prisma from "@/../prisma";
+import crypto from "crypto";
+import PaymongoCheckoutService from "./PaymongoCheckout.service";
+
+async function OrderService(req: Request, res: Response) {
+  const tableNo = Number(req.tableSession.tableNo);
+  const sessionId = req.tableSession.session;
+
+  const { loyalty, name, email, contactNo, paymentMethod, paymentMode } =
+    req.body;
+
+  const cartItems = await prisma.cartItem.findMany({
+    where: {
+      tableNo,
+      sessionId,
+    },
+    include: {
+      product: {
+        include: {
+          productCategorize: {
+            include: {
+              category: {
+                include: {
+                  promotionCategorize: {
+                    include: {
+                      promotion: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (cartItems.length === 0)
+    return res.status(400).send({ message: "no item in cart." });
+
+  // check if product really exists.
+  for (let i = 0; i < cartItems.length; i++) {
+    const product = cartItems[i].product;
+
+    if (!product)
+      return res
+        .status(404)
+        .json({ message: "product with given id is not found!" });
+  }
+
+  const lastOrderedItem = await prisma.orders.findFirst({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const lastOrderedNo = lastOrderedItem ? lastOrderedItem.orderNo : 0;
+  const transactionId = crypto.randomBytes(32).toString("hex");
+
+  // move to orders
+  for (let i = 0; i < cartItems.length; i++) {
+    const item = cartItems[i];
+    const product = item.product;
+
+    await prisma.orders.create({
+      data: {
+        tableNo,
+        sessionId,
+        productId: product.id,
+        price: product.price,
+        quantity: item.quantity,
+        amount: product.price * item.quantity,
+        transactionId,
+        orderNo: lastOrderedNo + 1,
+      },
+    });
+
+    const disount = product.productCategorize.reduce(
+      (discountAmount, categorize) => {
+        const discountRate = categorize.category.promotionCategorize.reduce(
+          (promotionAmount, promotionCategorize) => {
+            return promotionAmount + promotionCategorize.promotion.discountRate;
+          },
+          0,
+        );
+
+        return discountAmount + discountRate;
+      },
+      0,
+    );
+
+    await prisma.transactions.create({
+      data: {
+        tableNo,
+        sessionId,
+        productId: product.id,
+        price: product.price,
+        quantity: item.quantity,
+        amount: product.price * item.quantity,
+        transactionId,
+        discountAmount: disount,
+        loyalty,
+        email,
+        name,
+        contactNo,
+        paymentMethod,
+        paymentMode,
+      },
+    });
+  }
+
+  // clear cart
+  await prisma.cartItem.deleteMany({
+    where: {
+      tableNo,
+      sessionId,
+    },
+  });
+
+  if (paymentMethod === "Online") {
+    return await PaymongoCheckoutService(req, res);
+  }
+  return res.status(200).json({ message: "cart successfully ordered" });
+}
+
+export default OrderService;
