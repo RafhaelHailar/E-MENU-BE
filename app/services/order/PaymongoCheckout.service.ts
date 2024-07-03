@@ -85,7 +85,7 @@ async function createCheckoutSession(items: LineItem[]) {
   });
 }
 
-async function CheckoutService(req: Request, res: Response) {
+async function PaymongoCheckoutService(req: Request, res: Response) {
   const { session, tableNo } = req.tableSession as Request["tableSession"];
 
   const cartItems = await prisma.cartItem.findMany({
@@ -127,4 +127,4 @@ async function CheckoutService(req: Request, res: Response) {
   return res.status(200).json(checkoutSession);
 }
 
-export default CheckoutService;
+export default PaymongoCheckoutService;
