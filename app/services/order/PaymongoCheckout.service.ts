@@ -98,9 +98,6 @@ async function PaymongoCheckoutService(req: Request, res: Response) {
     },
   });
 
-  if (cartItems.length === 0)
-    return res.status(400).send({ message: "no item in cart." });
-
   const lineItems: LineItem[] = [];
 
   cartItems.forEach((item) => {

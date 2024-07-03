@@ -36,6 +36,9 @@ async function OrderService(req: Request, res: Response) {
     },
   });
 
+  if (cartItems.length === 0)
+    return res.status(400).send({ message: "no item in cart." });
+
   // check if product really exists.
   for (let i = 0; i < cartItems.length; i++) {
     const product = cartItems[i].product;
