@@ -52,6 +52,9 @@ async function GetService(req: Request, res: Response) {
   const lastPointInResults = firstQueryResults[firstQueryResults.length - 1];
   const myCursor = lastPointInResults.id;
 
+  if ((page - 1) * total + 1 > firstQueryResults.length)
+    return res.status(200).json([]);
+
   const products = await prisma.product.findMany({
     take: total,
     skip: 0,
