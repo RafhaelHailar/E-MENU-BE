@@ -43,7 +43,10 @@ async function RegisterService(req: Request, res: Response) {
     },
   });
 
-  return res.redirect(process.env.FRONTEND_BASE_URL);
+  return res.redirect(
+    process.env.FRONTEND_BASE_URL +
+      `?sessionId=${sessionId}&tableNo=${tableId}`,
+  );
 }
 
 export default RegisterService;
