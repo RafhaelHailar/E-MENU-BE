@@ -164,7 +164,7 @@ router.post("/cart/add", auth(), OrderController.addCart);
  * @route POST /cart/sub
  * @returns {object} 200 - Item in Cart Reduced its Quantity.
  */
-router.post("/cart/sub", auth(), OrderController.addCart);
+router.post("/cart/sub", auth(), OrderController.subCart);
 
 /**
  * Order Cart Items

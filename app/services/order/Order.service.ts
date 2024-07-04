@@ -7,8 +7,9 @@ async function OrderService(req: Request, res: Response) {
   const tableNo = Number(req.tableSession.tableNo);
   const sessionId = req.tableSession.session;
 
-  const { loyalty, name, email, contactNo, paymentMethod, paymentMode } =
-    req.body;
+  let { loyalty, name, email, contactNo, paymentMethod } = req.body;
+
+  paymentMethod = paymentMethod || "ONLINE";
 
   const cartItems = await prisma.cartItem.findMany({
     where: {
@@ -105,9 +106,12 @@ async function OrderService(req: Request, res: Response) {
         name,
         contactNo,
         paymentMethod,
-        paymentMode,
       },
     });
+  }
+
+  if (paymentMethod === "ONLINE") {
+    return await PaymongoCheckoutService(req, res);
   }
 
   // clear cart
@@ -118,9 +122,6 @@ async function OrderService(req: Request, res: Response) {
     },
   });
 
-  if (paymentMethod === "Online") {
-    return await PaymongoCheckoutService(req, res);
-  }
   return res.status(200).json({ message: "cart successfully ordered" });
 }
 
