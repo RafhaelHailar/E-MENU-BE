@@ -8,6 +8,7 @@ import {
   OrderService,
   GetMyOrdersService,
   GetService,
+  UpdateStatusService,
 } from "@services/order";
 
 const OrderController = {
@@ -37,6 +38,10 @@ const OrderController = {
 
   getMyOrder: asyncHandler(async (req: Request, res: Response) => {
     await GetMyOrdersService(req, res);
+  }),
+
+  updateStatus: asyncHandler(async (req: Request, res: Response) => {
+    await UpdateStatusService(req, res);
   }),
 };
 
