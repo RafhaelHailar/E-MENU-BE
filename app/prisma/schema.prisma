@@ -228,6 +228,7 @@ enum Transactions_paymentMode {
 enum Transactions_status {
   Pending
   Ongoing
+  Serve
   Completed
   Cancelled
 }
