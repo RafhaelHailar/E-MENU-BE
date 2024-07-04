@@ -106,6 +106,7 @@ async function OrderService(req: Request, res: Response) {
         name,
         contactNo,
         paymentMethod,
+        orderNo: lastOrderedNo + 1,
       },
     });
   }
