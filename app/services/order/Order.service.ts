@@ -57,7 +57,7 @@ async function OrderService(req: Request, res: Response) {
   });
 
   const lastOrderedNo = lastOrderedItem ? lastOrderedItem.orderNo : 0;
-  const transactionId = crypto.randomBytes(32).toString("hex");
+  const transactionId = crypto.randomBytes(12).toString("hex");
 
   // move to orders
   for (let i = 0; i < cartItems.length; i++) {
