@@ -20,7 +20,8 @@ function transformProduct(product: ProductWithCategory) {
 async function GetService(req: Request, res: Response) {
   const { productId } = req.params;
   const page = Number(req.query.page || 1);
-  const total = Number(req.query.total || 15);
+  const getAll = req.query.total === null || req.query.total === undefined;
+  const total = Number(req.query.total || 0);
 
   if (productId) {
     const product = await prisma.product.findUnique({
@@ -55,12 +56,7 @@ async function GetService(req: Request, res: Response) {
   if ((page - 1) * total + 1 > firstQueryResults.length)
     return res.status(200).json([]);
 
-  const products = await prisma.product.findMany({
-    take: total,
-    skip: 0,
-    cursor: {
-      id: myCursor,
-    },
+  const getOption = {
     include: {
       productCategorize: {
         include: {
@@ -77,7 +73,19 @@ async function GetService(req: Request, res: Response) {
       },
       productReview: true,
     },
-  });
+  };
+
+  const pageOption = {
+    take: total,
+    skip: 0,
+    cursor: {
+      id: myCursor,
+    },
+  };
+
+  const takeOption = getAll ? getOption : Object.assign(getOption, pageOption);
+
+  const products = await prisma.product.findMany(takeOption);
 
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
