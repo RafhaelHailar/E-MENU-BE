@@ -88,6 +88,13 @@ router.get("/group/:_session_id", TableController.groupRegister);
 router.get("/my_orders", auth(), OrderController.getMyOrder);
 
 /**
+ * Get All Customer Orders
+ * @route POST /orders
+ * @returns {object} 200 - All Customer Orders.
+ */
+router.get("/orders", OrderController.get);
+
+/**
  * Approve Table Request
  * @route PATCH /table/approve
  *
