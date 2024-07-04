@@ -187,7 +187,7 @@ model Transactions {
   updatedAt      DateTime                   @updatedAt
   updatedBy      String?                    @db.VarChar(50)
   product        Product                    @relation(fields: [productId], references: [id], onUpdate: Restrict)
-
+  orderNo        Int
   @@index([productId], map: "Transactions_productId_fkey")
 }
 

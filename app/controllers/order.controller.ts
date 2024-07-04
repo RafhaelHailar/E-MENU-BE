@@ -7,9 +7,14 @@ import {
   SubCartService,
   OrderService,
   GetMyOrdersService,
+  GetService,
 } from "@services/order";
 
 const OrderController = {
+  get: asyncHandler(async (req: Request, res: Response) => {
+    await GetService(req, res);
+  }),
+
   updateCart: asyncHandler(async (req: Request, res: Response) => {
     await UpdateCartService(req, res);
   }),
