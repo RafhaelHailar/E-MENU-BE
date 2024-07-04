@@ -181,6 +181,14 @@ router.post("/cart/sub", auth(), OrderController.subCart);
 router.post("/order", auth(), OrderController.order);
 
 /**
+ * Update Order Status
+ * @route POST /cart/add
+ * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
+ * @returns {object} 404 - Transactions with given Order No. are not found.
+ */
+router.post("/order/status", OrderController.updateStatus);
+
+/**
  * De Categorize a Product from a given Category
  * @route DELETE /category/${categoryId}/decategorize/${productId}
  * @returns {object} 200 - Product Successfully Decategorize.
