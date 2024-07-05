@@ -5,6 +5,7 @@ import ProductController from "@controllers/product.controller";
 import OrderController from "@controllers/order.controller";
 import productValidators from "@validators/product.validator";
 import TableController from "@controllers/table.controller";
+import InventoryController from "@controllers/inventory.controller";
 
 import auth from "@middlewares/auth";
 
@@ -100,6 +101,13 @@ router.get("/orders", OrderController.get);
  * @returns {object} 200 - Register Confirm
  */
 router.get("/confirm_register", TableController.confirmRegister);
+
+/**
+ * Get Inventory Items
+ * @route GET /inventory/items
+ * @returns {object} 200 - All Inventory
+ */
+router.get("/inventory/items", InventoryController.getItems);
 
 /**
  * Approve Table Request
