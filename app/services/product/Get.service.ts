@@ -50,6 +50,8 @@ async function GetService(req: Request, res: Response) {
     take: (page - 1) * total + 1,
   });
 
+  if (firstQueryResults.length === 0) return res.status(200).json([]);
+
   const lastPointInResults = firstQueryResults[firstQueryResults.length - 1];
   const myCursor = lastPointInResults.id;
 
