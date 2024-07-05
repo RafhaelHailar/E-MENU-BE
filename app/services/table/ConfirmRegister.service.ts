@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function ConfirmRegisterService(req: Request, res: Response) {
-  const tableId = Number(req.query.tableId);
+  const tableNo = Number(req.query.tableNo);
   const sessionId = req.query.sessionId;
 
   const table = await prisma.table.findUnique({
     where: {
-      tableNo: tableId,
+      tableNo,
       session: sessionId as string,
     },
   });
