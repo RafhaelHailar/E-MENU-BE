@@ -63,7 +63,7 @@ router.get("/table/queues", TableController.listQueues);
 
 /**
  * Register a user to a table
- * @route POST /order/{tableId}
+ * @route GET /order/{tableId}
  *
  * @returns {object} 404 - Table with given table id is not found
  * @returns {object} 403 - There is another session open
@@ -73,7 +73,7 @@ router.get("/order/:tableId", TableController.tableRegister);
 
 /**
  * Register a user to a group
- * @route POST /order/{tableId}
+ * @route GET /order/{tableId}
  *
  * @returns {object} 404 - Session id is not register
  * @returns {object} 200 - Table session key
@@ -82,17 +82,24 @@ router.get("/group/:_session_id", TableController.groupRegister);
 
 /**
  * Get Customer Orders
- * @route POST /my_orders
+ * @route GET /my_orders
  * @returns {object} 200 - Customer Orders.
  */
 router.get("/my_orders", auth(), OrderController.getMyOrder);
 
 /**
  * Get All Customer Orders
- * @route POST /orders
+ * @route GET /orders
  * @returns {object} 200 - All Customer Orders.
  */
 router.get("/orders", OrderController.get);
+
+/**
+ * Confirm Table Registration
+ * @route GET /confirm_register
+ * @returns {object} 200 - Register Confirm
+ */
+router.get("/confirm_register", TableController.confirmRegister);
 
 /**
  * Approve Table Request
