@@ -7,6 +7,7 @@ import {
   GroupRegisterService,
   ApproveRequestService,
   DeclineRequestService,
+  ConfirmRegisterService,
 } from "@services/table";
 
 const TableController = {
@@ -28,6 +29,10 @@ const TableController = {
 
   declineRequest: asyncHandler(async (req: Request, res: Response) => {
     await DeclineRequestService(req, res);
+  }),
+
+  confirmRegister: asyncHandler(async (req: Request, res: Response) => {
+    await ConfirmRegisterService(req, res);
   }),
 };
 
