@@ -203,6 +203,22 @@ model User {
   updatedAt DateTime  @updatedAt
 }
 
+model InventoryItem {
+  id        String    @unique() @default(uuid())
+  name      String   
+  category  InventoryItemCategory
+  quantity  Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+enum InventoryItemCategory {
+  MEAT
+  PRODUCE
+  DAIRY
+  SEAFOOD
+}
+
 enum CustomerType {
   LEADER
   ACCOMPLICE
