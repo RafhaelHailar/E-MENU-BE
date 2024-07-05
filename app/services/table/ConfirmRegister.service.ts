@@ -20,7 +20,7 @@ async function ConfirmRegisterService(req: Request, res: Response) {
     sameSite: "none",
     path: "/",
   });
-  res.cookie("_table_no", tableId, {
+  res.cookie("_table_no", tableNo, {
     httpOnly: false,
     secure: true,
     sameSite: "none",
