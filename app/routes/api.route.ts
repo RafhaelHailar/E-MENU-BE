@@ -104,10 +104,10 @@ router.get("/confirm_register", TableController.confirmRegister);
 
 /**
  * Get Inventory Items
- * @route GET /inventory/items
+ * @route GET /inventory
  * @returns {object} 200 - All Inventory
  */
-router.get("/inventory/items", InventoryController.getItems);
+router.get("/inventory", InventoryController.getItems);
 
 /**
  * Approve Table Request
