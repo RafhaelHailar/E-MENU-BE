@@ -7,3 +7,4 @@ export { default as CategorizePromotionService } from "./CategorizePromotion.ser
 export { default as GetPromotionService } from "./GetPromotion.service";
 export { default as DeCategorizeProductService } from "./DeCategorizeProduct.service";
 export { default as GetCategoriesService } from "./GetCategories.service";
+export { default as UpdateService } from "./Update.service";
