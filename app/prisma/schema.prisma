@@ -181,8 +181,8 @@ model Transactions {
   contactNo      String?                    @db.VarChar(50)
   loyalty        Boolean                    @default(false)
   discountAmount Float                      @db.Float
-  status         Transactions_status        @default(Pending)
-  paymentStatus  Transactions_paymentStatus @default(Unpaid)
+  status         Transactions_status        @default(PENDING)
+  paymentStatus  Transactions_paymentStatus @default(UNPAID)
   createdAt      DateTime                   @default(now()) @db.DateTime(0)
   updatedAt      DateTime                   @updatedAt
   updatedBy      String?                    @db.VarChar(50)
@@ -242,14 +242,14 @@ enum Transactions_paymentMode {
 }
 
 enum Transactions_status {
-  Pending
-  Ongoing
-  Serve
-  Completed
-  Cancelled
+  PENDING
+  ONGOING
+  SERVE
+  COMPLETED
+  CANCELLED
 }
 
 enum Transactions_paymentStatus {
-  Paid
-  Unpaid
+  PAID
+  UNPAID
 }
