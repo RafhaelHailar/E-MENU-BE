@@ -28,7 +28,7 @@ const UpdateItemService = async (req: Request, res: Response) => {
     },
   });
 
-  return res.status(201).json({ message: "inventory item is updated" });
+  return res.status(200).json({ message: "inventory item is updated" });
 };
 
 export default UpdateItemService;
