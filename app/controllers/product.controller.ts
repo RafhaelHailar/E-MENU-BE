@@ -10,6 +10,7 @@ import {
   GetPromotionService,
   DeCategorizeProductService,
   GetCategoriesService,
+  UpdateService,
 } from "@services/product";
 
 const ProductController = {
@@ -19,6 +20,10 @@ const ProductController = {
 
   add: asyncHandler(async (req: Request, res: Response) => {
     await AddProductService(req, res);
+  }),
+
+  update: asyncHandler(async (req: Request, res: Response) => {
+    await UpdateService(req, res);
   }),
 
   addProductCategory: asyncHandler(async (req: Request, res: Response) => {
