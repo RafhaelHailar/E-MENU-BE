@@ -212,10 +212,21 @@ router.post("/inventory/add", InventoryController.addItem);
 
 /**
  * Update Inventory Item
- * @route POST /inventory/update
+ * @route PUT /inventory/update
  * @returns {object} 200 - Inventory Item Updated
  */
 router.put("/inventory/update", InventoryController.updateItem);
+
+/**
+ * Update a product
+ * @route PUT /product
+ * @returns {object} 200 - Product Updated Sucessfully
+ */
+router.put(
+  "/product/update",
+  validate(productValidators.update),
+  ProductController.update,
+);
 
 /**
  * De Categorize a Product from a given Category
