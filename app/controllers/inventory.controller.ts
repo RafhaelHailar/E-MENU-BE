@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import asyncHandler from "@utils/asyncHandler";
-import { GetItemsService, AddItemService } from "@services/inventory";
+import {
+  GetItemsService,
+  AddItemService,
+  UpdateItemService,
+} from "@services/inventory";
 
 const InventoryController = {
   getItems: asyncHandler(async (req: Request, res: Response) => {
@@ -9,6 +13,10 @@ const InventoryController = {
 
   addItem: asyncHandler(async (req: Request, res: Response) => {
     await AddItemService(req, res);
+  }),
+
+  updateItem: asyncHandler(async (req: Request, res: Response) => {
+    await UpdateItemService(req, res);
   }),
 };
 
