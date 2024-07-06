@@ -211,6 +211,13 @@ router.post("/order/status", OrderController.updateStatus);
 router.post("/inventory/add", InventoryController.addItem);
 
 /**
+ * Update Inventory Item
+ * @route POST /inventory/update
+ * @returns {object} 200 - Inventory Item Updated
+ */
+router.put("/inventory/update", InventoryController.updateItem);
+
+/**
  * De Categorize a Product from a given Category
  * @route DELETE /category/${categoryId}/decategorize/${productId}
  * @returns {object} 200 - Product Successfully Decategorize.
