@@ -238,6 +238,13 @@ router.delete(
  */
 router.delete("/table/decline/:_session_id", TableController.declineRequest);
 
+/**
+ * Delete Inventory Item
+ * @route DELETE /inventory/delete
+ * @returns {object} 200 - Inventory Item Deleted
+ */
+router.delete("/inventory/delete/:itemId", InventoryController.deleteItem);
+
 export default router;
 
 /**

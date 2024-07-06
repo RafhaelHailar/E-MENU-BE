@@ -4,6 +4,7 @@ import {
   GetItemsService,
   AddItemService,
   UpdateItemService,
+  DeleteItemService,
 } from "@services/inventory";
 
 const InventoryController = {
@@ -17,6 +18,10 @@ const InventoryController = {
 
   updateItem: asyncHandler(async (req: Request, res: Response) => {
     await UpdateItemService(req, res);
+  }),
+
+  deleteItem: asyncHandler(async (req: Request, res: Response) => {
+    await DeleteItemService(req, res);
   }),
 };
 
