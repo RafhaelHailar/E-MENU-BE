@@ -3,10 +3,11 @@ import { Router } from "express";
 import validate from "@middlewares/validate";
 import ProductController from "@controllers/product.controller";
 import OrderController from "@controllers/order.controller";
-import productValidators from "@validators/product.validator";
 import TableController from "@controllers/table.controller";
 import InventoryController from "@controllers/inventory.controller";
 import LoyaltyController from "@controllers/loyalty.controller";
+import productValidators from "@validators/product.validator";
+import tableValidators from "@validators/table.validator";
 
 import auth from "@middlewares/auth";
 
@@ -131,7 +132,11 @@ router.get("/my_loyalties/:email", LoyaltyController.getMyLoyalties);
  * @returns {object} 404 - Table session with given session is not found
  * @returns {object} 200 - Table session is approve
  */
-router.patch("/table/approve", TableController.approveRequest);
+router.patch(
+  "/table/approve",
+  validate(tableValidators.approve),
+  TableController.approveRequest,
+);
 
 /**
  * Update Order Payment Status
