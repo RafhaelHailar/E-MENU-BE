@@ -6,6 +6,7 @@ import OrderController from "@controllers/order.controller";
 import productValidators from "@validators/product.validator";
 import TableController from "@controllers/table.controller";
 import InventoryController from "@controllers/inventory.controller";
+import LoyaltyController from "@controllers/loyalty.controller";
 
 import auth from "@middlewares/auth";
 
@@ -108,6 +109,13 @@ router.get("/confirm_register", TableController.confirmRegister);
  * @returns {object} 200 - All Inventory
  */
 router.get("/inventory", InventoryController.getItems);
+
+/**
+ * Get Loyalties History
+ * @route GET /loyalties
+ * @returns {object} 200 - Loyalties History
+ */
+router.get("/loyalties", LoyaltyController.get);
 
 /**
  * Approve Table Request
