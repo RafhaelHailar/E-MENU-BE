@@ -6,3 +6,4 @@ export { default as OrderService } from "./Order.service";
 export { default as GetMyOrdersService } from "./GetMyOrder.service";
 export { default as GetService } from "./Get.service";
 export { default as UpdateStatusService } from "./UpdateStatus.service";
+export { default as UpdatePaymentStatusService } from "./UpdatePaymentStatus.service";
