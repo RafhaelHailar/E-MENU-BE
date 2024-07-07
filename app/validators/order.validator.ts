@@ -2,6 +2,7 @@ import Joi from "joi";
 import {
   Transactions_paymentMethod,
   Transactions_paymentStatus,
+  Transactions_status,
 } from "@prisma/client";
 
 const addSubCart = {
@@ -13,7 +14,18 @@ const addSubCart = {
 const updatePaymentStatus = {
   body: Joi.object().keys({
     transactionId: Joi.string().required(),
-    status: Joi.string().valid(...Object.values(Transactions_paymentStatus)),
+    status: Joi.string()
+      .valid(...Object.values(Transactions_paymentStatus))
+      .required(),
+  }),
+};
+
+const updateStatus = {
+  body: Joi.object().keys({
+    orderNo: Joi.string().required(),
+    status: Joi.string()
+      .valid(...Object.values(Transactions_status))
+      .required(),
   }),
 };
 
@@ -23,15 +35,16 @@ const order = {
     name: Joi.string(),
     email: Joi.string().email(),
     contactNo: Joi.string(),
-    paymentMethod: Joi.string().valid(
-      ...Object.values(Transactions_paymentMethod),
-    ),
+    paymentMethod: Joi.string()
+      .valid(...Object.values(Transactions_paymentMethod))
+      .required(),
   }),
 };
 
 const orderValidators = {
   addSubCart,
   updatePaymentStatus,
+  updateStatus,
   order,
 };
 
