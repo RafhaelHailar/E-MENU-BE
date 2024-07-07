@@ -10,6 +10,22 @@ const add = {
   }),
 };
 
+const addProductCategory = {
+  body: Joi.object().keys({
+    name: Joi.string().required(),
+  }),
+};
+
+const addPromotion = {
+  body: Joi.object().keys({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    discountRate: Joi.number().required(),
+    startDate: Joi.date().iso(),
+    endDate: Joi.date().iso(),
+  }),
+};
+
 const update = {
   body: Joi.object().keys({
     id: Joi.string().required(),
@@ -21,9 +37,25 @@ const update = {
   }),
 };
 
+const categorizeProduct = {
+  body: Joi.object().keys({
+    categoryId: Joi.string().required(),
+  }),
+};
+
+const categorizePromotion = {
+  body: Joi.object().keys({
+    categoryId: Joi.string().required(),
+  }),
+};
+
 const productValidators = {
   add,
+  addProductCategory,
+  addPromotion,
   update,
+  categorizeProduct,
+  categorizePromotion,
 };
 
 export default productValidators;

@@ -3,10 +3,13 @@ import { Router } from "express";
 import validate from "@middlewares/validate";
 import ProductController from "@controllers/product.controller";
 import OrderController from "@controllers/order.controller";
-import productValidators from "@validators/product.validator";
 import TableController from "@controllers/table.controller";
 import InventoryController from "@controllers/inventory.controller";
 import LoyaltyController from "@controllers/loyalty.controller";
+import productValidators from "@validators/product.validator";
+import tableValidators from "@validators/table.validator";
+import orderValidators from "@validators/order.validator";
+import inventoryValidators from "@validators/inventory.validator";
 
 import auth from "@middlewares/auth";
 
@@ -131,7 +134,11 @@ router.get("/my_loyalties/:email", LoyaltyController.getMyLoyalties);
  * @returns {object} 404 - Table session with given session is not found
  * @returns {object} 200 - Table session is approve
  */
-router.patch("/table/approve", TableController.approveRequest);
+router.patch(
+  "/table/approve",
+  validate(tableValidators.approve),
+  TableController.approveRequest,
+);
 
 /**
  * Update Order Payment Status
@@ -139,7 +146,11 @@ router.patch("/table/approve", TableController.approveRequest);
  * @returns {object} 200 - Orders Payment Status Updated.
  * @returns {object} 404 - Orders with given transaction id is not found.
  */
-router.patch("/order/payment_status", OrderController.updatePaymentStatus);
+router.patch(
+  "/order/payment_status",
+  validate(orderValidators.updatePaymentStatus),
+  OrderController.updatePaymentStatus,
+);
 
 /**
  * Add a new product
@@ -157,7 +168,11 @@ router.post(
  * @route POST /products/category
  * @returns {object} 200 - Message that the product category is created along side with its id.
  */
-router.post("/products/category", ProductController.addProductCategory);
+router.post(
+  "/products/category",
+  validate(productValidators.addProductCategory),
+  ProductController.addProductCategory,
+);
 
 /**
  * Categorize product
@@ -166,6 +181,7 @@ router.post("/products/category", ProductController.addProductCategory);
  */
 router.post(
   "/product/:productId/categorize",
+  validate(productValidators.categorizeProduct),
   ProductController.categorizeProduct,
 );
 
@@ -174,7 +190,12 @@ router.post(
  * @route POST /products/promotion
  * @returns {object} 200 - Message that the promotion is created along side with its id.
  */
-router.post("/promotions", auth(), ProductController.addPromotion);
+router.post(
+  "/promotions",
+  validate(productValidators.addPromotion),
+  auth(),
+  ProductController.addPromotion,
+);
 
 /**
  * Categorize promotion
@@ -183,6 +204,7 @@ router.post("/promotions", auth(), ProductController.addPromotion);
  */
 router.post(
   "/promotion/:promotionId/categorize",
+  validate(productValidators.categorizePromotion),
   ProductController.categorizePromotion,
 );
 
@@ -202,21 +224,36 @@ router.post("/cart/update", auth(), OrderController.updateCart);
  * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
-router.post("/cart/add", auth(), OrderController.addCart);
+router.post(
+  "/cart/add",
+  validate(orderValidators.addSubCart),
+  auth(),
+  OrderController.addCart,
+);
 
 /**
  * Subtract Cart
  * @route POST /cart/sub
  * @returns {object} 200 - Item in Cart Reduced its Quantity.
  */
-router.post("/cart/sub", auth(), OrderController.subCart);
+router.post(
+  "/cart/sub",
+  validate(orderValidators.addSubCart),
+  auth(),
+  OrderController.subCart,
+);
 
 /**
  * Order Cart Items
  * @route POST /order
  * @returns {object} 200 - Item in Cart is Ordered.
  */
-router.post("/order", auth(), OrderController.order);
+router.post(
+  "/order",
+  validate(orderValidators.order),
+  auth(),
+  OrderController.order,
+);
 
 /**
  * Update Order Status
@@ -224,21 +261,33 @@ router.post("/order", auth(), OrderController.order);
  * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
  * @returns {object} 404 - Transactions with given Order No. are not found.
  */
-router.post("/order/status", OrderController.updateStatus);
+router.post(
+  "/order/status",
+  validate(orderValidators.updateStatus),
+  OrderController.updateStatus,
+);
 
 /**
  * Add Inventory Item
  * @route POST /inventory/add
  * @returns {object} 200 - Inventory Item Added
  */
-router.post("/inventory/add", InventoryController.addItem);
+router.post(
+  "/inventory/add",
+  validate(inventoryValidators.addItem),
+  InventoryController.addItem,
+);
 
 /**
  * Update Inventory Item
  * @route PUT /inventory/update
  * @returns {object} 200 - Inventory Item Updated
  */
-router.put("/inventory/update", InventoryController.updateItem);
+router.put(
+  "/inventory/update",
+  validate(inventoryValidators.updateItem),
+  InventoryController.updateItem,
+);
 
 /**
  * Update a product
