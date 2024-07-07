@@ -8,6 +8,7 @@ import InventoryController from "@controllers/inventory.controller";
 import LoyaltyController from "@controllers/loyalty.controller";
 import productValidators from "@validators/product.validator";
 import tableValidators from "@validators/table.validator";
+import orderValidators from "@validators/order.validator";
 
 import auth from "@middlewares/auth";
 
@@ -144,7 +145,11 @@ router.patch(
  * @returns {object} 200 - Orders Payment Status Updated.
  * @returns {object} 404 - Orders with given transaction id is not found.
  */
-router.patch("/order/payment_status", OrderController.updatePaymentStatus);
+router.patch(
+  "/order/payment_status",
+  validate(orderValidators.updatePaymentStatus),
+  OrderController.updatePaymentStatus,
+);
 
 /**
  * Add a new product
