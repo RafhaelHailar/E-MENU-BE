@@ -11,7 +11,8 @@ interface URLPart {
 
 function split(url: string): URLPart {
   // remove queries
-  let init = url.slice(0, url.indexOf("?"));
+  const queryIndex = url.indexOf("?");
+  let init = queryIndex !== -1 ? url.slice(0, queryIndex) : url;
 
   // split by protocol (e.g [http] :// [www.example.com])
   let data = init.split("://");
