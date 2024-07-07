@@ -124,7 +124,7 @@ const CheckoutPaidService = async (req: Request, res: Response) => {
   // webhook payment method type.
   const paymentMode = body.data.attributes.data.attributes.type;
 
-  console.log(JSON.stringify(body));
+  console.log("BODY BODY: ", body, req.body, JSON.stringify(body));
 
   // update transactions value
   await prisma.transactions.updateMany({
