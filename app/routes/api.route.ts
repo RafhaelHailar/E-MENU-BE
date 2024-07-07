@@ -127,6 +127,14 @@ router.get("/loyalties", LoyaltyController.get);
 router.patch("/table/approve", TableController.approveRequest);
 
 /**
+ * Update Order Payment Status
+ * @route POST /order/payment_status
+ * @returns {object} 200 - Orders Payment Status Updated.
+ * @returns {object} 404 - Orders with given transaction id is not found.
+ */
+router.patch("/order/payment_status", OrderController.updatePaymentStatus);
+
+/**
  * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.
