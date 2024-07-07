@@ -16,6 +16,16 @@ const addProductCategory = {
   }),
 };
 
+const addPromotion = {
+  body: Joi.object().keys({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    discountRate: Joi.number().required(),
+    startDate: Joi.date().iso(),
+    endDate: Joi.date().iso(),
+  }),
+};
+
 const update = {
   body: Joi.object().keys({
     id: Joi.string().required(),
