@@ -1,5 +1,8 @@
 import Joi from "joi";
-import { Transactions_paymentStatus } from "@prisma/client";
+import {
+  Transactions_paymentMethod,
+  Transactions_paymentStatus,
+} from "@prisma/client";
 
 const addSubCart = {
   body: Joi.object().keys({
@@ -14,9 +17,22 @@ const updatePaymentStatus = {
   }),
 };
 
+const order = {
+  body: Joi.object().keys({
+    loyalty: Joi.boolean(),
+    name: Joi.string(),
+    email: Joi.string().email(),
+    contactNo: Joi.string(),
+    paymentMethod: Joi.string().valid(
+      ...Object.values(Transactions_paymentMethod),
+    ),
+  }),
+};
+
 const orderValidators = {
   addSubCart,
   updatePaymentStatus,
+  order,
 };
 
 export default orderValidators;
