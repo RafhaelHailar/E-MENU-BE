@@ -9,6 +9,7 @@ import LoyaltyController from "@controllers/loyalty.controller";
 import productValidators from "@validators/product.validator";
 import tableValidators from "@validators/table.validator";
 import orderValidators from "@validators/order.validator";
+import inventoryValidators from "@validators/inventory.validator";
 
 import auth from "@middlewares/auth";
 
@@ -271,7 +272,11 @@ router.post(
  * @route POST /inventory/add
  * @returns {object} 200 - Inventory Item Added
  */
-router.post("/inventory/add", InventoryController.addItem);
+router.post(
+  "/inventory/add",
+  validate(inventoryValidators.add),
+  InventoryController.addItem,
+);
 
 /**
  * Update Inventory Item
