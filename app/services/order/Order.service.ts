@@ -59,6 +59,7 @@ async function OrderService(req: Request, res: Response) {
   const lastOrderedNo = lastOrderedItem ? lastOrderedItem.orderNo : 0;
   const transactionId = crypto.randomBytes(12).toString("hex");
 
+  const orderNo = lastOrderedNo + 1;
   let totalAmount = 0;
 
   // move to orders
@@ -75,7 +76,7 @@ async function OrderService(req: Request, res: Response) {
         quantity: item.quantity,
         amount: product.price * item.quantity,
         transactionId,
-        orderNo: lastOrderedNo + 1,
+        orderNo,
       },
     });
 
@@ -107,6 +108,7 @@ async function OrderService(req: Request, res: Response) {
       name,
       contactNo,
       paymentMethod,
+      orderNo,
     },
   });
 
