@@ -59,6 +59,8 @@ async function OrderService(req: Request, res: Response) {
   const lastOrderedNo = lastOrderedItem ? lastOrderedItem.orderNo : 0;
   const transactionId = crypto.randomBytes(12).toString("hex");
 
+  let totalAmount = 0;
+
   // move to orders
   for (let i = 0; i < cartItems.length; i++) {
     const item = cartItems[i];
@@ -91,25 +93,22 @@ async function OrderService(req: Request, res: Response) {
       0,
     );
 
-    await prisma.transactions.create({
-      data: {
-        tableNo,
-        sessionId,
-        productId: product.id,
-        price: product.price,
-        quantity: item.quantity,
-        amount: product.price * item.quantity,
-        transactionId,
-        discountAmount: disount,
-        loyalty,
-        email,
-        name,
-        contactNo,
-        paymentMethod,
-        orderNo: lastOrderedNo + 1,
-      },
-    });
+    totalAmount += (product.price - product.price * disount) * item.quantity;
   }
+
+  await prisma.transactions.create({
+    data: {
+      tableNo,
+      sessionId,
+      amount: totalAmount,
+      transactionId,
+      loyalty,
+      email,
+      name,
+      contactNo,
+      paymentMethod,
+    },
+  });
 
   if (paymentMethod === "ONLINE") {
     return await PaymongoCheckoutService(req, res, transactionId);
