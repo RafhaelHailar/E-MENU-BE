@@ -108,11 +108,12 @@ const CheckoutPaidService = async (req: Request, res: Response) => {
 
   // signature match and payment succeed.
   // get checkout session id
-  const checkoutReference = body.data.attributes.transactionId as string;
+  const checkoutReference = body.data.attributes.reference_number as string;
 
   const orderedItems = await prisma.transactions.findMany({
     where: {
       transactionId: checkoutReference,
+      paymentStatus: "UNPAID",
     },
   });
 
