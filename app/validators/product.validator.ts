@@ -46,6 +46,7 @@ const categorizeProduct = {
 const productValidators = {
   add,
   addProductCategory,
+  addPromotion,
   update,
   categorizeProduct,
 };
