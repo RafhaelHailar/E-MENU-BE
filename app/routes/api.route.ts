@@ -203,6 +203,7 @@ router.post(
  */
 router.post(
   "/promotion/:promotionId/categorize",
+  validate(productValidators.categorizePromotion),
   ProductController.categorizePromotion,
 );
 
