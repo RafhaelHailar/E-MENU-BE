@@ -171,13 +171,14 @@ model Transactions {
   amount         Float                      @db.Float
   paymentMethod  Transactions_paymentMethod
   paymentMode    String?
-  transactionId  String                     @db.Char(200)
+  transactionId  String                     @unique @db.Char(200)
   email          String?                    @db.VarChar(50)
   name           String?                    @db.VarChar(50)
   contactNo      String?                    @db.VarChar(50)
   loyalty        Boolean                    @default(false)
   status         Transactions_status        @default(PENDING)
   paymentStatus  Transactions_paymentStatus @default(UNPAID)
+  orderNo        Int                        @unique
   createdAt      DateTime                   @default(now()) @db.DateTime(0)
   updatedAt      DateTime                   @updatedAt
   updatedBy      String?                    @db.VarChar(50)
