@@ -223,7 +223,12 @@ router.post("/cart/update", auth(), OrderController.updateCart);
  * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
-router.post("/cart/add", auth(), OrderController.addCart);
+router.post(
+  "/cart/add",
+  validate(orderValidators.addCart),
+  auth(),
+  OrderController.addCart,
+);
 
 /**
  * Subtract Cart
