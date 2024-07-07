@@ -27,10 +27,17 @@ const update = {
   }),
 };
 
+const categorizeProduct = {
+  body: Joi.object().keys({
+    categoryId: Joi.string().required(),
+  }),
+};
+
 const productValidators = {
   add,
   addProductCategory,
   update,
+  categorizeProduct,
 };
 
 export default productValidators;
