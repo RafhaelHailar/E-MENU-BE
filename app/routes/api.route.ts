@@ -167,7 +167,11 @@ router.post(
  * @route POST /products/category
  * @returns {object} 200 - Message that the product category is created along side with its id.
  */
-router.post("/products/category", ProductController.addProductCategory);
+router.post(
+  "/products/category",
+  validate(productValidators.addProductCategory),
+  ProductController.addProductCategory,
+);
 
 /**
  * Categorize product
