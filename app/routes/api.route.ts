@@ -247,7 +247,12 @@ router.post(
  * @route POST /order
  * @returns {object} 200 - Item in Cart is Ordered.
  */
-router.post("/order", auth(), OrderController.order);
+router.post(
+  "/order",
+  validate(orderValidators.order),
+  auth(),
+  OrderController.order,
+);
 
 /**
  * Update Order Status
