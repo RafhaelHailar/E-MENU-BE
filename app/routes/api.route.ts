@@ -225,7 +225,7 @@ router.post("/cart/update", auth(), OrderController.updateCart);
  */
 router.post(
   "/cart/add",
-  validate(orderValidators.addCart),
+  validate(orderValidators.addSubCart),
   auth(),
   OrderController.addCart,
 );
@@ -235,7 +235,12 @@ router.post(
  * @route POST /cart/sub
  * @returns {object} 200 - Item in Cart Reduced its Quantity.
  */
-router.post("/cart/sub", auth(), OrderController.subCart);
+router.post(
+  "/cart/sub",
+  validate(orderValidators.addSubCart),
+  auth(),
+  OrderController.subCart,
+);
 
 /**
  * Order Cart Items
