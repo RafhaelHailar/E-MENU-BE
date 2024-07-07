@@ -174,7 +174,7 @@ model Transactions {
   quantity       Int
   amount         Float                      @db.Float
   paymentMethod  Transactions_paymentMethod
-  paymentMode    Transactions_paymentMode?
+  paymentMode    String?
   transactionId  String                     @db.Char(200)
   email          String?                    @db.VarChar(50)
   name           String?                    @db.VarChar(50)
@@ -235,10 +235,6 @@ enum User_Role {
 enum Transactions_paymentMethod {
   CASH
   ONLINE
-}
-
-enum Transactions_paymentMode {
-  GCASH
 }
 
 enum Transactions_status {
