@@ -112,7 +112,7 @@ async function OrderService(req: Request, res: Response) {
   }
 
   if (paymentMethod === "ONLINE") {
-    return await PaymongoCheckoutService(req, res);
+    return await PaymongoCheckoutService(req, res, transactionId);
   }
 
   // clear cart
