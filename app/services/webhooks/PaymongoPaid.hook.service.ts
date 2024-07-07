@@ -108,7 +108,8 @@ const CheckoutPaidService = async (req: Request, res: Response) => {
 
   // signature match and payment succeed.
   // get checkout session id
-  const checkoutReference = body.data.attributes.reference_number as string;
+  const checkoutReference = body.data.attributes.data.attributes
+    .reference_number as string;
 
   const orderedItems = await prisma.transactions.findMany({
     where: {
@@ -122,9 +123,7 @@ const CheckoutPaidService = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "no ordered item(s) found" });
 
   // webhook payment method type.
-  const paymentMode = body.data.attributes.data.attributes.type;
-
-  console.log("BODY BODY: ", body, req.body, JSON.stringify(body));
+  const paymentMode = body.data.attributes.data.attributes.payment_method_used;
 
   // update transactions value
   await prisma.transactions.updateMany({
