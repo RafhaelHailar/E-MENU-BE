@@ -16,7 +16,7 @@ const apiKey = Buffer.from(
   process.env.PAYMENTGATEWAY_SECRET_KEY + ":",
 ).toString("base64");
 
-async function createCheckoutSession(items: LineItem[]) {
+async function createCheckoutSession(items: LineItem[], reference: string) {
   const options = {
     method: "POST",
     hostname: "api.paymongo.com",
@@ -49,6 +49,7 @@ async function createCheckoutSession(items: LineItem[]) {
     line_items: items,
     cancel_url: process.env.FRONTEND_BASE_URL,
     sucess_url: process.env.FRONTEND_BASE_URL,
+    reference_number: reference,
   };
 
   return new Promise((resolve, reject) => {
@@ -85,7 +86,11 @@ async function createCheckoutSession(items: LineItem[]) {
   });
 }
 
-async function PaymongoCheckoutService(req: Request, res: Response) {
+async function PaymongoCheckoutService(
+  req: Request,
+  res: Response,
+  transactionId: string,
+) {
   const { session, tableNo } = req.tableSession as Request["tableSession"];
 
   const cartItems = await prisma.cartItem.findMany({
@@ -119,7 +124,7 @@ async function PaymongoCheckoutService(req: Request, res: Response) {
     });
   });
 
-  const checkoutSession = await createCheckoutSession(lineItems);
+  const checkoutSession = await createCheckoutSession(lineItems, transactionId);
 
   // clear cart
   await prisma.cartItem.deleteMany({

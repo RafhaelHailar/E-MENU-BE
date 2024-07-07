@@ -14,6 +14,7 @@ async function disconnectPrisma() {
 
 (async function run() {
   await require("@lib/express").index(app);
+  await require("@services/webhooks/PaymongoPaid.hook.service").createCheckoutPaidWebhook();
 
   try {
     await connectPrisma();
