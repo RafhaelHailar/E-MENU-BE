@@ -274,7 +274,7 @@ router.post(
  */
 router.post(
   "/inventory/add",
-  validate(inventoryValidators.add),
+  validate(inventoryValidators.addItem),
   InventoryController.addItem,
 );
 
@@ -283,7 +283,11 @@ router.post(
  * @route PUT /inventory/update
  * @returns {object} 200 - Inventory Item Updated
  */
-router.put("/inventory/update", InventoryController.updateItem);
+router.put(
+  "/inventory/update",
+  validate(inventoryValidators.updateItem),
+  InventoryController.updateItem,
+);
 
 /**
  * Update a product
