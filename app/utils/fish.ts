@@ -40,8 +40,6 @@ async function prepareRod(
     headers: options.headers,
   };
 
-  console.log(HTTPOption);
-
   return new Promise((resolve, reject) => {
     const req = http.request(HTTPOption, function (res) {
       const chunks: Buffer[] = [];
