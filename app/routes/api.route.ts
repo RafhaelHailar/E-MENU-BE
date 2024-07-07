@@ -189,7 +189,12 @@ router.post(
  * @route POST /products/promotion
  * @returns {object} 200 - Message that the promotion is created along side with its id.
  */
-router.post("/promotions", auth(), ProductController.addPromotion);
+router.post(
+  "/promotions",
+  validate(productValidators.addPromotion),
+  auth(),
+  ProductController.addPromotion,
+);
 
 /**
  * Categorize promotion
