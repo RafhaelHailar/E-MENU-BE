@@ -25,17 +25,20 @@ async function createCheckoutPaidWebhook() {
   const url = "api.paymongo.com/v1/webhooks";
   let webhookId: string = "";
   try {
+    // retrieve all webhook
     const webhooks = await fishPermitted.catch(url, {
       headers: {
         accept: "application/json",
       },
     });
 
+    // new web hook to create
     const attributes = {
-      url: `${process.env.BACKEND_BASE_URL}/webhook/checkout/payment_success`,
+      url: `${process.env.BACKEND_BASE_URL}/webhook/payment_success`,
       events: ["checkout_session.payment.paid"],
     };
 
+    // find similar
     const similarHook = webhooks.data.find((hook) => {
       const { url } = attributes;
       return hook.attributes.url === url;
@@ -46,6 +49,7 @@ async function createCheckoutPaidWebhook() {
       return (webhookKey.data = similarHook.attributes.secret_key);
     }
 
+    // create new web hook if no similar found.
     const createHook = await fishPermitted.withWorm(url, {
       headers: {
         accept: "application/json",
@@ -60,7 +64,9 @@ async function createCheckoutPaidWebhook() {
   } catch (e) {
     console.log(e);
     webhookKey.error = e;
+    return;
   } finally {
+    // enable webhook
     fishPermitted.withWorm(`${url}/${webhookId}/enable`).catch((e: Error) => {
       console.log(e);
     });
