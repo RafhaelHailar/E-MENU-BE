@@ -118,6 +118,13 @@ router.get("/inventory", InventoryController.getItems);
 router.get("/loyalties", LoyaltyController.get);
 
 /**
+ * Get Customer Loyalties History
+ * @route GET /my_loyalties
+ * @returns {object} 200 - Customer Loyalties History
+ */
+router.get("/my_loyalties/:email", LoyaltyController.getMyLoyalties);
+
+/**
  * Approve Table Request
  * @route PATCH /table/approve
  *
