@@ -180,6 +180,7 @@ router.post(
  */
 router.post(
   "/product/:productId/categorize",
+  validate(productValidators.categorizeProduct),
   ProductController.categorizeProduct,
 );
 
