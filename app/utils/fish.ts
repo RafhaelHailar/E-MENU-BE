@@ -40,6 +40,8 @@ async function prepareRod(
     headers: options.headers,
   };
 
+  console.log(HTTPOption);
+
   return new Promise((resolve, reject) => {
     const req = http.request(HTTPOption, function (res) {
       const chunks: Buffer[] = [];
@@ -81,7 +83,7 @@ const fish: Fish = {
     };
   },
 
-  async catch(url: string, options: FishGetOption) {
+  async catch(url: string, options: FishGetOption = {}) {
     const method = "GET";
 
     if (this.authorization) {
@@ -96,7 +98,7 @@ const fish: Fish = {
     return await prepareRod(method, url, options);
   },
 
-  async withWorm(url: string, options: FishPostOption) {
+  async withWorm(url: string, options: FishPostOption = { body: "" }) {
     const method = "POST";
 
     if (this.authorization) {
