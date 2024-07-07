@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 
 import apiRoutes from "@routes/api.route";
 import authRoutes from "@routes/auth.route";
+import webhookRoutes from "@routes/webhook.route";
 import docsRoutes from "@routes/docs.route";
 
 export async function index(app: express.Express): Promise<void> {
@@ -31,6 +32,7 @@ export async function index(app: express.Express): Promise<void> {
 
     app.use("/api", apiRoutes);
     app.use("/api/auth", authRoutes);
+    app.use("/webhook", webhookRoutes);
     app.use("/docs", docsRoutes);
 
     resolve();
