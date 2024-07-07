@@ -2,26 +2,19 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function GetService(req: Request, res: Response) {
-  const orders = await prisma.transactions.findMany({
-    select: {
-      id: true,
-      sessionId: true,
-      tableNo: true,
-      quantity: true,
-      price: true,
-      amount: true,
-      status: true,
-      product: true,
-      transactionId: true,
-      orderNo: true,
-      createdAt: true,
-    },
-  });
+  const orders = await prisma.orders.findMany();
 
   const ordersByOrderId = [];
 
   for (let i = 0; i < orders.length; i++) {
     const order = orders[i];
+
+    const transaction = await prisma.transactions.findUnique({
+      where: {
+        transactionId: order.transactionId,
+      },
+    });
+
     const group = ordersByOrderId.find(
       (orderGroup) => orderGroup.orderNo === order.orderNo,
     );
@@ -37,7 +30,7 @@ async function GetService(req: Request, res: Response) {
         orders: [order],
         orderDate: order.createdAt,
         total: order.amount,
-        status: order.status,
+        status: transaction.status,
       });
     }
   }
