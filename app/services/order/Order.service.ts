@@ -61,6 +61,7 @@ async function OrderService(req: Request, res: Response) {
 
   const orderNo = lastOrderedNo + 1;
   let totalAmount = 0;
+  let totalLoyalty = 0;
 
   // move to orders
   for (let i = 0; i < cartItems.length; i++) {
@@ -94,7 +95,9 @@ async function OrderService(req: Request, res: Response) {
       0,
     );
 
-    totalAmount += (product.price - product.price * disount) * item.quantity;
+    let amount = (product.price - product.price * disount) * item.quantity;
+    totalAmount += amount;
+    totalLoyalty += amount * 0.02; // total loyalty is 2% of the amount they bought.
   }
 
   await prisma.transactions.create({
@@ -111,6 +114,17 @@ async function OrderService(req: Request, res: Response) {
       orderNo,
     },
   });
+
+  if (loyalty) {
+    await prisma.loyalty.create({
+      data: {
+        email,
+        contactNo,
+        amount: totalLoyalty,
+        reference: transactionId,
+      },
+    });
+  }
 
   if (paymentMethod === "ONLINE") {
     return await PaymongoCheckoutService(req, res, transactionId);
