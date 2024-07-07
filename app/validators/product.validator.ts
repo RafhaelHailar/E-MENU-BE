@@ -10,6 +10,12 @@ const add = {
   }),
 };
 
+const addProductCategory = {
+  body: Joi.object().keys({
+    name: Joi.string().required(),
+  }),
+};
+
 const update = {
   body: Joi.object().keys({
     id: Joi.string().required(),
@@ -23,6 +29,7 @@ const update = {
 
 const productValidators = {
   add,
+  addProductCategory,
   update,
 };
 
