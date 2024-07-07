@@ -260,7 +260,11 @@ router.post(
  * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
  * @returns {object} 404 - Transactions with given Order No. are not found.
  */
-router.post("/order/status", OrderController.updateStatus);
+router.post(
+  "/order/status",
+  validate(orderValidators.updateStatus),
+  OrderController.updateStatus,
+);
 
 /**
  * Add Inventory Item
