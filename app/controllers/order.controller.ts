@@ -9,6 +9,7 @@ import {
   GetMyOrdersService,
   GetService,
   UpdateStatusService,
+  UpdatePaymentStatusService,
 } from "@services/order";
 
 import CheckoutPaidService from "@services/webhooks/PaymongoPaid.hook.service";
@@ -48,6 +49,10 @@ const OrderController = {
 
   paymongoPaidHook: asyncHandler(async (req: Request, res: Response) => {
     await CheckoutPaidService(req, res);
+  }),
+
+  updatePaymentStatus: asyncHandler(async (req: Request, res: Response) => {
+    await UpdatePaymentStatusService(req, res);
   }),
 };
 
