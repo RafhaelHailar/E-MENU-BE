@@ -140,10 +140,10 @@ model spatial_ref_sys {
 model Loyalty {
   id        Int      @id @default(autoincrement())
   email     String   @db.VarChar(50)
-  phoneNo   String   @db.VarChar(50)
+  contactNo String   @db.VarChar(50)
   amount    Float    @db.Float
   reference String   @db.Char(200)
-  createdAt DateTime @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
