@@ -10,6 +10,9 @@ async function GetMyOrdersService(req: Request, res: Response) {
       sessionId: tableSession,
       tableNo,
     },
+    include: {
+      product: true,
+    },
   });
 
   const ordersByTransactionId = [];
