@@ -128,6 +128,13 @@ router.get("/loyalties", LoyaltyController.get);
 router.get("/my_loyalties/:email", LoyaltyController.getMyLoyalties);
 
 /**
+ * Get Customer Table Request Status
+ * @route GET /my_status
+ * @returns {object} 200 - Customer Table Request
+ */
+router.get("/my_status", auth(), TableController.getMyStatus);
+
+/**
  * Approve Table Request
  * @route PATCH /table/approve
  *
