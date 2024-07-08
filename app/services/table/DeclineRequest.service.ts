@@ -11,7 +11,7 @@ async function DeclineRequestService(req: Request, res: Response) {
   });
 
   if (!tableRequest)
-    res
+    return res
       .status(404)
       .json({ message: "table request with that session id is not found" });
 
