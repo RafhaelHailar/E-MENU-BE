@@ -132,7 +132,7 @@ router.get("/my_loyalties/:email", LoyaltyController.getMyLoyalties);
  * @route GET /my_status
  * @returns {object} 200 - Customer Table Request
  */
-router.get("/my_status", auth(), TableController.getMyStatus);
+router.get("/my_status", TableController.getMyStatus);
 
 /**
  * Approve Table Request
