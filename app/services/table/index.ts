@@ -4,3 +4,4 @@ export { default as GroupRegisterService } from "./GroupRegister.service";
 export { default as ApproveRequestService } from "./ApproveRequest.service";
 export { default as DeclineRequestService } from "./DeclineRequest.service";
 export { default as ConfirmRegisterService } from "./ConfirmRegister.service";
+export { default as GetMyStatusService } from "./GetMyStatus.service";
