@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function GetMyStatusService(req: Request, res: Response) {
-  const { sessionId } = req.body;
+  const tableSession = req.tableSession;
 
   const tableRequest = await prisma.table.findUnique({
     where: {
-      session: sessionId,
+      session: tableSession.session,
     },
   });
 
