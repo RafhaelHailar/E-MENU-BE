@@ -22,7 +22,7 @@ async function LoginService(req: Request, res: Response) {
   if (!isMatch)
     return res.status(401).json({ message: "email or password is incorrect" });
 
-  const salt = await bcrypt.salt();
+  const salt = await bcrypt.genSalt();
   const sessionId = await bcrypt.hash(
     crypto.randomBytes(32).toString("hex"),
     salt,
