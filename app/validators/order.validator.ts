@@ -22,7 +22,7 @@ const updatePaymentStatus = {
 
 const updateStatus = {
   body: Joi.object().keys({
-    orderNo: Joi.string().required(),
+    orderNo: Joi.number().required(),
     status: Joi.string()
       .valid(...Object.values(Transactions_status))
       .required(),
