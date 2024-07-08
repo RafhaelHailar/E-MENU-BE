@@ -48,7 +48,7 @@ async function createCheckoutSession(items: LineItem[], reference: string) {
     ],
     line_items: items,
     cancel_url: process.env.FRONTEND_BASE_URL,
-    sucess_url: process.env.FRONTEND_BASE_URL,
+    success_url: process.env.FRONTEND_BASE_URL,
     reference_number: reference,
   };
 
