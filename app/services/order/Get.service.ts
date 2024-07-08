@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function GetService(req: Request, res: Response) {
-  const orders = await prisma.orders.findMany();
+  const orders = await prisma.orders.findMany({
+    include: {
+      product: true,
+    },
+  });
 
   const ordersByOrderId = [];
 
