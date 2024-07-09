@@ -4,7 +4,7 @@ import crypto from "crypto";
 import bcrypt from "bcrypt";
 
 async function VerifyCodeService(req: Request, res: Response) {
-  const { email } = req.cookies._customer_email;
+  const email = req.cookies._customer_email;
   const { code } = req.body.code;
 
   if (!email)
