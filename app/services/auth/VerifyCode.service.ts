@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 async function VerifyCodeService(req: Request, res: Response) {
   const email = req.cookies._customer_email;
-  const { code } = req.body.code;
+  const code = req.body.code;
 
   if (!email)
     return res
@@ -24,6 +24,8 @@ async function VerifyCodeService(req: Request, res: Response) {
       .json({ message: "given email does not request for verification" });
 
   const isMatch = otp.code === code;
+
+  console.log(otp.code, code);
 
   if (!isMatch)
     return res.status(401).json({ message: "given code is not valid" });
