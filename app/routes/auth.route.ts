@@ -2,6 +2,7 @@ import { Router } from "express";
 import AuthController from "@controllers/auth.controller";
 import userValidators from "@validators/user.validator";
 import validate from "@middlewares/validate";
+import loyaltyValidators from "@validators/loyalty.validator";
 
 const router: Router = Router();
 
@@ -26,5 +27,17 @@ router.post(
  * @returns {object} 200 - User is Logged in
  */
 router.post("/login", validate(userValidators.login), AuthController.login);
+
+/**
+ * Send Email Verification for Loyalty Login
+ * @route POST /loyalty/login
+ *
+ * @returns {object} 200 - Email Verification Sent.
+ */
+router.post(
+  "/loyalty/login",
+  validate(loyaltyValidators.customerLogin),
+  AuthController.customerLogin,
+);
 
 export default router;
