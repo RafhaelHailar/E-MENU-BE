@@ -6,8 +6,15 @@ const customerLogin = {
   }),
 };
 
+const verifyCode = {
+  body: Joi.object().keys({
+    code: Joi.number().required(),
+  }),
+};
+
 const loyaltyValidators = {
   customerLogin,
+  verifyCode,
 };
 
 export default loyaltyValidators;

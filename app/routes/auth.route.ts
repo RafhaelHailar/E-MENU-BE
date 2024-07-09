@@ -40,4 +40,16 @@ router.post(
   AuthController.customerLogin,
 );
 
+/**
+ * Email Verify Code
+ * @route POST /loyalty/verify
+ *
+ * @returns {object} 200 - Email is Verified.
+ */
+router.post(
+  "/loyalty/verify",
+  validate(loyaltyValidators.verifyCode),
+  AuthController.verifyCode,
+);
+
 export default router;

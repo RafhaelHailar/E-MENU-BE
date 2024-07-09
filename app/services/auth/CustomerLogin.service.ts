@@ -31,7 +31,7 @@ async function CustomerLoginService(req: Request, res: Response) {
   await transporter.sendMail(mailOptions);
   res.cookie("_customer_email", email);
 
-  return res.status(200).json({ message: "Verification Link Sent!" });
+  return res.status(200).json({ message: "verification email sent!" });
 }
 
 export default CustomerLoginService;
