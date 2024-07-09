@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import asyncHandler from "@utils/asyncHandler";
-import { LoginService, RegisterService } from "@services/auth";
+import {
+  CustomerLoginService,
+  LoginService,
+  RegisterService,
+} from "@services/auth";
 
 const AuthController = {
   register: asyncHandler(async (req: Request, res: Response) => {
@@ -9,6 +13,10 @@ const AuthController = {
 
   login: asyncHandler(async (req: Request, res: Response) => {
     await LoginService(req, res);
+  }),
+
+  customerLogin: asyncHandler(async (req: Request, res: Response) => {
+    await CustomerLoginService(req, res);
   }),
 };
 
