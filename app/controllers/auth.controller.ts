@@ -4,6 +4,7 @@ import {
   CustomerLoginService,
   LoginService,
   RegisterService,
+  VerifyCodeService,
 } from "@services/auth";
 
 const AuthController = {
@@ -17,6 +18,10 @@ const AuthController = {
 
   customerLogin: asyncHandler(async (req: Request, res: Response) => {
     await CustomerLoginService(req, res);
+  }),
+
+  verifyCode: asyncHandler(async (req: Request, res: Response) => {
+    await VerifyCodeService(req, res);
   }),
 };
 
