@@ -206,23 +206,33 @@ model InventoryItem {
 }
 
 model Debit {
-  id        Int       @id @default(autoincrement())
-  email     String    @db.VarChar(50)
-  contactNo String    @db.VarChar(50)
-  rewardId  Int       
+  id        Int      @id @default(autoincrement())
+  email     String   @db.VarChar(50)
+  contactNo String   @db.VarChar(50)
+  rewardId  Int
   amount    Int
-  createdAt DateTime  @default(now()) @db.DateTime(0)
-  updatedAt DateTime  @updatedAt
-  reward    Reward    @relation(fields: [rewardId], references: [id])
-}   
+  createdAt DateTime @default(now()) @db.DateTime(0)
+  updatedAt DateTime @updatedAt
+  reward    Reward   @relation(fields: [rewardId], references: [id])
+
+  @@index([rewardId], map: "Debit_rewardId_fkey")
+}
 
 model Reward {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(100)
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
   points    Int
-  createdAt DateTime  @default(now()) @db.DateTime(0)
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now()) @db.DateTime(0)
+  updatedAt DateTime @updatedAt
   debit     Debit[]
+}
+
+model OTP {
+  id        Int      @id @default(autoincrement())
+  email     String   @db.VarChar(50)
+  code      Int
+  sessionId Int
+  createdAt DateTime @default(now()) @db.DateTime(0)
 }
 
 enum InventoryItemCategory {
