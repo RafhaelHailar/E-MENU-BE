@@ -43,7 +43,7 @@ const LoyaltyController = {
         (total, debit) => total + debit.amount,
         0,
       );
-      return res.status(200).json(totalPoints - totalDebits);
+      return res.status(200).send(totalPoints - totalDebits);
     } catch (e) {
       return res.status(e.statusCode).json({ message: e.message });
     }
