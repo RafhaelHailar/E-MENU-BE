@@ -17,7 +17,7 @@ model Table {
   approvedDate DateTime?  @db.DateTime(0)
   approvedBy   String?    @db.Char(50)
   createdAt    DateTime   @default(now()) @db.DateTime(0)
-  updatedAt    DateTime?  @db.DateTime(0)
+  updatedAt    DateTime?  @updatedAt
   customers    Customer[]
 }
 
@@ -140,10 +140,10 @@ model spatial_ref_sys {
 model Loyalty {
   id        Int      @id @default(autoincrement())
   email     String   @db.VarChar(50)
-  contactNo String   @db.VarChar(50)
   amount    Float    @db.Float
   reference String   @db.Char(200)
   createdAt DateTime @default(now())
+  contactNo String   @db.VarChar(50)
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -165,23 +165,23 @@ model Orders {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model Transactions {
-  id             Int                        @id @default(autoincrement())
-  sessionId      String                     @db.Char(200)
-  tableNo        Int
-  amount         Float                      @db.Float
-  paymentMethod  Transactions_paymentMethod
-  paymentMode    String?
-  transactionId  String                     @unique @db.Char(200)
-  email          String?                    @db.VarChar(50)
-  name           String?                    @db.VarChar(50)
-  contactNo      String?                    @db.VarChar(50)
-  loyalty        Boolean                    @default(false)
-  status         Transactions_status        @default(PENDING)
-  paymentStatus  Transactions_paymentStatus @default(UNPAID)
-  orderNo        Int                        @unique
-  createdAt      DateTime                   @default(now()) @db.DateTime(0)
-  updatedAt      DateTime                   @updatedAt
-  updatedBy      String?                    @db.VarChar(50)
+  id            Int                        @id @default(autoincrement())
+  sessionId     String                     @db.Char(200)
+  tableNo       Int
+  amount        Float                      @db.Float
+  paymentMethod Transactions_paymentMethod
+  paymentMode   String?
+  transactionId String                     @unique @db.Char(200)
+  email         String?                    @db.VarChar(50)
+  name          String?                    @db.VarChar(50)
+  contactNo     String?                    @db.VarChar(50)
+  loyalty       Boolean                    @default(false)
+  status        Transactions_status        @default(PENDING)
+  paymentStatus Transactions_paymentStatus @default(UNPAID)
+  createdAt     DateTime                   @default(now()) @db.DateTime(0)
+  updatedAt     DateTime                   @updatedAt
+  updatedBy     String?                    @db.VarChar(50)
+  orderNo       Int                        @unique
 }
 
 model User {
@@ -197,12 +197,32 @@ model User {
 }
 
 model InventoryItem {
-  id        String    @unique() @default(uuid())
-  name      String   
+  id        String                @unique @default(uuid())
+  name      String
   category  InventoryItemCategory
   quantity  Int
-  createdAt DateTime  @default(now())
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+}
+
+model Debit {
+  id        Int       @id @default(autoincrement())
+  email     String    @db.VarChar(50)
+  contactNo String    @db.VarChar(50)
+  rewardId  Int       
+  amount    Int
+  createdAt DateTime  @default(now()) @db.DateTime(0)
   updatedAt DateTime  @updatedAt
+  reward    Reward    @relation(fields: [rewardId], reference: [id])
+}
+
+model Rewards {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(100)
+  points    Int
+  createdAt DateTime  @default(now()) @db.DateTime(0)
+  updatedAt DateTime  @updatedAt
+  debit     Debit[]
 }
 
 enum InventoryItemCategory {

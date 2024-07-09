@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
 import prisma from "@/../prisma";
+import ApiErrorHandler from "@utils/ApiErrorHandler";
+import httpStatus from "http-status";
 
-const GetMyLoyaltiesService = async (req: Request, res: Response) => {
-  const email = req.body.params;
+const GetMyLoyaltiesService = async (email: string) => {
   const loyalties = await prisma.loyalty.findMany({
     where: {
       email,
@@ -10,12 +10,10 @@ const GetMyLoyaltiesService = async (req: Request, res: Response) => {
   });
 
   if (loyalties.length === 0)
-    return res
-      .status(404)
-      .json({
-        message:
-          "either no loyalty record found for the email or no such email exists",
-      });
+    return new ApiErrorHandler(
+      httpStatus.NOT_FOUND,
+      "either no loyalty record found for the email or no such email exists",
+    );
 
   const totalLoyalty = loyalties.filter(async (loyalty) => {
     const transaction = await prisma.transactions.findUnique({
@@ -29,7 +27,7 @@ const GetMyLoyaltiesService = async (req: Request, res: Response) => {
     return transaction.paymentStatus === "PAID";
   });
 
-  return res.status(200).json(totalLoyalty);
+  return totalLoyalty;
 };
 
 export default GetMyLoyaltiesService;
