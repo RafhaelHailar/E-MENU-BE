@@ -1,8 +1,10 @@
+import { Request } from "express";
 import prisma from "@/../prisma";
 import ApiErrorHandler from "@utils/ApiErrorHandler";
 import httpStatus from "http-status";
 
-const GetMyLoyaltiesService = async (email: string) => {
+const GetMyLoyaltiesService = async (req: Request) => {
+  const email = req.cookies.email;
   const loyalties = await prisma.loyalty.findMany({
     where: {
       email,
