@@ -7,15 +7,14 @@ async function CustomerLoginService(req: Request, res: Response) {
 
   const code = 1000 + Math.floor(Math.random() * 9000);
 
-  // delete similar email
-  await prisma.oTP.deleteMany({
+  await prisma.oTP.upsert({
     where: {
       email,
     },
-  });
-
-  await prisma.oTP.create({
-    data: {
+    update: {
+      code,
+    },
+    create: {
       email,
       code,
     },
