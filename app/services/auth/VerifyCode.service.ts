@@ -7,6 +7,11 @@ async function VerifyCodeService(req: Request, res: Response) {
   const { email } = req.cookies._customer_email;
   const { code } = req.body.code;
 
+  if (!email)
+    return res
+      .status(400)
+      .json({ message: "please request for email verification" });
+
   const otp = await prisma.oTP.findUnique({
     where: {
       email,
