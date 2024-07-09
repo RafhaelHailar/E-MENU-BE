@@ -50,11 +50,18 @@ async function prepareRod(
 
       res.on("end", function () {
         const body = Buffer.concat(chunks);
-        const response = JSON.parse(body.toString());
-        const keys = Object.keys(response);
 
-        if (keys.includes("error") || keys.includes("errors")) reject(response);
-        else resolve(response);
+        try {
+          const response = JSON.parse(body.toString());
+          const keys = Object.keys(response);
+
+          if (keys.includes("error") || keys.includes("errors"))
+            reject(response);
+          else resolve(response);
+        } catch (e) {
+          console.log(e);
+          reject(e);
+        }
       });
 
       res.on("error", function (e) {
