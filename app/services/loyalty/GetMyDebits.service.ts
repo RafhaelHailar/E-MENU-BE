@@ -2,8 +2,11 @@ import { Request } from "express";
 import prisma from "@/../prisma";
 import ApiErrorHandler from "@utils/ApiErrorHandler";
 import httpStatus from "http-status";
+import { Debit } from "@prisma/client";
 
-const GetMyDebitsService = async (req: Request) => {
+const GetMyDebitsService = async (
+  req: Request,
+): Promise<ApiErrorHandler | Debit[]> => {
   const email = req.cookies.email;
 
   const debits = await prisma.debit.findMany({
