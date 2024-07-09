@@ -213,10 +213,10 @@ model Debit {
   amount    Int
   createdAt DateTime  @default(now()) @db.DateTime(0)
   updatedAt DateTime  @updatedAt
-  reward    Reward    @relation(fields: [rewardId], reference: [id])
-}
+  reward    Reward    @relation(fields: [rewardId], references: [id])
+}   
 
-model Rewards {
+model Reward {
   id        Int       @id @default(autoincrement())
   name      String    @db.VarChar(100)
   points    Int
