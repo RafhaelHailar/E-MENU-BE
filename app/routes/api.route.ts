@@ -125,7 +125,21 @@ router.get("/loyalties", LoyaltyController.get);
  * @route GET /my_loyalties
  * @returns {object} 200 - Customer Loyalties History
  */
-router.get("/my_loyalties/:email", LoyaltyController.getMyLoyalties);
+router.get("/my_loyalties", LoyaltyController.getMyLoyalties);
+
+/**
+ * Get Customer Debits History
+ * @route GET /my_debits
+ * @returns {object} 200 - Customer Debits History
+ */
+router.get("/my_debits", LoyaltyController.getMyDebits);
+
+/**
+ * Get Customer Total Loyalties
+ * @route GET /my_total_loyalties
+ * @returns {number} 200 - Customer Total Loyalties
+ */
+router.get("/my_total_loyalties", LoyaltyController.getMyTotalLoyalties);
 
 /**
  * Get Customer Table Request Status
