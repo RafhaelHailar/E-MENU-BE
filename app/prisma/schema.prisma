@@ -231,7 +231,7 @@ model OTP {
   id        Int      @id @default(autoincrement())
   email     String   @db.VarChar(50)
   code      Int
-  sessionId Int
+  sessionId String?  @db.Char(200)
   createdAt DateTime @default(now())
 }
 
