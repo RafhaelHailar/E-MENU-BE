@@ -232,7 +232,7 @@ model OTP {
   email     String   @db.VarChar(50)
   code      Int
   sessionId Int
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 enum InventoryItemCategory {
