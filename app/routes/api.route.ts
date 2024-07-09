@@ -135,6 +135,13 @@ router.get("/my_loyalties", LoyaltyController.getMyLoyalties);
 router.get("/my_debits", LoyaltyController.getMyDebits);
 
 /**
+ * Get Customer Total Loyalties
+ * @route GET /my_total_loyalties
+ * @returns {number} 200 - Customer Total Loyalties
+ */
+router.get("/my_total_loyalties", LoyaltyController.getMyTotalLoyalties);
+
+/**
  * Get Customer Table Request Status
  * @route GET /my_status
  * @returns {object} 200 - Customer Table Request
