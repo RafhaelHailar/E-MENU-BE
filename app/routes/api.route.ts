@@ -13,6 +13,7 @@ import inventoryValidators from "@validators/inventory.validator";
 
 import auth from "@middlewares/auth";
 import loyaltyValidators from "@validators/loyalty.validator";
+import isAuthenticated from "@middlewares/isAuthenticated";
 
 const router: Router = Router();
 
@@ -65,7 +66,7 @@ router.get("/cart", OrderController.getCart);
  * @returns {object} 403 - User Role is not allowed to make such request.
  * @returns {object} 200 - List of Table Session Requests
  */
-router.get("/table/queues", TableController.listQueues);
+router.get("/table/queues", auth(), TableController.listQueues);
 
 /**
  * Register a user to a table
@@ -98,7 +99,7 @@ router.get("/my_orders", auth(), OrderController.getMyOrder);
  * @route GET /orders
  * @returns {object} 200 - All Customer Orders.
  */
-router.get("/orders", OrderController.get);
+router.get("/orders", auth(), OrderController.get);
 
 /**
  * Confirm Table Registration
@@ -112,35 +113,39 @@ router.get("/confirm_register", TableController.confirmRegister);
  * @route GET /inventory
  * @returns {object} 200 - All Inventory
  */
-router.get("/inventory", InventoryController.getItems);
+router.get("/inventory", auth(), InventoryController.getItems);
 
 /**
  * Get Loyalties History
  * @route GET /loyalties
  * @returns {object} 200 - Loyalties History
  */
-router.get("/loyalties", LoyaltyController.get);
+router.get("/loyalties", auth(), LoyaltyController.get);
 
 /**
  * Get Customer Loyalties History
  * @route GET /my_loyalties
  * @returns {object} 200 - Customer Loyalties History
  */
-router.get("/my_loyalties", LoyaltyController.getMyLoyalties);
+router.get("/my_loyalties", isAuthenticated, LoyaltyController.getMyLoyalties);
 
 /**
  * Get Customer Debits History
  * @route GET /my_debits
  * @returns {object} 200 - Customer Debits History
  */
-router.get("/my_debits", LoyaltyController.getMyDebits);
+router.get("/my_debits", isAuthenticated, LoyaltyController.getMyDebits);
 
 /**
  * Get Customer Total Loyalties
  * @route GET /my_total_loyalties
  * @returns {number} 200 - Customer Total Loyalties
  */
-router.get("/my_total_loyalties", LoyaltyController.getMyTotalLoyalties);
+router.get(
+  "/my_total_loyalties",
+  isAuthenticated,
+  LoyaltyController.getMyTotalLoyalties,
+);
 
 /**
  * Get Customer Table Request Status
