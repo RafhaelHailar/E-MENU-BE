@@ -208,7 +208,7 @@ model InventoryItem {
 model Debit {
   id        Int      @id @default(autoincrement())
   email     String   @db.VarChar(50)
-  contactNo String   @db.VarChar(50)
+  contactNo String?   @db.VarChar(50)
   rewardId  Int
   amount    Int
   createdAt DateTime @default(now()) @db.DateTime(0)
