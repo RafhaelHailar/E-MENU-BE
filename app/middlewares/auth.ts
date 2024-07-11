@@ -20,7 +20,12 @@ async function checkRights(
         sessionId: userSession,
       },
     });
-    if (user) role = user.role;
+
+    if (!user)
+      return reject(
+        new ApiErrorHandler(httpStatus.UNAUTHORIZED, "session expired"),
+      );
+    role = user.role;
   }
 
   const userRights = roleRights.get(role) ?? [];
@@ -29,7 +34,7 @@ async function checkRights(
   );
 
   if (!hasRequiredRights)
-    return reject(new ApiErrorHandler(httpStatus.FORBIDDEN, "Forbidden"));
+    return reject(new ApiErrorHandler(httpStatus.FORBIDDEN, "forbidden"));
 
   return resolve(role);
 }
