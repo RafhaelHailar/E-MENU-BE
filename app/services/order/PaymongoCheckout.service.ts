@@ -93,13 +93,16 @@ async function PaymongoCheckoutService(
   req: Request,
   res: Response,
   transactionId: string,
+  orderNo: number,
 ) {
   const { session, tableNo } = req.tableSession as Request["tableSession"];
 
-  const cartItems = await prisma.cartItem.findMany({
+  const cartItems = await prisma.orders.findMany({
     where: {
       sessionId: session,
       tableNo: tableNo,
+      transactionId,
+      orderNo,
     },
     include: {
       product: true,
