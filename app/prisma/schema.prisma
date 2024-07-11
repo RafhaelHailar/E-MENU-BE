@@ -237,7 +237,7 @@ model OTP {
 
 model Assistance {
   id           Int      @id @default(autoincrement())
-  requested    String   
+  requested    String   @unique
   tableNo      Int
   assist       Boolean  @default(false)
   approvedDate DateTime?@db.DateTime(0)
