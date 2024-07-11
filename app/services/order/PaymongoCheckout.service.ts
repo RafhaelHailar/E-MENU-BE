@@ -50,6 +50,9 @@ async function createCheckoutSession(items: LineItem[], reference: string) {
     cancel_url: process.env.FRONTEND_BASE_URL,
     success_url: process.env.FRONTEND_BASE_URL,
     reference_number: reference,
+    metadata: {
+      merchant_name: "Digibite",
+    },
   };
 
   return new Promise((resolve, reject) => {
@@ -90,13 +93,16 @@ async function PaymongoCheckoutService(
   req: Request,
   res: Response,
   transactionId: string,
+  orderNo: number,
 ) {
   const { session, tableNo } = req.tableSession as Request["tableSession"];
 
-  const cartItems = await prisma.cartItem.findMany({
+  const cartItems = await prisma.orders.findMany({
     where: {
       sessionId: session,
       tableNo: tableNo,
+      transactionId,
+      orderNo,
     },
     include: {
       product: true,
@@ -126,15 +132,7 @@ async function PaymongoCheckoutService(
 
   const checkoutSession = await createCheckoutSession(lineItems, transactionId);
 
-  // clear cart
-  await prisma.cartItem.deleteMany({
-    where: {
-      tableNo,
-      sessionId: session,
-    },
-  });
-
-  return res.status(200).json(checkoutSession);
+  return checkoutSession;
 }
 
 export default PaymongoCheckoutService;

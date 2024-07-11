@@ -126,10 +126,6 @@ async function OrderService(req: Request, res: Response) {
     });
   }
 
-  if (paymentMethod === "ONLINE") {
-    return await PaymongoCheckoutService(req, res, transactionId);
-  }
-
   // clear cart
   await prisma.cartItem.deleteMany({
     where: {
