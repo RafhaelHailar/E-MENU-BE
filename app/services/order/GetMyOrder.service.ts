@@ -44,6 +44,7 @@ async function GetMyOrdersService(req: Request, res: Response) {
     } else {
       ordersByTransactionId.push({
         transactionId: order.transactionId,
+        orderNo: order.orderNo,
         orders: [order],
         orderDate: order.createdAt,
         total: order.amount,
