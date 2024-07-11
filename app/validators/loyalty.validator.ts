@@ -21,6 +21,7 @@ const redeem = {
 const loyaltyValidators = {
   customerLogin,
   verifyCode,
+  redeem,
 };
 
 export default loyaltyValidators;
