@@ -21,6 +21,9 @@ async function GetMyLatestOrder(req: Request, res: Response) {
       tableNo,
       orderNo: order.orderNo,
     },
+    include: {
+      product: true,
+    },
   });
 
   const transaction = await prisma.transactions.findUnique({
