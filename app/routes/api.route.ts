@@ -15,6 +15,7 @@ import auth from "@middlewares/auth";
 import loyaltyValidators from "@validators/loyalty.validator";
 import isAuthenticated from "@middlewares/isAuthenticated";
 import isApproved from "@middlewares/isApproved";
+import AssistanceController from "@controllers/assitance.controller";
 
 const router: Router = Router();
 
@@ -154,6 +155,13 @@ router.get(
  * @returns {object} 200 - Customer Table Request
  */
 router.get("/my_status", TableController.getMyStatus);
+
+/**
+ * Request for Assistance
+ * @route GET /assistance/request
+ * @returns {object} 200 - Request for Assistance is Sent.
+ */
+router.get("/assistance/request", isApproved, AssistanceController.request);
 
 /**
  * Approve Table Request
