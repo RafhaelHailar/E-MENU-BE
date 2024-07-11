@@ -134,7 +134,7 @@ async function PaymongoCheckoutService(
     },
   });
 
-  return res.status(200).json(checkoutSession);
+  return checkoutSession;
 }
 
 export default PaymongoCheckoutService;
