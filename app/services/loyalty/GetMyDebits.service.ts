@@ -3,7 +3,7 @@ import prisma from "@/../prisma";
 import { Debit } from "@prisma/client";
 
 const GetMyDebitsService = async (req: Request): Promise<Debit[]> => {
-  const email = req.cookies.email;
+  const email = req.customerEmail;
 
   const debits = await prisma.debit.findMany({
     where: {

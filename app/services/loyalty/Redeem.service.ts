@@ -3,7 +3,7 @@ import prisma from "@/../prisma";
 import getMyTotalLoyaltiesService from "./GetMyTotalLoyalties.service";
 
 const RedeemService = async (req: Request, res: Response) => {
-  const email = req.cookies.email;
+  const email = req.customerEmail;
   const rewardId = req.body.rewardId as number;
 
   const reward = await prisma.reward.findUnique({
