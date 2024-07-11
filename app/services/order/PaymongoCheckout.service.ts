@@ -126,14 +126,6 @@ async function PaymongoCheckoutService(
 
   const checkoutSession = await createCheckoutSession(lineItems, transactionId);
 
-  // clear cart
-  await prisma.cartItem.deleteMany({
-    where: {
-      tableNo,
-      sessionId: session,
-    },
-  });
-
   return checkoutSession;
 }
 
