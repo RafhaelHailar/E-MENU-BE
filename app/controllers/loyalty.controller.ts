@@ -4,7 +4,8 @@ import {
   GetService,
   GetMyLoyaltiesService,
   GetMyDebitsService,
-  getMyTotalLoyaltiesService,
+  GetMyTotalLoyaltiesService,
+  RedeemService,
 } from "@services/loyalty";
 
 const LoyaltyController = {
@@ -23,9 +24,13 @@ const LoyaltyController = {
   }),
 
   getMyTotalLoyalties: asyncHandler(async (req: Request, res: Response) => {
-    const points = await getMyTotalLoyaltiesService(req);
+    const points = await GetMyTotalLoyaltiesService(req);
 
     return res.status(200).json({ points });
+  }),
+
+  redeem: asyncHandler(async (req: Request, res: Response) => {
+    await RedeemService(req, res);
   }),
 };
 

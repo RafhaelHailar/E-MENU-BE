@@ -3,6 +3,7 @@ import asyncHandler from "@utils/asyncHandler";
 import {
   CustomerLoginService,
   LoginService,
+  LogoutService,
   RegisterService,
   VerifyCodeService,
 } from "@services/auth";
@@ -22,6 +23,10 @@ const AuthController = {
 
   verifyCode: asyncHandler(async (req: Request, res: Response) => {
     await VerifyCodeService(req, res);
+  }),
+
+  logout: asyncHandler(async (req: Request, res: Response) => {
+    await LogoutService(req, res);
   }),
 };
 

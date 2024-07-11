@@ -12,9 +12,16 @@ const verifyCode = {
   }),
 };
 
+const redeem = {
+  body: Joi.object().keys({
+    rewardId: Joi.number().required(),
+  }),
+};
+
 const loyaltyValidators = {
   customerLogin,
   verifyCode,
+  redeem,
 };
 
 export default loyaltyValidators;

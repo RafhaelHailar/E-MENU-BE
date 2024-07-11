@@ -12,6 +12,8 @@ import orderValidators from "@validators/order.validator";
 import inventoryValidators from "@validators/inventory.validator";
 
 import auth from "@middlewares/auth";
+import loyaltyValidators from "@validators/loyalty.validator";
+import isAuthenticated from "@middlewares/isAuthenticated";
 
 const router: Router = Router();
 
@@ -64,7 +66,7 @@ router.get("/cart", OrderController.getCart);
  * @returns {object} 403 - User Role is not allowed to make such request.
  * @returns {object} 200 - List of Table Session Requests
  */
-router.get("/table/queues", TableController.listQueues);
+router.get("/table/queues", auth("manageSessions"), TableController.listQueues);
 
 /**
  * Register a user to a table
@@ -97,7 +99,7 @@ router.get("/my_orders", auth(), OrderController.getMyOrder);
  * @route GET /orders
  * @returns {object} 200 - All Customer Orders.
  */
-router.get("/orders", OrderController.get);
+router.get("/orders", auth("getOrders"), OrderController.get);
 
 /**
  * Confirm Table Registration
@@ -111,35 +113,39 @@ router.get("/confirm_register", TableController.confirmRegister);
  * @route GET /inventory
  * @returns {object} 200 - All Inventory
  */
-router.get("/inventory", InventoryController.getItems);
+router.get("/inventory", auth("manageInventory"), InventoryController.getItems);
 
 /**
  * Get Loyalties History
  * @route GET /loyalties
  * @returns {object} 200 - Loyalties History
  */
-router.get("/loyalties", LoyaltyController.get);
+router.get("/loyalties", auth("manageLoyalties"), LoyaltyController.get);
 
 /**
  * Get Customer Loyalties History
  * @route GET /my_loyalties
  * @returns {object} 200 - Customer Loyalties History
  */
-router.get("/my_loyalties", LoyaltyController.getMyLoyalties);
+router.get("/my_loyalties", isAuthenticated, LoyaltyController.getMyLoyalties);
 
 /**
  * Get Customer Debits History
  * @route GET /my_debits
  * @returns {object} 200 - Customer Debits History
  */
-router.get("/my_debits", LoyaltyController.getMyDebits);
+router.get("/my_debits", isAuthenticated, LoyaltyController.getMyDebits);
 
 /**
  * Get Customer Total Loyalties
  * @route GET /my_total_loyalties
  * @returns {number} 200 - Customer Total Loyalties
  */
-router.get("/my_total_loyalties", LoyaltyController.getMyTotalLoyalties);
+router.get(
+  "/my_total_loyalties",
+  isAuthenticated,
+  LoyaltyController.getMyTotalLoyalties,
+);
 
 /**
  * Get Customer Table Request Status
@@ -157,6 +163,7 @@ router.get("/my_status", TableController.getMyStatus);
  */
 router.patch(
   "/table/approve",
+  auth("manageSessions"),
   validate(tableValidators.approve),
   TableController.approveRequest,
 );
@@ -169,6 +176,7 @@ router.patch(
  */
 router.patch(
   "/order/payment_status",
+  auth("updateOrderPaymentStatus"),
   validate(orderValidators.updatePaymentStatus),
   OrderController.updatePaymentStatus,
 );
@@ -180,6 +188,7 @@ router.patch(
  */
 router.post(
   "/products",
+  auth("manageProducts"),
   validate(productValidators.add),
   ProductController.add,
 );
@@ -191,6 +200,7 @@ router.post(
  */
 router.post(
   "/products/category",
+  auth("manageProducts"),
   validate(productValidators.addProductCategory),
   ProductController.addProductCategory,
 );
@@ -202,6 +212,7 @@ router.post(
  */
 router.post(
   "/product/:productId/categorize",
+  auth("manageProducts"),
   validate(productValidators.categorizeProduct),
   ProductController.categorizeProduct,
 );
@@ -213,8 +224,8 @@ router.post(
  */
 router.post(
   "/promotions",
+  auth("manageProducts"),
   validate(productValidators.addPromotion),
-  auth(),
   ProductController.addPromotion,
 );
 
@@ -225,6 +236,7 @@ router.post(
  */
 router.post(
   "/promotion/:promotionId/categorize",
+  auth("manageProducts"),
   validate(productValidators.categorizePromotion),
   ProductController.categorizePromotion,
 );
@@ -247,8 +259,8 @@ router.post("/cart/update", auth(), OrderController.updateCart);
  */
 router.post(
   "/cart/add",
-  validate(orderValidators.addSubCart),
   auth(),
+  validate(orderValidators.addSubCart),
   OrderController.addCart,
 );
 
@@ -259,8 +271,8 @@ router.post(
  */
 router.post(
   "/cart/sub",
-  validate(orderValidators.addSubCart),
   auth(),
+  validate(orderValidators.addSubCart),
   OrderController.subCart,
 );
 
@@ -271,19 +283,20 @@ router.post(
  */
 router.post(
   "/order",
-  validate(orderValidators.order),
   auth(),
+  validate(orderValidators.order),
   OrderController.order,
 );
 
 /**
  * Update Order Status
- * @route POST /cart/add
- * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
+ * @route POST /order/status
+ * @returns {object} 200 - Order Status Updated.
  * @returns {object} 404 - Transactions with given Order No. are not found.
  */
 router.post(
   "/order/status",
+  auth("updateOrderStatus"),
   validate(orderValidators.updateStatus),
   OrderController.updateStatus,
 );
@@ -295,8 +308,21 @@ router.post(
  */
 router.post(
   "/inventory/add",
+  auth("manageInventory"),
   validate(inventoryValidators.addItem),
   InventoryController.addItem,
+);
+
+/**
+ * Redeem Reward Item
+ * @route POST /loyalty/redeem
+ * @returns {object} 200 - Reward Item Redeemed
+ */
+router.post(
+  "/loyalty/redeem",
+  isAuthenticated,
+  validate(loyaltyValidators.redeem),
+  LoyaltyController.redeem,
 );
 
 /**
@@ -306,6 +332,7 @@ router.post(
  */
 router.put(
   "/inventory/update",
+  auth("manageInventory"),
   validate(inventoryValidators.updateItem),
   InventoryController.updateItem,
 );
@@ -317,6 +344,7 @@ router.put(
  */
 router.put(
   "/product/update",
+  auth("manageProducts"),
   validate(productValidators.update),
   ProductController.update,
 );
@@ -330,6 +358,7 @@ router.put(
  */
 router.delete(
   "/category/:categoryId/decategorize/:productId",
+  auth("manageProducts"),
   ProductController.deCategorizeProduct,
 );
 
@@ -340,14 +369,22 @@ router.delete(
  * @returns {object} 404 - Table session with given session is not found
  * @returns {object} 200 - Table session is decline
  */
-router.delete("/table/decline/:_session_id", TableController.declineRequest);
+router.delete(
+  "/table/decline/:_session_id",
+  auth("manageSessions"),
+  TableController.declineRequest,
+);
 
 /**
  * Delete Inventory Item
  * @route DELETE /inventory/delete
  * @returns {object} 200 - Inventory Item Deleted
  */
-router.delete("/inventory/delete/:itemId", InventoryController.deleteItem);
+router.delete(
+  "/inventory/delete/:itemId",
+  auth("manageInventory"),
+  InventoryController.deleteItem,
+);
 
 export default router;
 

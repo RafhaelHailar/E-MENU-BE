@@ -3,8 +3,17 @@ import AuthController from "@controllers/auth.controller";
 import userValidators from "@validators/user.validator";
 import validate from "@middlewares/validate";
 import loyaltyValidators from "@validators/loyalty.validator";
+import auth from "@middlewares/auth";
 
 const router: Router = Router();
+
+/**
+ * Logout User
+ * @route GET /logout
+ *
+ * @returns {object} 200 - Logout Success
+ */
+router.get("/logout", AuthController.logout);
 
 /**
  * Register User
@@ -15,6 +24,7 @@ const router: Router = Router();
  */
 router.post(
   "/register",
+  auth("manageUsers"),
   validate(userValidators.register),
   AuthController.register,
 );
