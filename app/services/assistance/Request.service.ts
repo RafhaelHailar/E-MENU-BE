@@ -4,8 +4,15 @@ import prisma from "@/../prisma";
 async function RequestService(req: Request, res: Response) {
   const { tableNo, session } = req.tableSession;
 
-  await prisma.assistance.create({
-    data: {
+  await prisma.assistance.upsert({
+    where: {
+      requested: session,
+    },
+    update: {
+      createdAt: new Date(),
+      assist: false,
+    },
+    create: {
       requested: session,
       tableNo,
     },
