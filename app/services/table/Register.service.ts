@@ -5,7 +5,7 @@ import crypto from "crypto";
 async function RegisterService(req: Request, res: Response) {
   const tableId = Number(req.params.tableId);
 
-  const sessionId = crypto.randomBytes(12).toString("hex");
+  const sessionId = crypto.randomBytes(6).toString("hex");
 
   const ip =
     req.headers["cf-connecting-ip"] ||
