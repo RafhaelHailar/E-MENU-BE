@@ -14,6 +14,7 @@ import inventoryValidators from "@validators/inventory.validator";
 import auth from "@middlewares/auth";
 import loyaltyValidators from "@validators/loyalty.validator";
 import isAuthenticated from "@middlewares/isAuthenticated";
+import isApproved from "@middlewares/isApproved";
 
 const router: Router = Router();
 
@@ -92,7 +93,7 @@ router.get("/group/:_session_id", TableController.groupRegister);
  * @route GET /my_orders
  * @returns {object} 200 - Customer Orders.
  */
-router.get("/my_orders", auth(), OrderController.getMyOrder);
+router.get("/my_orders", isApproved, OrderController.getMyOrder);
 
 /**
  * Get All Customer Orders
@@ -249,7 +250,7 @@ router.post(
  * @returns {object} 409 - Table Id does not match with the Id User Provided.
  * @returns {object} 404 - Product with the given Product Id is not found.
  */
-router.post("/cart/update", auth(), OrderController.updateCart);
+router.post("/cart/update", isApproved, OrderController.updateCart);
 
 /**
  * Add Cart
@@ -259,7 +260,7 @@ router.post("/cart/update", auth(), OrderController.updateCart);
  */
 router.post(
   "/cart/add",
-  auth(),
+  isApproved,
   validate(orderValidators.addSubCart),
   OrderController.addCart,
 );
@@ -271,7 +272,7 @@ router.post(
  */
 router.post(
   "/cart/sub",
-  auth(),
+  isApproved,
   validate(orderValidators.addSubCart),
   OrderController.subCart,
 );
@@ -283,7 +284,7 @@ router.post(
  */
 router.post(
   "/order",
-  auth(),
+  isApproved,
   validate(orderValidators.order),
   OrderController.order,
 );
