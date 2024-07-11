@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "@utils/asyncHandler";
 import {
   ApproveRequestService,
+  DeclineRequestService,
   ListRequestsService,
   RequestService,
 } from "@services/assistance";
@@ -17,6 +18,10 @@ const AssistanceController = {
 
   approveRequest: asyncHandler(async (req: Request, res: Response) => {
     await ApproveRequestService(req, res);
+  }),
+
+  declineRequest: asyncHandler(async (req: Request, res: Response) => {
+    await DeclineRequestService(req, res);
   }),
 };
 
