@@ -35,6 +35,9 @@ async function RegisterService(req: Request, res: Response) {
       session: sessionId,
       tableNo: tableId,
       updatedAt: new Date(),
+      status: false,
+      approvedBy: "",
+      approvedDate: null,
     },
     create: {
       session: sessionId,
