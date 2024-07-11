@@ -24,7 +24,10 @@ async function GroupRegisterService(req: Request, res: Response) {
     sameSite: "none",
   });
 
-  return res.redirect(process.env.FRONTEND_BASE_URL);
+  return res.redirect(
+    process.env.FRONTEND_BASE_URL +
+      `?sessionId=${targetSession}&tableNo=${session.tableNo}`,
+  );
 }
 
 export default GroupRegisterService;
