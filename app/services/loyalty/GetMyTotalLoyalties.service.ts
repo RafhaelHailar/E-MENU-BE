@@ -2,7 +2,7 @@ import { GetMyDebitsService, GetMyLoyaltiesService } from ".";
 import { Request } from "express";
 import { Debit, Loyalty } from "@prisma/client";
 
-async function getMyTotalLoyaltiesService(req: Request) {
+async function GetMyTotalLoyaltiesService(req: Request) {
   const loyaltyPoints = (await GetMyLoyaltiesService(req)) as Loyalty[];
   const debits = (await GetMyDebitsService(req)) as Debit[];
 
@@ -16,4 +16,4 @@ async function getMyTotalLoyaltiesService(req: Request) {
   return totalPoints - totalDebits;
 }
 
-export default getMyTotalLoyaltiesService;
+export default GetMyTotalLoyaltiesService;
