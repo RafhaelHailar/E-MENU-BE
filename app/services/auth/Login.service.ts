@@ -37,7 +37,11 @@ async function LoginService(req: Request, res: Response) {
     },
   });
 
-  res.cookie("_user_session", sessionId);
+  res.cookie("_user_session", sessionId, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
 
   return res.status(200).json({ sessionId });
 }
