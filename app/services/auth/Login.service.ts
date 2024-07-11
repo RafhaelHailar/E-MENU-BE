@@ -28,6 +28,15 @@ async function LoginService(req: Request, res: Response) {
     salt,
   );
 
+  await prisma.user.update({
+    where: {
+      email,
+    },
+    data: {
+      sessionId,
+    },
+  });
+
   res.cookie("_user_session", sessionId);
 
   return res.status(200).json({ sessionId });
