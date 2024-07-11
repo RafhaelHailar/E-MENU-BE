@@ -66,7 +66,7 @@ router.get("/cart", OrderController.getCart);
  * @returns {object} 403 - User Role is not allowed to make such request.
  * @returns {object} 200 - List of Table Session Requests
  */
-router.get("/table/queues", auth(), TableController.listQueues);
+router.get("/table/queues", auth("manageSessions"), TableController.listQueues);
 
 /**
  * Register a user to a table
@@ -99,7 +99,7 @@ router.get("/my_orders", auth(), OrderController.getMyOrder);
  * @route GET /orders
  * @returns {object} 200 - All Customer Orders.
  */
-router.get("/orders", auth(), OrderController.get);
+router.get("/orders", auth("getOrders"), OrderController.get);
 
 /**
  * Confirm Table Registration
@@ -113,14 +113,14 @@ router.get("/confirm_register", TableController.confirmRegister);
  * @route GET /inventory
  * @returns {object} 200 - All Inventory
  */
-router.get("/inventory", auth(), InventoryController.getItems);
+router.get("/inventory", auth("manageInventory"), InventoryController.getItems);
 
 /**
  * Get Loyalties History
  * @route GET /loyalties
  * @returns {object} 200 - Loyalties History
  */
-router.get("/loyalties", auth(), LoyaltyController.get);
+router.get("/loyalties", auth("manageLoyalties"), LoyaltyController.get);
 
 /**
  * Get Customer Loyalties History
@@ -163,7 +163,7 @@ router.get("/my_status", TableController.getMyStatus);
  */
 router.patch(
   "/table/approve",
-  auth(),
+  auth("manageSessions"),
   validate(tableValidators.approve),
   TableController.approveRequest,
 );
@@ -176,7 +176,7 @@ router.patch(
  */
 router.patch(
   "/order/payment_status",
-  auth(),
+  auth("updateOrderPaymentStatus"),
   validate(orderValidators.updatePaymentStatus),
   OrderController.updatePaymentStatus,
 );
@@ -188,7 +188,7 @@ router.patch(
  */
 router.post(
   "/products",
-  auth(),
+  auth("manageProducts"),
   validate(productValidators.add),
   ProductController.add,
 );
@@ -200,7 +200,7 @@ router.post(
  */
 router.post(
   "/products/category",
-  auth(),
+  auth("manageProducts"),
   validate(productValidators.addProductCategory),
   ProductController.addProductCategory,
 );
@@ -212,7 +212,7 @@ router.post(
  */
 router.post(
   "/product/:productId/categorize",
-  auth(),
+  auth("manageProducts"),
   validate(productValidators.categorizeProduct),
   ProductController.categorizeProduct,
 );
@@ -224,7 +224,7 @@ router.post(
  */
 router.post(
   "/promotions",
-  auth(),
+  auth("manageProducts"),
   validate(productValidators.addPromotion),
   ProductController.addPromotion,
 );
@@ -236,7 +236,7 @@ router.post(
  */
 router.post(
   "/promotion/:promotionId/categorize",
-  auth(),
+  auth("manageProducts"),
   validate(productValidators.categorizePromotion),
   ProductController.categorizePromotion,
 );
@@ -259,8 +259,8 @@ router.post("/cart/update", auth(), OrderController.updateCart);
  */
 router.post(
   "/cart/add",
-  validate(orderValidators.addSubCart),
   auth(),
+  validate(orderValidators.addSubCart),
   OrderController.addCart,
 );
 
@@ -271,8 +271,8 @@ router.post(
  */
 router.post(
   "/cart/sub",
-  validate(orderValidators.addSubCart),
   auth(),
+  validate(orderValidators.addSubCart),
   OrderController.subCart,
 );
 
@@ -283,19 +283,20 @@ router.post(
  */
 router.post(
   "/order",
-  validate(orderValidators.order),
   auth(),
+  validate(orderValidators.order),
   OrderController.order,
 );
 
 /**
  * Update Order Status
- * @route POST /cart/add
- * @returns {object} 200 - Item is Added/Increase its Quantity in Cart.
+ * @route POST /order/status
+ * @returns {object} 200 - Order Status Updated.
  * @returns {object} 404 - Transactions with given Order No. are not found.
  */
 router.post(
   "/order/status",
+  auth("updateOrderStatus"),
   validate(orderValidators.updateStatus),
   OrderController.updateStatus,
 );
@@ -307,6 +308,7 @@ router.post(
  */
 router.post(
   "/inventory/add",
+  auth("manageInventory"),
   validate(inventoryValidators.addItem),
   InventoryController.addItem,
 );
@@ -318,6 +320,7 @@ router.post(
  */
 router.post(
   "/loyalty/redeem",
+  isAuthenticated,
   validate(loyaltyValidators.redeem),
   LoyaltyController.redeem,
 );
@@ -329,6 +332,7 @@ router.post(
  */
 router.put(
   "/inventory/update",
+  auth("manageInventory"),
   validate(inventoryValidators.updateItem),
   InventoryController.updateItem,
 );
@@ -340,6 +344,7 @@ router.put(
  */
 router.put(
   "/product/update",
+  auth("manageProducts"),
   validate(productValidators.update),
   ProductController.update,
 );
@@ -353,6 +358,7 @@ router.put(
  */
 router.delete(
   "/category/:categoryId/decategorize/:productId",
+  auth("manageProducts"),
   ProductController.deCategorizeProduct,
 );
 
@@ -363,14 +369,22 @@ router.delete(
  * @returns {object} 404 - Table session with given session is not found
  * @returns {object} 200 - Table session is decline
  */
-router.delete("/table/decline/:_session_id", TableController.declineRequest);
+router.delete(
+  "/table/decline/:_session_id",
+  auth("manageSessions"),
+  TableController.declineRequest,
+);
 
 /**
  * Delete Inventory Item
  * @route DELETE /inventory/delete
  * @returns {object} 200 - Inventory Item Deleted
  */
-router.delete("/inventory/delete/:itemId", InventoryController.deleteItem);
+router.delete(
+  "/inventory/delete/:itemId",
+  auth("manageInventory"),
+  InventoryController.deleteItem,
+);
 
 export default router;
 
