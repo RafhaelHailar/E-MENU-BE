@@ -40,6 +40,7 @@ async function GetMyLatestOrder(req: Request, res: Response) {
       req,
       res,
       order.transactionId,
+      order.orderNo,
     );
     checkoutURL = (paymongoCheckout as { data }).data.attributes.checkout_url;
   }
