@@ -12,6 +12,7 @@ import orderValidators from "@validators/order.validator";
 import inventoryValidators from "@validators/inventory.validator";
 
 import auth from "@middlewares/auth";
+import loyaltyValidators from "@validators/loyalty.validator";
 
 const router: Router = Router();
 
@@ -297,6 +298,17 @@ router.post(
   "/inventory/add",
   validate(inventoryValidators.addItem),
   InventoryController.addItem,
+);
+
+/**
+ * Redeem Reward Item
+ * @route POST /loyalty/redeem
+ * @returns {object} 200 - Reward Item Redeemed
+ */
+router.post(
+  "/loyalty/redeem",
+  validate(loyaltyValidators.redeem),
+  LoyaltyController.redeem,
 );
 
 /**
