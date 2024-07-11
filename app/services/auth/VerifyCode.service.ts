@@ -25,8 +25,6 @@ async function VerifyCodeService(req: Request, res: Response) {
 
   const isMatch = otp.code === code;
 
-  console.log(otp.code, code);
-
   if (!isMatch)
     return res.status(401).json({ message: "given code is not valid" });
 
@@ -46,7 +44,11 @@ async function VerifyCodeService(req: Request, res: Response) {
     },
   });
 
-  res.cookie("_loyalty_session", sessionId);
+  res.cookie("_loyalty_session", sessionId, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
   return res.status(200).json({ message: "email is verified" });
 }
 
