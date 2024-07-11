@@ -6,6 +6,7 @@ const allRoles = {
     "manageInventory",
     "manageSessions",
     "getOrders",
+    "manageUsers",
     "manageLoyalties",
     "updateOrderPaymentStatus",
     "updateOrderStatus",
