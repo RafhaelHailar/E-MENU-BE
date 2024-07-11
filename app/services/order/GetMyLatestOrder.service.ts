@@ -47,6 +47,7 @@ async function GetMyLatestOrder(req: Request, res: Response) {
 
   return res.status(200).json({
     transactionId: order.transactionId,
+    orderNo: order.orderNo,
     orders,
     orderDate: order.createdAt,
     total: order.amount,
