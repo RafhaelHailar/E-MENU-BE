@@ -50,6 +50,9 @@ async function createCheckoutSession(items: LineItem[], reference: string) {
     cancel_url: process.env.FRONTEND_BASE_URL,
     success_url: process.env.FRONTEND_BASE_URL,
     reference_number: reference,
+    metadata: {
+      merchant_name: "Digibite",
+    },
   };
 
   return new Promise((resolve, reject) => {
