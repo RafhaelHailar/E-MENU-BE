@@ -164,6 +164,17 @@ router.get("/my_status", TableController.getMyStatus);
 router.get("/assistance/request", isApproved, AssistanceController.request);
 
 /**
+ * List All Assistance Requests
+ * @route GET /assistance/requests
+ * @returns {object} 200 - List of Assistance Requests
+ */
+router.get(
+  "/assistance/requests",
+  auth("manageSessions"),
+  AssistanceController.listRequests,
+);
+
+/**
  * Approve Table Request
  * @route PATCH /table/approve
  *
