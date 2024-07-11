@@ -13,21 +13,13 @@ const LoyaltyController = {
   }),
 
   getMyLoyalties: asyncHandler(async (req: Request, res: Response) => {
-    try {
-      const loyaltyPoints = await GetMyLoyaltiesService(req);
-      return res.status(200).json(loyaltyPoints);
-    } catch (e) {
-      return res.status(e.statusCode).json({ message: e.message });
-    }
+    const loyaltyPoints = await GetMyLoyaltiesService(req);
+    return res.status(200).json(loyaltyPoints);
   }),
 
   getMyDebits: asyncHandler(async (req: Request, res: Response) => {
-    try {
-      const debits = await GetMyDebitsService(req);
-      return res.status(200).json(debits);
-    } catch (e) {
-      return res.status(e.statusCode).json({ message: e.message });
-    }
+    const debits = await GetMyDebitsService(req);
+    return res.status(200).json(debits);
   }),
 
   getMyTotalLoyalties: asyncHandler(async (req: Request, res: Response) => {
