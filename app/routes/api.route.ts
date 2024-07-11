@@ -191,6 +191,20 @@ router.patch(
 );
 
 /**
+ * Approve Request for Assistance
+ * @route PATCH /assistance/approve
+ *
+ * @returns {object} 404 - Assistance Request with given Request Session  is not found
+ * @returns {object} 200 - Assistance Request is approved
+ */
+router.patch(
+  "/assistance/approve",
+  auth("manageSessions"),
+  validate(tableValidators.approve),
+  AssistanceController.approveRequest,
+);
+
+/**
  * Add a new product
  * @route POST /products
  * @returns {object} 200 - Message that the product is created along side with its id.
