@@ -1,12 +1,9 @@
 import { Request } from "express";
 import prisma from "@/../prisma";
-import ApiErrorHandler from "@utils/ApiErrorHandler";
-import httpStatus from "http-status";
+
 import { Loyalty } from "@prisma/client";
 
-const GetMyLoyaltiesService = async (
-  req: Request,
-): Promise<ApiErrorHandler | Loyalty[]> => {
+const GetMyLoyaltiesService = async (req: Request): Promise<Loyalty[]> => {
   const email = req.cookies.email;
   const loyalties = await prisma.loyalty.findMany({
     where: {
@@ -14,11 +11,7 @@ const GetMyLoyaltiesService = async (
     },
   });
 
-  if (loyalties.length === 0)
-    return new ApiErrorHandler(
-      httpStatus.NOT_FOUND,
-      "either no loyalty record found for the email or no such email exists",
-    );
+  if (loyalties.length === 0) return [];
 
   const totalLoyalty = loyalties.filter(async (loyalty) => {
     const transaction = await prisma.transactions.findUnique({

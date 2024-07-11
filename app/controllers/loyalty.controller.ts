@@ -4,8 +4,8 @@ import {
   GetService,
   GetMyLoyaltiesService,
   GetMyDebitsService,
+  getMyTotalLoyaltiesService,
 } from "@services/loyalty";
-import { Debit, Loyalty } from "@prisma/client";
 
 const LoyaltyController = {
   get: asyncHandler(async (req: Request, res: Response) => {
@@ -13,40 +13,19 @@ const LoyaltyController = {
   }),
 
   getMyLoyalties: asyncHandler(async (req: Request, res: Response) => {
-    try {
-      const loyaltyPoints = await GetMyLoyaltiesService(req);
-      return res.status(200).json(loyaltyPoints);
-    } catch (e) {
-      return res.status(e.statusCode).json({ message: e.message });
-    }
+    const loyaltyPoints = await GetMyLoyaltiesService(req);
+    return res.status(200).json(loyaltyPoints);
   }),
 
   getMyDebits: asyncHandler(async (req: Request, res: Response) => {
-    try {
-      const debits = await GetMyDebitsService(req);
-      return res.status(200).json(debits);
-    } catch (e) {
-      return res.status(e.statusCode).json({ message: e.message });
-    }
+    const debits = await GetMyDebitsService(req);
+    return res.status(200).json(debits);
   }),
 
   getMyTotalLoyalties: asyncHandler(async (req: Request, res: Response) => {
-    try {
-      const loyaltyPoints = (await GetMyLoyaltiesService(req)) as Loyalty[];
-      const debits = (await GetMyDebitsService(req)) as Debit[];
+    const points = await getMyTotalLoyaltiesService(req);
 
-      const totalPoints = loyaltyPoints.reduce(
-        (total, loyalty) => total + loyalty.amount,
-        0,
-      );
-      const totalDebits = debits.reduce(
-        (total, debit) => total + debit.amount,
-        0,
-      );
-      return res.status(200).send(totalPoints - totalDebits);
-    } catch (e) {
-      return res.status(e.statusCode).json({ message: e.message });
-    }
+    return res.status(200).json({ points });
   }),
 };
 
