@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "@/../prisma";
+import PaymongoCheckoutService from "./PaymongoCheckout.service";
 
 async function GetMyLatestOrder(req: Request, res: Response) {
   const tableSession = req.tableSession.session;
@@ -32,12 +33,25 @@ async function GetMyLatestOrder(req: Request, res: Response) {
     },
   });
 
+  let checkoutURL = null;
+
+  if (transaction.paymentMethod === "ONLINE") {
+    const paymongoCheckout = await PaymongoCheckoutService(
+      req,
+      res,
+      order.transactionId,
+    );
+    checkoutURL = (paymongoCheckout as { data }).data.attributes.checkout_url;
+  }
+
   return res.status(200).json({
     transactionId: order.transactionId,
     orders,
     orderDate: order.createdAt,
     total: order.amount,
     status: transaction.status,
+    paymentMethod: transaction.paymentMethod,
+    checkoutURL,
   });
 }
 
