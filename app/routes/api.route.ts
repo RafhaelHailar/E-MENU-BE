@@ -163,6 +163,7 @@ router.get("/my_status", TableController.getMyStatus);
  */
 router.patch(
   "/table/approve",
+  auth(),
   validate(tableValidators.approve),
   TableController.approveRequest,
 );
@@ -175,6 +176,7 @@ router.patch(
  */
 router.patch(
   "/order/payment_status",
+  auth(),
   validate(orderValidators.updatePaymentStatus),
   OrderController.updatePaymentStatus,
 );
@@ -186,6 +188,7 @@ router.patch(
  */
 router.post(
   "/products",
+  auth(),
   validate(productValidators.add),
   ProductController.add,
 );
@@ -197,6 +200,7 @@ router.post(
  */
 router.post(
   "/products/category",
+  auth(),
   validate(productValidators.addProductCategory),
   ProductController.addProductCategory,
 );
@@ -208,6 +212,7 @@ router.post(
  */
 router.post(
   "/product/:productId/categorize",
+  auth(),
   validate(productValidators.categorizeProduct),
   ProductController.categorizeProduct,
 );
@@ -219,8 +224,8 @@ router.post(
  */
 router.post(
   "/promotions",
-  validate(productValidators.addPromotion),
   auth(),
+  validate(productValidators.addPromotion),
   ProductController.addPromotion,
 );
 
@@ -231,6 +236,7 @@ router.post(
  */
 router.post(
   "/promotion/:promotionId/categorize",
+  auth(),
   validate(productValidators.categorizePromotion),
   ProductController.categorizePromotion,
 );
