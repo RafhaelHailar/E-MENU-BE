@@ -8,6 +8,14 @@ import auth from "@middlewares/auth";
 const router: Router = Router();
 
 /**
+ * Logout User
+ * @route GET /logout
+ *
+ * @returns {object} 200 - Logout Success
+ */
+router.get("/logout", AuthController.logout);
+
+/**
  * Register User
  * @route POST /register
  *
