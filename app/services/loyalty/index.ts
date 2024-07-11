@@ -1,4 +1,5 @@
 export { default as GetService } from "./Get.service";
 export { default as GetMyLoyaltiesService } from "./GetMyLoyalties.service";
 export { default as GetMyDebitsService } from "./GetMyDebits.service";
-export { default as getMyTotalLoyaltiesService } from "./GetMyTotalLoyalties.service";
+export { default as GetMyTotalLoyaltiesService } from "./GetMyTotalLoyalties.service";
+export { default as RedeemService } from "./Redeem.service";
