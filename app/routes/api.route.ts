@@ -398,7 +398,7 @@ router.delete(
 
 /**
  * Decline Table Request
- * @route DELETE /table/delete
+ * @route DELETE /table/decline
  *
  * @returns {object} 404 - Table session with given session is not found
  * @returns {object} 200 - Table session is decline
@@ -418,6 +418,19 @@ router.delete(
   "/inventory/delete/:itemId",
   auth("manageInventory"),
   InventoryController.deleteItem,
+);
+
+/**
+ * Decline Assistance Request
+ * @route DELETE /assistance/decline
+ *
+ * @returns {object} 404 - Assistance Request with given Request Session  is not found
+ * @returns {object} 200 - Assistance Request is declined
+ */
+router.delete(
+  "/assistance/decline/:_session_id",
+  auth("manageSessions"),
+  AssistanceController.declineRequest,
 );
 
 export default router;
