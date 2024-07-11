@@ -9,15 +9,22 @@ async function GetService(req: Request, res: Response) {
   });
 
   const ordersByOrderId = [];
+  const cacheTransaction = {};
 
   for (let i = 0; i < orders.length; i++) {
     const order = orders[i];
+    let transaction;
 
-    const transaction = await prisma.transactions.findUnique({
-      where: {
-        transactionId: order.transactionId,
-      },
-    });
+    if (cacheTransaction[order.transactionId]) {
+      transaction = cacheTransaction[order.transactionId];
+    } else {
+      transaction = await prisma.transactions.findUnique({
+        where: {
+          transactionId: order.transactionId,
+        },
+      });
+      cacheTransaction[order.transactionId] = transaction;
+    }
 
     const group = ordersByOrderId.find(
       (orderGroup) => orderGroup.orderNo === order.orderNo,
