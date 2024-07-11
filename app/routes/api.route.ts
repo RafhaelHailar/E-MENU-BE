@@ -175,6 +175,13 @@ router.get(
 );
 
 /**
+ * Get Customer Latest Order
+ * @route GET /my_latest_order
+ * @returns {object} 200 - Customer Latest Order
+ */
+router.get("/my_latest_order", isApproved, OrderController.getMyLatestOrder);
+
+/**
  * Approve Table Request
  * @route PATCH /table/approve
  *
