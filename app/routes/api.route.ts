@@ -164,6 +164,17 @@ router.get("/my_status", TableController.getMyStatus);
 router.get("/assistance/request", isApproved, AssistanceController.request);
 
 /**
+ * List All Assistance Requests
+ * @route GET /assistance/requests
+ * @returns {object} 200 - List of Assistance Requests
+ */
+router.get(
+  "/assistance/requests",
+  auth("manageSessions"),
+  AssistanceController.listRequests,
+);
+
+/**
  * Approve Table Request
  * @route PATCH /table/approve
  *
@@ -188,6 +199,20 @@ router.patch(
   auth("updateOrderPaymentStatus"),
   validate(orderValidators.updatePaymentStatus),
   OrderController.updatePaymentStatus,
+);
+
+/**
+ * Approve Request for Assistance
+ * @route PATCH /assistance/approve
+ *
+ * @returns {object} 404 - Assistance Request with given Request Session  is not found
+ * @returns {object} 200 - Assistance Request is approved
+ */
+router.patch(
+  "/assistance/approve",
+  auth("manageSessions"),
+  validate(tableValidators.approve),
+  AssistanceController.approveRequest,
 );
 
 /**
@@ -373,7 +398,7 @@ router.delete(
 
 /**
  * Decline Table Request
- * @route DELETE /table/delete
+ * @route DELETE /table/decline
  *
  * @returns {object} 404 - Table session with given session is not found
  * @returns {object} 200 - Table session is decline
@@ -393,6 +418,19 @@ router.delete(
   "/inventory/delete/:itemId",
   auth("manageInventory"),
   InventoryController.deleteItem,
+);
+
+/**
+ * Decline Assistance Request
+ * @route DELETE /assistance/decline
+ *
+ * @returns {object} 404 - Assistance Request with given Request Session  is not found
+ * @returns {object} 200 - Assistance Request is declined
+ */
+router.delete(
+  "/assistance/decline/:_session_id",
+  auth("manageSessions"),
+  AssistanceController.declineRequest,
 );
 
 export default router;
