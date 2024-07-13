@@ -13,9 +13,7 @@ async function LoginService(req: Request, res: Response) {
   });
 
   if (!user)
-    return res
-      .status(404)
-      .json({ message: "user with that email is not found" });
+    return res.status(404).json({ message: "email or password is incorrect" });
 
   const isMatch = await bcrypt.compare(password, user.password);
 
