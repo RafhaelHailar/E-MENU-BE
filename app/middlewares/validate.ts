@@ -13,9 +13,9 @@ const validate =
       .validate(obj);
     if (error) {
       const errorMessage = error.details
-        .map((details) => details.message)
+        .map((details) => details.type)
         .join(", ");
-      return next(new ApiErrorHandler(httpStatus.BAD_REQUEST, errorMessage));
+      return res.status(400).json({ message: errorMessage });
     }
     Object.assign(req, value);
     return next();
