@@ -77,7 +77,7 @@ async function CustomerLoginService(req: Request, res: Response) {
 
   await transporter.sendMail(mailOptions);
   res.cookie("_customer_email", email, {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
     sameSite: "none",
   });
