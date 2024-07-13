@@ -76,7 +76,11 @@ async function CustomerLoginService(req: Request, res: Response) {
   };
 
   await transporter.sendMail(mailOptions);
-  res.cookie("_customer_email", email);
+  res.cookie("_customer_email", email, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
 
   return res.status(200).json({ message: "verification email sent!" });
 }
