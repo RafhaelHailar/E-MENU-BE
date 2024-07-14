@@ -220,6 +220,7 @@ model Debit {
 
 model Reward {
   id        Int      @id @default(autoincrement())
+  rewardId  String   @unique @default(uuid())
   name      String   @db.VarChar(100)
   points    Int
   createdAt DateTime @default(now()) @db.DateTime(0)
