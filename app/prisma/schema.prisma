@@ -10,7 +10,7 @@ datasource db {
 
 model Table {
   id           Int       @id @default(autoincrement())
-  session      String?
+  session      String?   @unique
   ipAddress    String    @unique @db.Char(60)
   tableNo      Int
   status       Boolean   @default(false)
