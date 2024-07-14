@@ -9,33 +9,39 @@ datasource db {
 }
 
 model Table {
-  id           Int       @id @default(autoincrement())
-  session      String?   @unique
-  ipAddress    String    @unique @db.Char(60)
+  id           Int        @id @default(autoincrement())
+  session      String?    @unique
+  ipAddress    String     @unique @db.Char(60)
   tableNo      Int
-  status       Boolean   @default(false)
-  approvedDate DateTime? @db.DateTime(0)
-  approvedBy   String?   @db.Char(50)
-  createdAt    DateTime  @default(now()) @db.DateTime(0)
-  updatedAt    DateTime? @updatedAt
+  status       Boolean    @default(false)
+  approvedDate DateTime?  @db.DateTime(0)
+  approvedBy   String?    @db.Char(50)
+  createdAt    DateTime   @default(now()) @db.DateTime(0)
+  updatedAt    DateTime?  @updatedAt
+  customers    Customer[]
 }
 
 model Customer {
-  id        String       @id @unique @default(uuid())
-  name      String       @unique @db.VarChar(255)
-  role      CustomerType @default(ACCOMPLICE)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  leaderId  String?
-  tableId   Int
+  id         String       @unique @default(uuid())
+  name       String       @unique @db.VarChar(255)
+  role       CustomerType @default(ACCOMPLICE)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  leaderId   String?
+  tableId    Int
+  cart       Cart?
+  leader     Customer?    @relation("group", fields: [leaderId], references: [id])
+  accomplice Customer[]   @relation("group")
+  table      Table        @relation(fields: [tableId], references: [id])
 
   @@index([leaderId], map: "Customer_leaderId_fkey")
   @@index([tableId], map: "Customer_tableId_fkey")
 }
 
 model Cart {
-  id         String @unique @default(uuid())
-  customerId String @unique
+  id         String   @unique @default(uuid())
+  customerId String   @unique
+  customer   Customer @relation(fields: [customerId], references: [id])
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -46,79 +52,93 @@ model CartItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   quantity  Int
+  product   Product  @relation(fields: [productId], references: [id])
 
   @@unique([sessionId, tableNo, productId])
   @@index([productId], map: "CartItem_productId_fkey")
 }
 
 model Product {
-  id                      String   @unique @default(uuid())
+  id                      String              @unique @default(uuid())
   name                    String
-  image                   String   @db.LongText
-  description             String   @db.LongText
+  image                   String              @db.LongText
+  description             String              @db.LongText
   price                   Float
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
   estimatedCookingTimeMin Int
+  cartItems               CartItem[]
+  orders                  Orders[]
+  productCategorize       ProductCategorize[]
+  productReview           ProductReview[]
 }
 
 model ProductCategory {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String                @unique @default(uuid())
+  name                String
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  productCategorize   ProductCategorize[]
+  promotionCategorize PromotionCategorize[]
 }
 
 model ProductCategorize {
   categoryId String
   productId  String
+  category   ProductCategory @relation(fields: [categoryId], references: [id])
+  product    Product         @relation(fields: [productId], references: [id])
 
-  @@id([categoryId, productId])
+  @@unique([categoryId, productId])
+  @@index([productId], map: "ProductCategorize_productId_fkey")
 }
 
 model Promotion {
-  id           String   @id @default(uuid())
-  name         String
-  description  String   @db.LongText
-  discountRate Float
-  startDate    DateTime @default(now())
-  endDate      DateTime
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                  String                @unique @default(uuid())
+  name                String
+  description         String                @db.LongText
+  discountRate        Float
+  startDate           DateTime              @default(now())
+  endDate             DateTime
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  promotionCategorize PromotionCategorize[]
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model PromotionCategorize {
   categoryId  String
   promotionId String
+  category    ProductCategory @relation(fields: [categoryId], references: [id])
+  promotion   Promotion       @relation(fields: [promotionId], references: [id])
 
-  @@ignore
+  @@unique([categoryId, promotionId])
+  @@index([promotionId], map: "PromotionCategorize_promotionId_fkey")
 }
 
 model ProductReview {
-  id        String   @id @default(uuid())
+  id        String   @unique @default(uuid())
   comment   String   @db.LongText
   rating    Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   accountId String
   productId String
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@index([accountId], map: "ProductReview_accountId_fkey")
+  @@index([productId], map: "ProductReview_productId_fkey")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model spatial_ref_sys {
-  srid      Int
+  srid      Int     @id
   auth_name String? @db.VarChar(256)
   auth_srid Int?
   srtext    String? @db.VarChar(2048)
   proj4text String? @db.VarChar(2048)
-
-  @@ignore
 }
 
 model Loyalty {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   email     String   @db.VarChar(50)
   amount    Float    @db.Float
   reference String   @db.Char(200)
@@ -128,7 +148,7 @@ model Loyalty {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model Orders {
-  id            Int      @id
+  id            Int      @id @default(autoincrement())
   sessionId     String   @db.Char(200)
   tableNo       Int
   productId     String
@@ -138,6 +158,7 @@ model Orders {
   createdAt     DateTime @default(now()) @db.DateTime(0)
   transactionId String   @db.Char(200)
   orderNo       Int
+  product       Product  @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "Orders_product_fkey")
 
   @@index([productId], map: "Orders_product_fkey")
 }
@@ -150,7 +171,7 @@ model Transactions {
   amount        Float                      @db.Float
   paymentMethod Transactions_paymentMethod
   paymentMode   String?
-  transactionId String                     @db.Char(200)
+  transactionId String                     @unique @db.Char(200)
   email         String?                    @db.VarChar(50)
   name          String?                    @db.VarChar(50)
   contactNo     String?                    @db.VarChar(50)
@@ -160,23 +181,23 @@ model Transactions {
   createdAt     DateTime                   @default(now()) @db.DateTime(0)
   updatedAt     DateTime                   @updatedAt
   updatedBy     String?                    @db.VarChar(50)
-  orderNo       Int
+  orderNo       Int                        @unique
 }
 
 model User {
-  id        String    @id @default(uuid())
+  id        String    @unique(map: "Account_id_key") @default(uuid())
   name      String
-  email     String    @db.VarChar(255)
+  email     String    @unique(map: "Account_email_key") @db.VarChar(255)
   contact   String
   password  String
-  sessionId String?   @db.Char(200)
+  sessionId String?   @unique @db.Char(200)
   role      User_Role
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
 model InventoryItem {
-  id        String                @id @unique @default(uuid())
+  id        String                @unique @default(uuid())
   name      String
   category  InventoryItemCategory
   quantity  Int
@@ -185,27 +206,30 @@ model InventoryItem {
 }
 
 model Debit {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   email     String   @db.VarChar(50)
-  contactNo String?  @db.VarChar(50)
+  contactNo String?   @db.VarChar(50)
   rewardId  Int
   amount    Int
   createdAt DateTime @default(now()) @db.DateTime(0)
   updatedAt DateTime @updatedAt
+  reward    Reward   @relation(fields: [rewardId], references: [id])
 
   @@index([rewardId], map: "Debit_rewardId_fkey")
 }
 
 model Reward {
   id        Int      @id @default(autoincrement())
+  rewardId  String   @unique @default(uuid())
   name      String   @db.VarChar(100)
   points    Int
   createdAt DateTime @default(now()) @db.DateTime(0)
   updatedAt DateTime @updatedAt
+  debit     Debit[]
 }
 
 model OTP {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   email     String   @unique @db.VarChar(50)
   code      Int
   sessionId String?  @db.Char(200)
@@ -213,20 +237,13 @@ model OTP {
 }
 
 model Assistance {
-  id           Int       @id
-  requested    String    @unique
+  id           Int      @id @default(autoincrement())
+  requested    String   @unique
   tableNo      Int
-  assist       Boolean   @default(false)
-  approvedDate DateTime? @db.DateTime(0)
-  approvedBy   String?   @db.Char(50)
-  createdAt    DateTime  @default(now())
-}
-
-model Tables {
-  id        Int      @id @default(autoincrement())
-  tableNo   Int
-  createdAt DateTime @default(now()) @db.DateTime(0)
-  status    Boolean
+  assist       Boolean  @default(false)
+  approvedDate DateTime?@db.DateTime(0)
+  approvedBy   String?  @db.Char(50)
+  createdAt    DateTime @default(now())
 }
 
 enum InventoryItemCategory {
