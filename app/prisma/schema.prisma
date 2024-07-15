@@ -196,13 +196,13 @@ model User {
   updatedAt DateTime  @updatedAt
 }
 
-model InventoryItem {
-  id        String                @unique @default(uuid())
-  name      String
-  category  InventoryItemCategory
+model Inventory {
+  id        String                @id @default(autoincrement())
+  productId String
   quantity  Int
-  createdAt DateTime              @default(now())
   updatedAt DateTime              @updatedAt
+
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Debit {
