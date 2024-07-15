@@ -41,9 +41,7 @@
     "joi": "^17.13.2",
     "morgan": "^1.10.0",
     "nocache": "^4.0.0",
-    "nodemailer": "^6.9.14",
-    "socket.io": "^4.7.5",
-    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.4.0"
+    "nodemailer": "^6.9.14"
   },
   "devDependencies": {
     "@swc/cli": "^0.3.12",
@@ -55,7 +53,6 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.14.5",
     "@types/nodemailer": "^6.4.15",
-    "@types/socket.io": "^3.0.2",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
     "cross-env": "^7.0.3",
