@@ -82,7 +82,9 @@ async function CustomerLoginService(req: Request, res: Response) {
     sameSite: "none",
   });
 
-  return res.status(200).json({ message: "verification email sent!" });
+  return res
+    .status(200)
+    .json({ customerEmail: email, message: "verification email sent!" });
 }
 
 export default CustomerLoginService;
