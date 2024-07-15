@@ -8,6 +8,8 @@ async function GetService(req: Request, res: Response) {
     },
   });
 
+  const orderNo = req.params.orderNo;
+
   const ordersByOrderId = [];
   const cacheTransaction = {};
 
@@ -46,6 +48,10 @@ async function GetService(req: Request, res: Response) {
     }
   }
 
+  if (orderNo)
+    return res
+      .status(200)
+      .json(ordersByOrderId.find((order) => order.orderNo === Number(orderNo)));
   return res.status(200).json(ordersByOrderId);
 }
 
