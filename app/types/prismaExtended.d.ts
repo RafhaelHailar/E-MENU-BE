@@ -3,6 +3,7 @@ import {
   ProductCategorize,
   ProductCategory,
   PromotionCategorize,
+  Inventory,
 } from "@prisma/client";
 
 export interface CategoryWithPromotionCategorize extends ProductCategory {
@@ -15,4 +16,5 @@ export interface Category extends ProductCategorize {
 
 export interface ProductWithCategory extends Product {
   productCategorize: Category[];
+  inventory: Inventory;
 }
