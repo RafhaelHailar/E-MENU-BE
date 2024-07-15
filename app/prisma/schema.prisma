@@ -71,6 +71,7 @@ model Product {
   orders                  Orders[]
   productCategorize       ProductCategorize[]
   productReview           ProductReview[]
+  inventory               Inventory?
 }
 
 model ProductCategory {
@@ -197,10 +198,10 @@ model User {
 }
 
 model Inventory {
-  id        String                @id @default(autoincrement())
-  productId String
-  quantity  Int
-  updatedAt DateTime              @updatedAt
+  id        Int                @id @default(autoincrement())
+  productId String             @unique
+  quantity  Int                @default(15)
+  updatedAt DateTime           @updatedAt
 
   product   Product  @relation(fields: [productId], references: [id])
 }
