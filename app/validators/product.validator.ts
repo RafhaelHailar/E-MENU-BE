@@ -35,6 +35,7 @@ const update = {
     description: Joi.string(),
     price: Joi.number(),
     estimatedCookingTimeMin: Joi.number(),
+    quantity: Joi.string(),
   }),
 };
 
