@@ -2,57 +2,38 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function GetService(req: Request, res: Response) {
-  const orders = await prisma.orders.findMany({
-    include: {
-      product: true,
+  const orders = await prisma.transactions.findMany({
+    select: {
+      status: true,
+      orderNo: true,
+      transactionId: true,
+      createdAt: true,
+      orders: {
+        select: {
+          id: true,
+          sessionId: true,
+          price: true,
+          quantity: true,
+          amount: true,
+          createdAt: true,
+          product: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
 
   const orderNo = req.params.orderNo;
 
-  const ordersByOrderId = [];
-  const cacheTransaction = {};
-
-  for (let i = 0; i < orders.length; i++) {
-    const order = orders[i];
-    let transaction;
-
-    if (cacheTransaction[order.transactionId]) {
-      transaction = cacheTransaction[order.transactionId];
-    } else {
-      transaction = await prisma.transactions.findUnique({
-        where: {
-          transactionId: order.transactionId,
-        },
-      });
-      cacheTransaction[order.transactionId] = transaction;
-    }
-
-    const group = ordersByOrderId.find(
-      (orderGroup) => orderGroup.orderNo === order.orderNo,
-    );
-    if (group) {
-      if (order.createdAt < group.orderDate) group.orderDate = order.createdAt;
-      group.orders.push(order);
-      group.total += order.amount;
-    } else {
-      ordersByOrderId.push({
-        orderNo: order.orderNo,
-        tableNo: order.tableNo,
-        transactionId: order.transactionId,
-        orders: [order],
-        orderDate: order.createdAt,
-        total: order.amount,
-        status: transaction.status,
-      });
-    }
-  }
-
   if (orderNo)
     return res
       .status(200)
-      .json(ordersByOrderId.find((order) => order.orderNo === Number(orderNo)));
-  return res.status(200).json(ordersByOrderId);
+      .json(orders.find((order) => order.orderNo === Number(orderNo)));
+  return res.status(200).json(orders);
 }
 
 export default GetService;
