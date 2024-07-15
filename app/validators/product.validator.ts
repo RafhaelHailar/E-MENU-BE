@@ -7,6 +7,7 @@ const add = {
     description: Joi.string().required(),
     price: Joi.number().required(),
     estimatedCookingTimeMin: Joi.number().required(),
+    quantity: Joi.number().required(),
   }),
 };
 
