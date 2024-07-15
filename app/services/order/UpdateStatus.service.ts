@@ -24,6 +24,27 @@ async function UpdateStatusService(req: Request, res: Response) {
     },
   });
 
+  const orders = await prisma.orders.findMany({
+    where: {
+      orderNo,
+    },
+    include: {
+      product: true,
+    },
+  });
+
+  for (let i = 0; i < orders.length; i++) {
+    const order = orders[i];
+    await prisma.inventory.update({
+      where: {
+        productId: order.product.id,
+      },
+      data: {
+        quantity: { decrement: order.quantity },
+      },
+    });
+  }
+
   return res.status(200).json({ message: "order status is updated" });
 }
 
