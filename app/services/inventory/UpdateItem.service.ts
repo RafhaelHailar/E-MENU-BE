@@ -5,7 +5,7 @@ const UpdateItemService = async (req: Request, res: Response) => {
   const { id, name, category } = req.body;
   const quantity = req.body.quantity || 0;
 
-  const item = await prisma.inventoryItem.findUnique({
+  /*  const item = await prisma.inventoryItem.findUnique({
     where: {
       id,
     },
@@ -26,7 +26,7 @@ const UpdateItemService = async (req: Request, res: Response) => {
       quantity,
       updatedAt: new Date(),
     },
-  });
+  }); */
 
   return res.status(200).json({ message: "inventory item is updated" });
 };

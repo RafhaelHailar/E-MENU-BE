@@ -6,7 +6,7 @@ const DeleteItemService = async (req: Request, res: Response) => {
 
   if (!id)
     return res.status(400).json({ message: "no inventory item id is given" });
-
+  /* 
   const item = await prisma.inventoryItem.findUnique({
     where: {
       id,
@@ -23,7 +23,7 @@ const DeleteItemService = async (req: Request, res: Response) => {
       id,
     },
   });
-
+ */
   return res.status(200).json({ message: "inventory item is deleted" });
 };
 
