@@ -21,6 +21,12 @@ async function DeclineRequestService(req: Request, res: Response) {
     },
   });
 
+  await prisma.cartItem.deleteMany({
+    where: {
+      sessionId,
+    },
+  });
+
   return res.status(200).json({ message: "table request is declined" });
 }
 
