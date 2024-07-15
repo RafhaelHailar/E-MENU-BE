@@ -101,7 +101,7 @@ router.get("/my_orders", isApproved, OrderController.getMyOrder);
  * @route GET /orders
  * @returns {object} 200 - All Customer Orders.
  */
-router.get("/orders", auth("getOrders"), OrderController.get);
+router.get("/orders/:orderNo?", auth("getOrders"), OrderController.get);
 
 /**
  * Confirm Table Registration
