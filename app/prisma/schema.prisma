@@ -247,6 +247,13 @@ model Assistance {
   createdAt    DateTime @default(now())
 }
 
+model Tables {
+  id           Int      @id @default(autoincrement())
+  tableNo      Int
+  status       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+}
+
 enum InventoryItemCategory {
   MEAT
   PRODUCE
