@@ -7,6 +7,7 @@ const add = {
     description: Joi.string().required(),
     price: Joi.number().required(),
     estimatedCookingTimeMin: Joi.number().required(),
+    quantity: Joi.number().required(),
   }),
 };
 
@@ -34,6 +35,7 @@ const update = {
     description: Joi.string(),
     price: Joi.number(),
     estimatedCookingTimeMin: Joi.number(),
+    quantity: Joi.string(),
   }),
 };
 

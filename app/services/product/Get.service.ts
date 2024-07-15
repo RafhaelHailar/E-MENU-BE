@@ -29,6 +29,7 @@ async function GetService(req: Request, res: Response) {
         id: productId,
       },
       include: {
+        inventory: true,
         productCategorize: {
           include: {
             category: true,

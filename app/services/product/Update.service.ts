@@ -2,8 +2,15 @@ import { Request, Response } from "express";
 import prisma from "@/../prisma";
 
 async function UpdateService(req: Request, res: Response) {
-  const { id, name, description, image, price, estimatedCookingTimeMin } =
-    req.body;
+  const {
+    id,
+    name,
+    description,
+    image,
+    price,
+    estimatedCookingTimeMin,
+    quantity,
+  } = req.body;
 
   const product = await prisma.product.findUnique({
     where: {
@@ -26,6 +33,12 @@ async function UpdateService(req: Request, res: Response) {
       image,
       price,
       estimatedCookingTimeMin,
+      inventory: {
+        update: {
+          quantity,
+          updatedAt: new Date(),
+        },
+      },
     },
   });
 
