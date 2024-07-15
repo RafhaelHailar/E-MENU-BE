@@ -149,30 +149,31 @@ model Loyalty {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model Orders {
-  id            Int      @id @default(autoincrement())
-  sessionId     String   @db.Char(200)
+  id            Int          @id @default(autoincrement())
+  sessionId     String       @db.Char(200)
   tableNo       Int
   productId     String
-  price         Float    @db.Float
+  price         Float        @db.Float
   quantity      Int
-  amount        Float    @db.Float
-  createdAt     DateTime @default(now()) @db.DateTime(0)
-  transactionId String   @db.Char(200)
+  amount        Float        @db.Float
+  createdAt     DateTime     @default(now()) @db.DateTime(0)
+  transactionId String       @db.Char(200)
   orderNo       Int
-  product       Product  @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "Orders_product_fkey")
+  product       Product      @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "Orders_product_fkey")
 
+  transaction   Transactions @relation(fields: [transactionId], references: [transactionId])
   @@index([productId], map: "Orders_product_fkey")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model Transactions {
   id            Int                        @id @default(autoincrement())
+  transactionId String                     @unique @db.Char(200)
   sessionId     String                     @db.Char(200)
   tableNo       Int
   amount        Float                      @db.Float
   paymentMethod Transactions_paymentMethod
   paymentMode   String?
-  transactionId String                     @unique @db.Char(200)
   email         String?                    @db.VarChar(50)
   name          String?                    @db.VarChar(50)
   contactNo     String?                    @db.VarChar(50)
@@ -183,6 +184,8 @@ model Transactions {
   updatedAt     DateTime                   @updatedAt
   updatedBy     String?                    @db.VarChar(50)
   orderNo       Int                        @unique
+
+  orders        Orders[]
 }
 
 model User {
