@@ -8,7 +8,7 @@ function transformProduct(product: ProductWithCategory) {
     return categoryName;
   });
 
-  const quantity = product.inventory.quantity;
+  const quantity = (product.inventory && product.inventory.quantity) || 0;
 
   const mappedProduct = (({
     id,
