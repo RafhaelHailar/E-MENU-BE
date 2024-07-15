@@ -8,9 +8,32 @@ function transformProduct(product: ProductWithCategory) {
     return categoryName;
   });
 
+  const quantity = product.inventory.quantity;
+
+  const mappedProduct = (({
+    id,
+    name,
+    image,
+    description,
+    price,
+    createdAt,
+    updatedAt,
+    estimatedCookingTimeMin,
+  }) => ({
+    id,
+    name,
+    image,
+    description,
+    price,
+    createdAt,
+    updatedAt,
+    estimatedCookingTimeMin,
+  }))(product);
+
   const transformedProduct = {
-    ...product,
+    ...mappedProduct,
     categories,
+    quantity,
     ratings: 5,
   };
 
@@ -61,6 +84,7 @@ async function GetService(req: Request, res: Response) {
 
   const getOption = {
     include: {
+      inventory: true,
       productCategorize: {
         include: {
           category: {

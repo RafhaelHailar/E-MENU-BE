@@ -4,12 +4,12 @@ import validate from "@middlewares/validate";
 import ProductController from "@controllers/product.controller";
 import OrderController from "@controllers/order.controller";
 import TableController from "@controllers/table.controller";
-import InventoryController from "@controllers/inventory.controller";
+/* import InventoryController from "@controllers/inventory.controller"; */
 import LoyaltyController from "@controllers/loyalty.controller";
 import productValidators from "@validators/product.validator";
 import tableValidators from "@validators/table.validator";
 import orderValidators from "@validators/order.validator";
-import inventoryValidators from "@validators/inventory.validator";
+/* import inventoryValidators from "@validators/inventory.validator"; */
 
 import auth from "@middlewares/auth";
 import loyaltyValidators from "@validators/loyalty.validator";
@@ -115,7 +115,7 @@ router.get("/confirm_register", TableController.confirmRegister);
  * @route GET /inventory
  * @returns {object} 200 - All Inventory
  */
-router.get("/inventory", auth("manageInventory"), InventoryController.getItems);
+/* router.get("/inventory", auth("manageInventory"), InventoryController.getItems); */
 
 /**
  * Get Loyalties History
@@ -347,12 +347,12 @@ router.post(
  * @route POST /inventory/add
  * @returns {object} 200 - Inventory Item Added
  */
-router.post(
+/* router.post(
   "/inventory/add",
   auth("manageInventory"),
   validate(inventoryValidators.addItem),
   InventoryController.addItem,
-);
+); */
 
 /**
  * Redeem Reward Item
@@ -371,12 +371,12 @@ router.post(
  * @route PUT /inventory/update
  * @returns {object} 200 - Inventory Item Updated
  */
-router.put(
+/* router.put(
   "/inventory/update",
   auth("manageInventory"),
   validate(inventoryValidators.updateItem),
   InventoryController.updateItem,
-);
+); */
 
 /**
  * Update a product
@@ -421,11 +421,11 @@ router.delete(
  * @route DELETE /inventory/delete
  * @returns {object} 200 - Inventory Item Deleted
  */
-router.delete(
+/* router.delete(
   "/inventory/delete/:itemId",
   auth("manageInventory"),
   InventoryController.deleteItem,
-);
+); */
 
 /**
  * Decline Assistance Request
