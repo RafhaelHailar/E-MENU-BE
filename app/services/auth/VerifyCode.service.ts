@@ -49,7 +49,9 @@ async function VerifyCodeService(req: Request, res: Response) {
     secure: true,
     sameSite: "none",
   });
-  return res.status(200).json({ message: "email is verified" });
+  return res
+    .status(200)
+    .json({ loyaltySession: sessionId, message: "email is verified" });
 }
 
 export default VerifyCodeService;
