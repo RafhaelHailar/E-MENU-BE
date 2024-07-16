@@ -252,7 +252,7 @@ model Assistance {
 
 model Tables {
   id           Int      @id @default(autoincrement())
-  tableNo      Int
+  tableNo      Int      @unique
   status       Boolean  @default(true)
   createdAt    DateTime @default(now())
 }
