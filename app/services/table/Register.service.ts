@@ -5,6 +5,18 @@ import crypto from "crypto";
 async function RegisterService(req: Request, res: Response) {
   const tableId = Number(req.params.tableId);
 
+  const table = await prisma.tables.findUnique({
+    where: {
+      tableNo: tableId,
+    },
+  });
+
+  if (!table)
+    return res.status(404).json({ message: "no table with given id found!" });
+
+  if (!table.status)
+    return res.status(400).json({ message: "table is not available" });
+
   const sessionId = crypto.randomBytes(6).toString("hex");
 
   const ip =
