@@ -35,9 +35,9 @@ const order = {
     name: Joi.string(),
     email: Joi.string().email(),
     contactNo: Joi.string(),
-    paymentMethod: Joi.string()
-      .valid(...Object.values(Transactions_paymentMethod))
-      .required(),
+    paymentMethod: Joi.string().valid(
+      ...Object.values(Transactions_paymentMethod),
+    ),
     items: Joi.array().items(
       Joi.object()
         .keys({

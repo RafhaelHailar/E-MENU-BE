@@ -172,7 +172,7 @@ model Transactions {
   sessionId     String                     @db.Char(200)
   tableNo       Int
   amount        Float?                     @db.Float
-  paymentMethod Transactions_paymentMethod
+  paymentMethod Transactions_paymentMethod @default(ONLINE)
   paymentMode   String?
   email         String?                    @db.VarChar(50)
   name          String?                    @db.VarChar(50)
