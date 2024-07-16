@@ -157,7 +157,7 @@ model Orders {
   quantity      Int
   amount        Float        @db.Float
   createdAt     DateTime     @default(now()) @db.DateTime(0)
-  transactionId String       @db.Char(200)
+  transactionId String      @db.Char(200)
   orderNo       Int
   product       Product      @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "Orders_product_fkey")
 
@@ -171,7 +171,7 @@ model Transactions {
   transactionId String                     @unique @db.Char(200)
   sessionId     String                     @db.Char(200)
   tableNo       Int
-  amount        Float                      @db.Float
+  amount        Float?                     @db.Float
   paymentMethod Transactions_paymentMethod
   paymentMode   String?
   email         String?                    @db.VarChar(50)
