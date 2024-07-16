@@ -29,6 +29,8 @@ async function GetMyOrdersService(req: Request, res: Response) {
             select: {
               id: true,
               name: true,
+              image: true,
+              description: true,
             },
           },
         },
