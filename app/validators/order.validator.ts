@@ -38,6 +38,14 @@ const order = {
     paymentMethod: Joi.string()
       .valid(...Object.values(Transactions_paymentMethod))
       .required(),
+    items: Joi.array().items(
+      Joi.object()
+        .keys({
+          id: Joi.string(),
+          quantity: Joi.number(),
+        })
+        .required(),
+    ),
   }),
 };
 
