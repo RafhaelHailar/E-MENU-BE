@@ -11,6 +11,8 @@ async function GetMyOrdersService(req: Request, res: Response) {
       tableNo,
     },
     select: {
+      sessionId: true,
+      tableNo: true,
       status: true,
       orderNo: true,
       transactionId: true,

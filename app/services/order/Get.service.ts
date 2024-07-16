@@ -4,6 +4,8 @@ import prisma from "@/../prisma";
 async function GetService(req: Request, res: Response) {
   const orders = await prisma.transactions.findMany({
     select: {
+      tableNo: true,
+      sessionId: true,
       status: true,
       orderNo: true,
       transactionId: true,
