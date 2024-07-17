@@ -9,6 +9,7 @@ import {
   CreateRewardService,
   GetRewardsService,
   UpdateRewardService,
+  DeleteRewardService,
 } from "@services/loyalty";
 
 const LoyaltyController = {
@@ -46,6 +47,10 @@ const LoyaltyController = {
 
   updateReward: asyncHandler(async (req: Request, res: Response) => {
     await UpdateRewardService(req, res);
+  }),
+
+  deleteReward: asyncHandler(async (req: Request, res: Response) => {
+    await DeleteRewardService(req, res);
   }),
 };
 
