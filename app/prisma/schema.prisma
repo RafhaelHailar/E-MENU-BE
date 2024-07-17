@@ -223,13 +223,15 @@ model Debit {
 }
 
 model Reward {
-  id        Int      @id @default(autoincrement())
-  rewardId  String   @unique @default(uuid())
-  name      String   @db.VarChar(100)
-  points    Int
-  createdAt DateTime @default(now()) @db.DateTime(0)
-  updatedAt DateTime @updatedAt
-  debit     Debit[]
+  id          Int      @id @default(autoincrement())
+  rewardId    String   @unique @default(uuid())
+  name        String   @db.VarChar(100)
+  points      Int
+  image       String
+  description String
+  createdAt   DateTime @default(now()) @db.DateTime(0)
+  updatedAt   DateTime @updatedAt
+  debit       Debit[]
 }
 
 model OTP {
