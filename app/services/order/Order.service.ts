@@ -1,33 +1,30 @@
 import { Request, Response } from "express";
 import prisma from "@/../prisma";
 import crypto from "crypto";
-import PaymongoCheckoutService from "./PaymongoCheckout.service";
 
 async function OrderService(req: Request, res: Response) {
   const tableNo = Number(req.tableSession.tableNo);
   const sessionId = req.tableSession.session;
 
-  let { loyalty, name, email, contactNo, paymentMethod } = req.body;
+  let { loyalty, name, email, contactNo, paymentMethod, items } = req.body;
 
-  paymentMethod = paymentMethod || "ONLINE";
-
-  const cartItems = await prisma.cartItem.findMany({
+  const productIds = items.map((item) => item.id);
+  const products = await prisma.product.findMany({
     where: {
-      tableNo,
-      sessionId,
+      id: {
+        in: productIds,
+      },
     },
-    include: {
-      product: {
-        include: {
-          productCategorize: {
-            include: {
-              category: {
-                include: {
-                  promotionCategorize: {
-                    include: {
-                      promotion: true,
-                    },
-                  },
+    select: {
+      id: true,
+      price: true,
+      productCategorize: {
+        select: {
+          category: {
+            select: {
+              promotionCategorize: {
+                select: {
+                  promotion: true,
                 },
               },
             },
@@ -37,17 +34,22 @@ async function OrderService(req: Request, res: Response) {
     },
   });
 
-  if (cartItems.length === 0)
+  if (products.length === 0)
     return res.status(400).send({ message: "no item in cart." });
 
-  // check if product really exists.
-  for (let i = 0; i < cartItems.length; i++) {
-    const product = cartItems[i].product;
+  const cartItems = [];
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const productId = item.id;
+    const product = products.find((product) => product.id === productId);
 
     if (!product)
       return res
         .status(404)
         .json({ message: "product with given id is not found!" });
+
+    cartItems.push({ ...product, quantity: item.quantity });
   }
 
   const lastOrderedItem = await prisma.orders.findFirst({
@@ -80,22 +82,21 @@ async function OrderService(req: Request, res: Response) {
   // move to orders
   for (let i = 0; i < cartItems.length; i++) {
     const item = cartItems[i];
-    const product = item.product;
 
     await prisma.orders.create({
       data: {
         tableNo,
         sessionId,
-        productId: product.id,
-        price: product.price,
+        productId: item.id,
+        price: item.price,
         quantity: item.quantity,
-        amount: product.price * item.quantity,
+        amount: item.price * item.quantity,
         transactionId,
         orderNo,
       },
     });
 
-    const disount = product.productCategorize.reduce(
+    const disount = item.productCategorize.reduce(
       (discountAmount, categorize) => {
         const discountRate = categorize.category.promotionCategorize.reduce(
           (promotionAmount, promotionCategorize) => {
@@ -109,7 +110,7 @@ async function OrderService(req: Request, res: Response) {
       0,
     );
 
-    let amount = (product.price - product.price * disount) * item.quantity;
+    let amount = (item.price - item.price * disount) * item.quantity;
     totalAmount += amount;
     totalLoyalty += amount * 0.02; // total loyalty is 2% of the amount they bought.
   }
@@ -133,14 +134,6 @@ async function OrderService(req: Request, res: Response) {
       },
     });
   }
-
-  // clear cart
-  await prisma.cartItem.deleteMany({
-    where: {
-      tableNo,
-      sessionId,
-    },
-  });
 
   return res.status(200).json({ message: "cart successfully ordered" });
 }

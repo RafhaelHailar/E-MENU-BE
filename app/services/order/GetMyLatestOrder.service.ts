@@ -50,7 +50,7 @@ async function GetMyLatestOrder(req: Request, res: Response) {
     orderNo: order.orderNo,
     orders,
     orderDate: order.createdAt,
-    total: order.amount,
+    total: transaction.amount,
     status: transaction.status,
     paymentMethod: transaction.paymentMethod,
     checkoutURL,
