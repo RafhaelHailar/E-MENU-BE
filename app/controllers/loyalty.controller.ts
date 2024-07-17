@@ -8,6 +8,7 @@ import {
   RedeemService,
   CreateRewardService,
   GetRewardsService,
+  UpdateRewardService,
 } from "@services/loyalty";
 
 const LoyaltyController = {
@@ -41,6 +42,10 @@ const LoyaltyController = {
 
   createReward: asyncHandler(async (req: Request, res: Response) => {
     await CreateRewardService(req, res);
+  }),
+
+  updateReward: asyncHandler(async (req: Request, res: Response) => {
+    await UpdateRewardService(req, res);
   }),
 };
 
