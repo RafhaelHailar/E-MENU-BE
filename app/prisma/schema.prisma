@@ -67,6 +67,7 @@ model Product {
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
   estimatedCookingTimeMin Int
+  deleted                 Boolean             @default(0)
   cartItems               CartItem[]
   orders                  Orders[]
   productCategorize       ProductCategorize[]
@@ -225,7 +226,7 @@ model Debit {
 model Reward {
   id          Int      @id @default(autoincrement())
   rewardId    String   @unique @default(uuid())
-  name        String   @db.VarChar(100)
+  name        String   @db.VarChar(100) 
   points      Int
   image       String
   description String
