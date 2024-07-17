@@ -16,6 +16,8 @@ async function GetMyLatestOrder(req: Request, res: Response) {
     },
   });
 
+  if (!order) return res.status(404).json({ message: "no order found" });
+
   const orders = await prisma.orders.findMany({
     where: {
       sessionId: tableSession,
