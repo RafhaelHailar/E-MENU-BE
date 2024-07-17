@@ -182,6 +182,13 @@ router.get(
 router.get("/my_latest_order", isApproved, OrderController.getMyLatestOrder);
 
 /**
+ * Get All Rewards
+ * @route GET /rewards
+ * @returns {object} 200 - Loyalty Redeemable Rewards
+ */
+router.get("/rewards", isAuthenticated, LoyaltyController.getRewards);
+
+/**
  * Approve Table Request
  * @route PATCH /table/approve
  *
