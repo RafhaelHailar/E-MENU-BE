@@ -83,6 +83,9 @@ async function GetService(req: Request, res: Response) {
     return res.status(200).json([]);
 
   const getOption = {
+    where: {
+      deleted: false,
+    },
     include: {
       inventory: true,
       productCategorize: {
