@@ -18,10 +18,20 @@ const redeem = {
   }),
 };
 
+const createReward = {
+  body: Joi.object().keys({
+    name: Joi.string().required(),
+    points: Joi.string().required(),
+    image: Joi.string().required(),
+    description: Joi.string().required(),
+  }),
+};
+
 const loyaltyValidators = {
   customerLogin,
   verifyCode,
   redeem,
+  createReward,
 };
 
 export default loyaltyValidators;
