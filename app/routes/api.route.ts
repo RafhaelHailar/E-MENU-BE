@@ -400,7 +400,7 @@ router.post(
 
 /**
  * Update a product
- * @route PUT /product
+ * @route PUT /product/update
  * @returns {object} 200 - Product Updated Sucessfully
  */
 router.put(
@@ -408,6 +408,18 @@ router.put(
   auth("manageProducts"),
   validate(productValidators.update),
   ProductController.update,
+);
+
+/**
+ * Update a reward
+ * @route PUT /reward/update
+ * @returns {object} 200 - Reward Updated Sucessfully
+ */
+router.put(
+  "/reward/update",
+  auth("manageLoyalties"),
+  validate(loyaltyValidators.UpdateReward),
+  LoyaltyController.updateReward,
 );
 
 /**
