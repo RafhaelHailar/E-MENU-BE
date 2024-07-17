@@ -1,19 +1,24 @@
 import { Request, Response } from "express";
 import prisma from "@/../prisma";
+import loyaltyPoints from "./LoyaltyPoints.service";
 
 async function UpdateStatusService(req: Request, res: Response) {
   const { orderNo, status } = req.body;
 
-  const transactions = await prisma.transactions.findMany({
+  const transaction = await prisma.transactions.findUnique({
     where: {
       orderNo,
     },
   });
 
-  if (transactions.length === 0)
+  if (transaction)
     return res
       .status(404)
       .json({ message: "transactions with that order no are not found" });
+
+  if (status === "COMPLETED") {
+    await loyaltyPoints(transaction);
+  }
 
   await prisma.transactions.updateMany({
     where: {

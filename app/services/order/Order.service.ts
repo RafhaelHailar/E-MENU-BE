@@ -63,7 +63,6 @@ async function OrderService(req: Request, res: Response) {
 
   const orderNo = lastOrderedNo + 1;
   let totalAmount = 0;
-  let totalLoyalty = 0;
 
   await prisma.transactions.create({
     data: {
@@ -112,7 +111,6 @@ async function OrderService(req: Request, res: Response) {
 
     let amount = (item.price - item.price * disount) * item.quantity;
     totalAmount += amount;
-    totalLoyalty += amount * 0.02; // total loyalty is 2% of the amount they bought.
   }
 
   await prisma.transactions.update({
@@ -123,17 +121,6 @@ async function OrderService(req: Request, res: Response) {
       amount: totalAmount,
     },
   });
-
-  if (loyalty) {
-    await prisma.loyalty.create({
-      data: {
-        email,
-        contactNo,
-        amount: totalLoyalty,
-        reference: transactionId,
-      },
-    });
-  }
 
   return res.status(200).json({ message: "cart successfully ordered" });
 }
