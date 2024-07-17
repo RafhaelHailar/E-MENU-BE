@@ -182,6 +182,13 @@ router.get(
 router.get("/my_latest_order", isApproved, OrderController.getMyLatestOrder);
 
 /**
+ * Get All Rewards
+ * @route GET /rewards
+ * @returns {object} 200 - Loyalty Redeemable Rewards
+ */
+router.get("/rewards", isAuthenticated, LoyaltyController.getRewards);
+
+/**
  * Approve Table Request
  * @route PATCH /table/approve
  *
@@ -393,7 +400,7 @@ router.post(
 
 /**
  * Update a product
- * @route PUT /product
+ * @route PUT /product/update
  * @returns {object} 200 - Product Updated Sucessfully
  */
 router.put(
@@ -401,6 +408,18 @@ router.put(
   auth("manageProducts"),
   validate(productValidators.update),
   ProductController.update,
+);
+
+/**
+ * Update a reward
+ * @route PUT /reward/update
+ * @returns {object} 200 - Reward Updated Sucessfully
+ */
+router.put(
+  "/reward/update",
+  auth("manageLoyalties"),
+  validate(loyaltyValidators.UpdateReward),
+  LoyaltyController.updateReward,
 );
 
 /**
@@ -463,6 +482,18 @@ router.delete(
   "/product/delete/:productId",
   auth("manageProducts"),
   ProductController.delete,
+);
+
+/**
+ * Delete Reward
+ * @route DELETE /reward/delete/:rewardId
+ *
+ * @returns {object} 200 - Product Successfully Deleted
+ */
+router.delete(
+  "/reward/delete/:rewardId",
+  auth("manageLoyalties"),
+  LoyaltyController.deleteReward,
 );
 
 export default router;

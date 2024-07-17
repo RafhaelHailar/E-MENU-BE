@@ -27,11 +27,22 @@ const createReward = {
   }),
 };
 
+const UpdateReward = {
+  body: Joi.object().keys({
+    rewardId: Joi.string().required(),
+    name: Joi.string(),
+    points: Joi.string(),
+    image: Joi.string(),
+    description: Joi.string(),
+  }),
+};
+
 const loyaltyValidators = {
   customerLogin,
   verifyCode,
   redeem,
   createReward,
+  UpdateReward,
 };
 
 export default loyaltyValidators;
