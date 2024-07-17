@@ -11,6 +11,7 @@ import {
   DeCategorizeProductService,
   GetCategoriesService,
   UpdateService,
+  DeleteService,
 } from "@services/product";
 
 const ProductController = {
@@ -24,6 +25,10 @@ const ProductController = {
 
   update: asyncHandler(async (req: Request, res: Response) => {
     await UpdateService(req, res);
+  }),
+
+  delete: asyncHandler(async (req: Request, res: Response) => {
+    await DeleteService(req, res);
   }),
 
   addProductCategory: asyncHandler(async (req: Request, res: Response) => {
