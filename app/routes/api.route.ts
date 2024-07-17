@@ -484,6 +484,18 @@ router.delete(
   ProductController.delete,
 );
 
+/**
+ * Delete Reward
+ * @route DELETE /reward/delete/:rewardId
+ *
+ * @returns {object} 200 - Product Successfully Deleted
+ */
+router.delete(
+  "/reward/delete/:rewardId",
+  auth("manageLoyalties"),
+  LoyaltyController.deleteReward,
+);
+
 export default router;
 
 /**
