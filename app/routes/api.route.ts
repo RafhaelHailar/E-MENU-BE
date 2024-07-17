@@ -453,6 +453,18 @@ router.delete(
   AssistanceController.declineRequest,
 );
 
+/**
+ * Delete Product
+ * @route DELETE /product/delete/:productId
+ *
+ * @returns {object} 200 - Product Successfully Deleted
+ */
+router.delete(
+  "/product/delete/:productId",
+  auth("manageProducts"),
+  ProductController.delete,
+);
+
 export default router;
 
 /**
