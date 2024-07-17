@@ -367,6 +367,19 @@ router.post(
 );
 
 /**
+ * Create Reward Item
+ * @route POST /reward
+ * @returns {object} 201 - Reward Item Created
+ */
+router.post(
+  "/reward",
+  isAuthenticated,
+  auth("manageLoyalties"),
+  validate(loyaltyValidators.createReward),
+  LoyaltyController.createReward,
+);
+
+/**
  * Update Inventory Item
  * @route PUT /inventory/update
  * @returns {object} 200 - Inventory Item Updated
