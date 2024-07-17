@@ -4,7 +4,7 @@ import validate from "@middlewares/validate";
 import ProductController from "@controllers/product.controller";
 import OrderController from "@controllers/order.controller";
 import TableController from "@controllers/table.controller";
-/* import InventoryController from "@controllers/inventory.controller"; */
+import InventoryController from "@controllers/inventory.controller";
 import LoyaltyController from "@controllers/loyalty.controller";
 import productValidators from "@validators/product.validator";
 import tableValidators from "@validators/table.validator";
@@ -115,7 +115,7 @@ router.get("/confirm_register", TableController.confirmRegister);
  * @route GET /inventory
  * @returns {object} 200 - All Inventory
  */
-/* router.get("/inventory", auth("manageInventory"), InventoryController.getItems); */
+router.get("/inventory", auth("manageInventory"), InventoryController.getItems);
 
 /**
  * Get Loyalties History
