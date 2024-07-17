@@ -41,7 +41,7 @@ async function LoginService(req: Request, res: Response) {
     sameSite: "none",
   });
 
-  return res.status(200).json({ sessionId });
+  return res.status(200).json({ sessionId, role: user.role });
 }
 
 export default LoginService;

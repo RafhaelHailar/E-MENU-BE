@@ -10,6 +10,7 @@ async function GetService(req: Request, res: Response) {
       orderNo: true,
       transactionId: true,
       createdAt: true,
+      paymentMethod: true,
       orders: {
         select: {
           id: true,
