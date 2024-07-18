@@ -13,9 +13,7 @@ async function GetMyStatusService(req: Request, res: Response) {
   });
 
   if (!tableRequest)
-    return res
-      .status(404)
-      .json({ message: "table request with that session id is not found" });
+    return res.status(404).json({ message: "please visit our restaurant!" });
 
   return res.status(200).json(tableRequest);
 }
