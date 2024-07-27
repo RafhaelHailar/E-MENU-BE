@@ -1,4 +1,5 @@
 import { Transactions } from "@prisma/client";
+import prisma from "prisma";
 
 async function loyaltyPoints(transaction: Transactions) {
   if (!transaction.loyalty) return;

@@ -41,6 +41,7 @@ async function GetMyLatestOrder(req: Request, res: Response) {
       transactionId: true,
       createdAt: true,
       paymentMethod: true,
+      amount: true,
       orders: {
         select: {
           id: true,
