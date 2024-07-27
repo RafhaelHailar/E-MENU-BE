@@ -260,6 +260,13 @@ model Tables {
   createdAt    DateTime @default(now())
 }
 
+model Reviews {
+  id           Int      @id @default(autoincrement())
+  orderNo      Int      @unique
+  reviews      String   
+  createdAt    DateTime @default(now())
+}
+
 enum InventoryItemCategory {
   MEAT
   PRODUCE
