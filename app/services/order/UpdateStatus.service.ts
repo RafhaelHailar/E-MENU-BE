@@ -11,7 +11,7 @@ async function UpdateStatusService(req: Request, res: Response) {
     },
   });
 
-  if (transaction)
+  if (!transaction)
     return res
       .status(404)
       .json({ message: "transactions with that order no are not found" });
@@ -20,7 +20,7 @@ async function UpdateStatusService(req: Request, res: Response) {
     await loyaltyPoints(transaction);
   }
 
-  await prisma.transactions.updateMany({
+  await prisma.transactions.update({
     where: {
       orderNo,
     },
