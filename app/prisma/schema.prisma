@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
+  provider          = "postgresql"
   url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Table {
@@ -14,9 +13,9 @@ model Table {
   ipAddress    String     @unique @db.Char(60)
   tableNo      Int
   status       Boolean    @default(false)
-  approvedDate DateTime?  @db.DateTime(0)
+  approvedDate DateTime? 
   approvedBy   String?    @db.Char(50)
-  createdAt    DateTime   @default(now()) @db.DateTime(0)
+  createdAt    DateTime   @default(now())
   updatedAt    DateTime?  @updatedAt
   customers    Customer[]
 }
@@ -33,9 +32,6 @@ model Customer {
   leader     Customer?    @relation("group", fields: [leaderId], references: [id])
   accomplice Customer[]   @relation("group")
   table      Table        @relation(fields: [tableId], references: [id])
-
-  @@index([leaderId], map: "Customer_leaderId_fkey")
-  @@index([tableId], map: "Customer_tableId_fkey")
 }
 
 model Cart {
@@ -55,14 +51,13 @@ model CartItem {
   product   Product  @relation(fields: [productId], references: [id])
 
   @@unique([sessionId, tableNo, productId])
-  @@index([productId], map: "CartItem_productId_fkey")
 }
 
 model Product {
   id                      String              @unique @default(uuid())
   name                    String
-  image                   String              @db.LongText
-  description             String              @db.LongText
+  image                   String              
+  description             String              
   price                   Float
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
@@ -91,13 +86,12 @@ model ProductCategorize {
   product    Product         @relation(fields: [productId], references: [id])
 
   @@unique([categoryId, productId])
-  @@index([productId], map: "ProductCategorize_productId_fkey")
 }
 
 model Promotion {
   id                  String                @unique @default(uuid())
   name                String
-  description         String                @db.LongText
+  description         String                
   discountRate        Float
   startDate           DateTime              @default(now())
   endDate             DateTime
@@ -113,21 +107,17 @@ model PromotionCategorize {
   promotion   Promotion       @relation(fields: [promotionId], references: [id])
 
   @@unique([categoryId, promotionId])
-  @@index([promotionId], map: "PromotionCategorize_promotionId_fkey")
 }
 
 model ProductReview {
   id        String   @unique @default(uuid())
-  comment   String   @db.LongText
+  comment   String   
   rating    Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   accountId String
   productId String
   product   Product  @relation(fields: [productId], references: [id])
-
-  @@index([accountId], map: "ProductReview_accountId_fkey")
-  @@index([productId], map: "ProductReview_productId_fkey")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -142,7 +132,7 @@ model spatial_ref_sys {
 model Loyalty {
   id        Int      @id @default(autoincrement())
   email     String   @db.VarChar(50)
-  amount    Float    @db.Float
+  amount    Float  
   reference String   @db.Char(200)
   createdAt DateTime @default(now())
   contactNo String   @db.VarChar(50)
@@ -154,16 +144,15 @@ model Orders {
   sessionId     String       @db.Char(200)
   tableNo       Int
   productId     String
-  price         Float        @db.Float
+  price         Float       
   quantity      Int
-  amount        Float        @db.Float
-  createdAt     DateTime     @default(now()) @db.DateTime(0)
+  amount        Float       
+  createdAt     DateTime     @default(now())
   transactionId String      @db.Char(200)
   orderNo       Int
   product       Product      @relation(fields: [productId], references: [id], onUpdate: Restrict, map: "Orders_product_fkey")
 
   transaction   Transactions @relation(fields: [transactionId], references: [transactionId])
-  @@index([productId], map: "Orders_product_fkey")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -172,7 +161,7 @@ model Transactions {
   transactionId String                     @unique @db.Char(200)
   sessionId     String                     @db.Char(200)
   tableNo       Int
-  amount        Float?                     @db.Float
+  amount        Float?                    
   paymentMethod Transactions_paymentMethod @default(ONLINE)
   paymentMode   String?
   email         String?                    @db.VarChar(50)
@@ -181,7 +170,7 @@ model Transactions {
   loyalty       Boolean                    @default(false)
   status        Transactions_status        @default(PENDING)
   paymentStatus Transactions_paymentStatus @default(UNPAID)
-  createdAt     DateTime                   @default(now()) @db.DateTime(0)
+  createdAt     DateTime                   @default(now())
   updatedAt     DateTime                   @updatedAt
   updatedBy     String?                    @db.VarChar(50)
   orderNo       Int                        @unique
@@ -216,11 +205,9 @@ model Debit {
   contactNo String?   @db.VarChar(50)
   rewardId  Int
   amount    Int
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   reward    Reward   @relation(fields: [rewardId], references: [id])
-
-  @@index([rewardId], map: "Debit_rewardId_fkey")
 }
 
 model Reward {
@@ -230,7 +217,7 @@ model Reward {
   points      Int
   image       String
   description String
-  createdAt   DateTime @default(now()) @db.DateTime(0)
+  createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   debit       Debit[]
 }
@@ -248,7 +235,7 @@ model Assistance {
   requested    String   @unique
   tableNo      Int
   assist       Boolean  @default(false)
-  approvedDate DateTime?@db.DateTime(0)
+  approvedDate DateTime?
   approvedBy   String?  @db.Char(50)
   createdAt    DateTime @default(now())
 }
